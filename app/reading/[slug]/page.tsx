@@ -48,29 +48,31 @@ export default async function BookPage({
         </span>
       </div>
 
-      <Book3D book={book} bg={palette.bg} fg={palette.fg} />
+      <div className="detail-layout">
+        <Book3D book={book} bg={palette.bg} fg={palette.fg} />
 
-      <article className="article detail-body">
-        <header>
-          <h1>{book.title}</h1>
-          <time>
-            {book.author} · read in {book.year}
-          </time>
-        </header>
-        <p>{book.summary}</p>
-        {book.href && (
-          <p>
-            <a
-              className="basic-link"
-              target="_blank"
-              rel="noopener noreferrer"
-              href={book.href}
-            >
-              Get the book
-            </a>
-          </p>
-        )}
-      </article>
+        <article className="article detail-body">
+          <header>
+            <h1>{book.title}</h1>
+            <time>
+              {book.author} · read in {book.year}
+            </time>
+          </header>
+          <p>{book.summary}</p>
+          {book.href && (
+            <p>
+              <a
+                className="basic-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                href={book.href}
+              >
+                Get the book
+              </a>
+            </p>
+          )}
+        </article>
+      </div>
 
       <nav className="detail-nav">
         {prev ? (

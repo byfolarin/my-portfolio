@@ -382,28 +382,81 @@ body {
 
 /* ---- 3D book ---- */
 
+.detail-layout {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding-top: 2.5rem;
+}
+
+.detail-layout .detail-body {
+  flex: 1;
+  padding-top: 0;
+}
+
 .book3d-wrap {
-  padding-top: 1.5rem;
+  flex: 0 0 46%;
+  min-width: 0;
 }
 
 .book3d-canvas {
-  height: 26rem;
+  position: relative;
+  height: 19rem;
   touch-action: pan-y;
 }
 
-@media screen and (max-width: 520px) {
-  .book3d-canvas {
-    height: 20rem;
+.book3d-canvas canvas {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.book3d-canvas[data-ready] canvas {
+  opacity: 1;
+}
+
+.book3d-loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1rem;
+  height: 1rem;
+  margin: -0.5rem 0 0 -0.5rem;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  border-top-color: rgba(0, 0, 0, 0.35);
+  animation: book3d-spin 0.8s linear infinite;
+}
+
+@keyframes book3d-spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 
 .book3d-hint {
-  padding-top: 0.75rem;
+  padding-top: 0.25rem;
   text-align: center;
   color: rgba(0, 0, 0, 0.25);
   font-size: 0.75rem;
   font-weight: 460;
   letter-spacing: 0.00063rem;
+}
+
+@media screen and (max-width: 640px) {
+  .detail-layout {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
+    padding-top: 1.5rem;
+  }
+
+  .book3d-wrap {
+    flex: none;
+  }
+
+  .book3d-canvas {
+    height: 16rem;
+  }
 }
 
 /* ---- footer ---- */

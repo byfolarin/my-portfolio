@@ -7,7 +7,11 @@ import type { Book } from "../books";
 // rest of the site stays light
 const BookCanvas = dynamic(() => import("./book-canvas"), {
   ssr: false,
-  loading: () => <div className="book3d-canvas" aria-hidden />,
+  loading: () => (
+    <div className="book3d-canvas">
+      <span className="book3d-loader" aria-label="Loading book" />
+    </div>
+  ),
 });
 
 export default function Book3D({

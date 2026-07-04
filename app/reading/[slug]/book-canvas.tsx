@@ -1,9 +1,8 @@
 "use client";
 
-import { Suspense, useMemo } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import {
-  ContactShadows,
   Environment,
   Lightformer,
   PresentationControls,
@@ -272,6 +271,13 @@ function BookModel({ book, bg, fg }: { book: Book; bg: string; fg: string }) {
   );
 }
 
+// Mounts only once everything inside the Suspense boundary has resolved,
+// so the loader hides exactly when the book becomes visible
+function Ready({ onReady }: { onReady: () => void }) {
+  useEffect(onReady, [onReady]);
+  return null;
+}
+
 export default function BookCanvas({
   book,
   bg,
@@ -281,11 +287,14 @@ export default function BookCanvas({
   bg: string;
   fg: string;
 }) {
+  const [ready, setReady] = useState(false);
+
   return (
-    <div className="book3d-canvas">
+    <div className="book3d-canvas" data-ready={ready || undefined}>
+      {!ready && <span className="book3d-loader" aria-label="Loading book" />}
       <Canvas
         dpr={[1, 2]}
-        camera={{ position: [0, 0.35, 9.4], fov: 30 }}
+        camera={{ position: [0, 0.2, 11], fov: 30 }}
         gl={{ antialias: true, alpha: true }}
       >
         <ambientLight intensity={0.9} />
@@ -323,14 +332,7 @@ export default function BookCanvas({
               scale={[8, 3, 1]}
             />
           </Environment>
-          <ContactShadows
-            position={[0, -2.6, 0]}
-            opacity={0.38}
-            scale={11}
-            blur={2.4}
-            far={4.4}
-            resolution={512}
-          />
+          <Ready onReady={() => setReady(true)} />
         </Suspense>
       </Canvas>
     </div>
