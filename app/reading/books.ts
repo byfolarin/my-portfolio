@@ -2,9 +2,11 @@
 // `summary` is your take on the book, shown on its detail page — I seeded
 // each with a neutral description; replace them with your own words.
 // Covers are generated typographically from the title/author using a
-// rotating palette. To use a real cover, drop an image in /public/books
-// and set `cover: "/books/name.jpg"` on the entry. `href` becomes a
-// "Get the book" link on the detail page.
+// rotating palette. To use real cover art, drop images in /public/books
+// and set `coverFront: "/books/name-front.jpg"` (used in the grid and on
+// the 3D book) and optionally `coverBack: "/books/name-back.jpg"` for the
+// 3D book's back face. Aim for a 5:7 aspect ratio (e.g. 1000x1400).
+// `href` becomes a "Get the book" link on the detail page.
 
 export type Book = {
   title: string;
@@ -12,7 +14,8 @@ export type Book = {
   year: string;
   summary: string;
   href?: string;
-  cover?: string;
+  coverFront?: string;
+  coverBack?: string;
 };
 
 export const palettes: { bg: string; fg: string }[] = [

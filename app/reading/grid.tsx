@@ -27,9 +27,9 @@ function BookCard({ book, index }: { book: Book; index: number }) {
           } as React.CSSProperties
         }
       >
-        {book.cover ? (
+        {book.coverFront ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={book.cover} alt={`Cover of ${book.title}`} />
+          <img src={book.coverFront} alt={`Cover of ${book.title}`} />
         ) : (
           <div className="book-cover-text">
             <span className="book-cover-title">{book.title}</span>
