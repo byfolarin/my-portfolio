@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, useState } from "react";
-import { books, palettes, type Book } from "./books";
+import { books, palettes, slugify, type Book } from "./books";
 
 const PAGE_SIZE = 10;
 const pageCount = Math.ceil(books.length / PAGE_SIZE);
@@ -9,55 +10,38 @@ const pageCount = Math.ceil(books.length / PAGE_SIZE);
 function BookCard({ book, index }: { book: Book; index: number }) {
   const palette = palettes[index % palettes.length];
 
-  const cover = (
-    <div
-      className="book-cover"
+  return (
+    <Link
+      className="book"
+      href={`/reading/${slugify(book.title)}`}
       style={
-        {
-          "--cover-bg": palette.bg,
-          "--cover-fg": palette.fg,
-        } as React.CSSProperties
+        { animationDelay: `${(index % PAGE_SIZE) * 0.04}s` } as React.CSSProperties
       }
     >
-      {book.cover ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={book.cover} alt={`Cover of ${book.title}`} />
-      ) : (
-        <div className="book-cover-text">
-          <span className="book-cover-title">{book.title}</span>
-          <span className="book-cover-author">{book.author}</span>
-        </div>
-      )}
-    </div>
-  );
-
-  const meta = (
-    <div className="book-meta">
-      <h2>{book.title}</h2>
-      <p>{book.author}</p>
-    </div>
-  );
-
-  const style = {
-    animationDelay: `${(index % PAGE_SIZE) * 0.04}s`,
-  } as React.CSSProperties;
-
-  return book.href ? (
-    <a
-      className="book"
-      style={style}
-      href={book.href}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      {cover}
-      {meta}
-    </a>
-  ) : (
-    <div className="book" style={style}>
-      {cover}
-      {meta}
-    </div>
+      <div
+        className="book-cover"
+        style={
+          {
+            "--cover-bg": palette.bg,
+            "--cover-fg": palette.fg,
+          } as React.CSSProperties
+        }
+      >
+        {book.cover ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={book.cover} alt={`Cover of ${book.title}`} />
+        ) : (
+          <div className="book-cover-text">
+            <span className="book-cover-title">{book.title}</span>
+            <span className="book-cover-author">{book.author}</span>
+          </div>
+        )}
+      </div>
+      <div className="book-meta">
+        <h2>{book.title}</h2>
+        <p>{book.author}</p>
+      </div>
+    </Link>
   );
 }
 

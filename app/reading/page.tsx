@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Clock from "../clock";
+import { books } from "./books";
 import ReadingGrid from "./grid";
 
 export const metadata: Metadata = {
@@ -17,7 +18,9 @@ export default function Reading() {
             ← Folarin Folarin
           </Link>
           <h1>Reading</h1>
-          <time>Updated Jul 4, 2026</time>
+          <time>
+            {books.length} books · Updated Jul 4, 2026
+          </time>
         </header>
         <p>
           Books I&rsquo;m reading, re-reading, or can&rsquo;t stop thinking
