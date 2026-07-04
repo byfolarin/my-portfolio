@@ -1,5 +1,5 @@
+import Link from "next/link";
 import Clock from "./clock";
-import { books } from "./books";
 
 export default function Home() {
   return (
@@ -26,8 +26,12 @@ export default function Home() {
         </p>
         <p>
           I care deeply about craft — type, spacing, and the small details
-          that make software feel considered. Lately I&rsquo;ve been turning
-          that obsession into books.
+          that make software feel considered. When I&rsquo;m not pushing
+          pixels, I&rsquo;m usually{" "}
+          <Link className="basic-link" href="/reading">
+            reading
+          </Link>
+          .
         </p>
         <p>
           You can find me on{" "}
@@ -46,60 +50,6 @@ export default function Home() {
           .
         </p>
       </article>
-
-      <section className="books">
-        <h3>Books</h3>
-        <div className="books-grid">
-          {books.map((book) => {
-            const cover = (
-              <div
-                className="book-cover"
-                style={
-                  {
-                    "--cover-bg": book.bg,
-                    "--cover-fg": book.fg,
-                  } as React.CSSProperties
-                }
-              >
-                {book.cover ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={book.cover} alt={`Cover of ${book.title}`} />
-                ) : (
-                  <div className="book-cover-text">
-                    <span className="book-cover-title">{book.title}</span>
-                    <span className="book-cover-author">Folarin</span>
-                  </div>
-                )}
-              </div>
-            );
-
-            const meta = (
-              <div className="book-meta">
-                <h2>{book.title}</h2>
-                <time>{book.year}</time>
-              </div>
-            );
-
-            return book.href ? (
-              <a
-                key={book.title}
-                className="book"
-                href={book.href}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {cover}
-                {meta}
-              </a>
-            ) : (
-              <div key={book.title} className="book">
-                {cover}
-                {meta}
-              </div>
-            );
-          })}
-        </div>
-      </section>
 
       <footer className="footer">
         <div className="footer-inner">

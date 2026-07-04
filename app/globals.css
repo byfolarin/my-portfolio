@@ -186,6 +186,9 @@ body {
   flex-direction: column;
   gap: 0.5rem;
   transition: opacity 0.2s ease, transform 0.2s ease;
+  /* `backwards` so the entrance animation doesn't pin opacity after it
+     finishes, which would defeat the grid hover dimming */
+  animation: staggerIn 0.4s ease backwards;
 }
 
 .book:hover {
@@ -266,11 +269,56 @@ body {
   letter-spacing: -0.00563rem;
 }
 
-.book-meta time {
+.book-meta time,
+.book-meta p {
   color: var(--muted);
   font-size: 0.75rem;
   font-weight: 460;
+  line-height: 1rem;
   letter-spacing: 0.00063rem;
+}
+
+/* ---- reading page ---- */
+
+.back-link {
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-weight: 460;
+  letter-spacing: -0.0025rem;
+  padding-bottom: 0.75rem;
+  transition: color 0.15s ease;
+}
+
+.back-link:hover {
+  color: var(--heading-color);
+}
+
+.reading-more {
+  display: flex;
+  justify-content: center;
+  padding-top: 2rem;
+}
+
+.reading-more button {
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-weight: 460;
+  letter-spacing: -0.0025rem;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.reading-more button:hover {
+  color: var(--heading-color);
+}
+
+.reading-count {
+  padding-top: 2rem;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 0.75rem;
+  font-weight: 460;
+  font-variant-numeric: tabular-nums;
 }
 
 /* ---- footer ---- */
