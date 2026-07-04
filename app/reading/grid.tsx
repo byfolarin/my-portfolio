@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { books, palettes, type Book } from "./books";
 
 const PAGE_SIZE = 10;
+const pageCount = Math.ceil(books.length / PAGE_SIZE);
 
 function BookCard({ book, index }: { book: Book; index: number }) {
   const palette = palettes[index % palettes.length];
@@ -61,48 +62,53 @@ function BookCard({ book, index }: { book: Book; index: number }) {
 }
 
 export default function ReadingGrid() {
-  const [count, setCount] = useState(PAGE_SIZE);
-  const sentinelRef = useRef<HTMLDivElement>(null);
-  const done = count >= books.length;
+  const [page, setPage] = useState(0);
+  const topRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (done) return;
-    const sentinel = sentinelRef.current;
-    if (!sentinel) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setCount((c) => Math.min(c + PAGE_SIZE, books.length));
-        }
-      },
-      { rootMargin: "300px" }
-    );
-    observer.observe(sentinel);
-    return () => observer.disconnect();
-  }, [count, done]);
+  const goTo = (next: number) => {
+    setPage(next);
+    topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const start = page * PAGE_SIZE;
+  const visible = books.slice(start, start + PAGE_SIZE);
 
   return (
     <>
-      <div className="books-grid">
-        {books.slice(0, count).map((book, i) => (
-          <BookCard key={`${book.title}-${i}`} book={book} index={i} />
+      <div ref={topRef} className="books-anchor" />
+      <div key={page} className="books-grid">
+        {visible.map((book, i) => (
+          <BookCard key={book.title} book={book} index={start + i} />
         ))}
       </div>
-      {!done && (
-        <div ref={sentinelRef} className="reading-more">
+      <nav className="pagination" aria-label="Pagination">
+        <button
+          type="button"
+          onClick={() => goTo(page - 1)}
+          disabled={page === 0}
+          aria-label="Previous page"
+        >
+          ←
+        </button>
+        {Array.from({ length: pageCount }, (_, i) => (
           <button
+            key={i}
             type="button"
-            onClick={() =>
-              setCount((c) => Math.min(c + PAGE_SIZE, books.length))
-            }
+            onClick={() => goTo(i)}
+            aria-current={i === page ? "page" : undefined}
           >
-            Load more
+            {i + 1}
           </button>
-        </div>
-      )}
-      <p className="reading-count">
-        {Math.min(count, books.length)} of {books.length}
-      </p>
+        ))}
+        <button
+          type="button"
+          onClick={() => goTo(page + 1)}
+          disabled={page === pageCount - 1}
+          aria-label="Next page"
+        >
+          →
+        </button>
+      </nav>
     </>
   );
 }
