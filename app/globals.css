@@ -1,26 +1,297 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --body-bg: #fdfdfc;
+  --body-color: rgba(0, 0, 0, 0.45);
+  --heading-color: #111;
+  --muted: rgba(0, 0, 0, 0.4);
+  --hairline: #f2f2f2;
+  --underline: #d9d9d9;
+  --underline-hover: #666;
+  --font-body: var(--font-inter), system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--body-bg);
+  color: var(--body-color);
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100%;
+  font-family: var(--font-body);
+  font-size: 16px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  color: #111;
+  background: #ededed;
+}
+
+/* ---- page container ---- */
+
+.page {
+  max-width: 36.375rem;
+  margin: 0 auto;
+  padding: 5rem 1rem 2.5rem;
+}
+
+@media screen and (max-width: 768px) {
+  .page {
+    padding: 2rem 1.5rem 2.5rem;
+  }
+}
+
+/* ---- staggered entrance ---- */
+
+@keyframes staggerIn {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.homepage > * > * {
+  animation: staggerIn 0.5s ease both;
+}
+
+.homepage > * > *:first-child { animation-delay: 0s; }
+.homepage > * > *:nth-child(2) { animation-delay: 0.05s; }
+.homepage > * > *:nth-child(3) { animation-delay: 0.1s; }
+.homepage > * > *:nth-child(4) { animation-delay: 0.15s; }
+.homepage > * > *:nth-child(5) { animation-delay: 0.2s; }
+.homepage > * > *:nth-child(6) { animation-delay: 0.25s; }
+.homepage > * > *:nth-child(n + 7) { animation-delay: 0.3s; }
+
+.homepage > section { animation: staggerIn 0.5s ease 0.35s both; }
+.homepage > footer { animation: staggerIn 0.5s ease 0.45s both; }
+
+/* ---- article / bio ---- */
+
+.article {
+  max-width: 70ch;
+}
+
+.article > header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0 0 0.5rem;
+}
+
+.article > header h1 {
+  color: var(--heading-color);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  letter-spacing: -0.00563rem;
+}
+
+.article > header time {
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 460;
+  line-height: 1.25rem;
+  letter-spacing: -0.00563rem;
+}
+
+.article p {
+  font-size: 0.875rem;
+  font-weight: 460;
+  line-height: 1.25rem;
+  letter-spacing: -0.00563rem;
+}
+
+.article > p {
+  padding-top: 1rem;
+}
+
+/* ---- links ---- */
+
+.basic-link {
+  position: relative;
+  display: inline;
+  color: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  transition: all 0.2s ease;
+}
+
+.basic-link::before {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  border-radius: 2px;
+  background: var(--underline);
+  opacity: 1;
+  transition: inherit;
+}
+
+.basic-link:hover::before {
+  background: var(--underline-hover);
+}
+
+/* ---- books section ---- */
+
+.books {
+  padding: 3rem 0 0;
+}
+
+.books > h3 {
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 460;
+  letter-spacing: -0.00563rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem 1rem;
+  padding-top: 1.5rem;
+}
+
+@media screen and (max-width: 520px) {
+  .books-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* dim siblings on grid hover, like benji's post list */
+@media screen and (min-width: 520px) {
+  .books-grid:hover .book {
+    opacity: 0.4;
+  }
+  .books-grid .book:hover {
+    opacity: 1;
+  }
+}
+
+.book {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.book:hover {
+  transform: translateY(-2px);
+}
+
+.book-cover {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--cover-bg, #ececea);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.04),
+    0 1px 2px rgba(0, 0, 0, 0.05),
+    0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* book spine highlight */
+.book-cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.08) 0,
+    rgba(255, 255, 255, 0.14) 3.5%,
+    rgba(0, 0, 0, 0.03) 6.5%,
+    transparent 9%
+  );
+}
+
+.book-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.book-cover-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.875rem 0.75rem 0.75rem 1rem;
+}
+
+.book-cover-text .book-cover-title {
+  color: var(--cover-fg, #111);
+  font-size: 0.6875rem;
+  font-weight: 560;
+  line-height: 0.875rem;
+  letter-spacing: -0.0025rem;
+  text-wrap: balance;
+}
+
+.book-cover-text .book-cover-author {
+  color: var(--cover-fg, #111);
+  opacity: 0.55;
+  font-size: 0.5625rem;
+  font-weight: 460;
+  letter-spacing: 0.01rem;
+  text-transform: uppercase;
+}
+
+.book-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.0625rem;
+}
+
+.book-meta h2 {
+  color: var(--heading-color);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.125rem;
+  letter-spacing: -0.00563rem;
+}
+
+.book-meta time {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 460;
+  letter-spacing: 0.00063rem;
+}
+
+/* ---- footer ---- */
+
+.footer {
+  padding: 2.5rem 0 5rem;
+}
+
+.footer-inner::before {
+  content: "";
+  display: block;
+  height: 1px;
+  width: 3.125rem;
+  background: #ededed;
+  margin: 0 0 2.375rem;
+}
+
+.footer-inner p {
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-weight: 460;
+  letter-spacing: -0.0025rem;
+  font-variant-numeric: tabular-nums;
 }
