@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Clock from "./clock";
+import { projects } from "./projects/projects";
 
 export default function Home() {
   return (
@@ -43,13 +44,31 @@ export default function Home() {
           >
             GitHub
           </a>
-          , or reach me via{" "}
+          , reach me via{" "}
           <a className="basic-link" href="mailto:folarin@kredete.com">
             email
           </a>
+          , or read more{" "}
+          <Link className="basic-link" href="/about">
+            about me
+          </Link>
           .
         </p>
       </article>
+
+      <section className="home-list">
+        <h3>Projects</h3>
+        <ul>
+          {projects.map((project) => (
+            <li key={project.slug}>
+              <Link href={`/projects#${project.slug}`}>
+                <h2>{project.name}</h2>
+                <time>{project.period}</time>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
 
       <footer className="footer">
         <div className="footer-inner">

@@ -1,0 +1,61 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import Clock from "../clock";
+import { projects } from "./projects";
+
+export const metadata: Metadata = {
+  title: "Projects — Folarin Folarin",
+  description: "Selected work across fintech, design systems, and brand.",
+};
+
+export default function Projects() {
+  return (
+    <div className="homepage">
+      <article className="article">
+        <header>
+          <Link className="back-link" href="/">
+            ← Folarin Folarin
+          </Link>
+          <h1>Projects</h1>
+          <time>
+            {projects.length} projects · Updated Jul 6, 2026
+          </time>
+        </header>
+        <p>
+          Selected work across fintech, design systems, and brand — the
+          things I&rsquo;ve helped build and the teams I built them with.
+        </p>
+      </article>
+
+      <section className="projects">
+        {projects.map((project) => (
+          <article key={project.slug} id={project.slug} className="project">
+            <header>
+              {project.href ? (
+                <a
+                  className="project-name"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={project.href}
+                >
+                  {project.name} ↗
+                </a>
+              ) : (
+                <span className="project-name">{project.name}</span>
+              )}
+              <span className="project-period">{project.period}</span>
+            </header>
+            <p className="project-role">{project.role}</p>
+            <p className="project-description">{project.description}</p>
+          </article>
+        ))}
+      </section>
+
+      <footer className="footer">
+        <div className="footer-inner">
+          <Clock />
+        </div>
+      </footer>
+    </div>
+  );
+}
