@@ -46,6 +46,17 @@ export default function Projects() {
               <span className="project-period">{project.period}</span>
             </header>
             <p className="project-role">{project.role}</p>
+            <div
+              className="project-media"
+              style={{ "--tint": project.tint } as React.CSSProperties}
+            >
+              {project.image ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={project.image} alt={`${project.name} preview`} />
+              ) : (
+                <span className="project-media-mark">{project.name}</span>
+              )}
+            </div>
             <p className="project-description">{project.description}</p>
           </article>
         ))}
