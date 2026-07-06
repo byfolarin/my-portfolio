@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
+import gsap from "gsap";
 
 const items = [
   { label: "Home", href: "/", preview: "/previews/home.png" },
@@ -13,15 +14,43 @@ const items = [
   { label: "Music", href: "/music", preview: "/previews/music.png" },
 ];
 
-// vertical rhythm of the nav list: 1rem line + 0.4375rem gap
-const ITEM_PITCH = 23;
+// vertical rhythm of the nav list: 1rem line + 0.875rem gap
+const ITEM_PITCH = 30;
 
 export default function Nav() {
   const pathname = usePathname();
   const [hovered, setHovered] = useState<number | null>(null);
+  const navRef = useRef<HTMLElement>(null);
+
+  useLayoutEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) return;
+
+    const links = nav.querySelectorAll("a");
+    const ctx = gsap.context(() => {
+      gsap.from(links, {
+        x: -14,
+        autoAlpha: 0,
+        duration: 0.55,
+        ease: "power3.out",
+        stagger: 0.07,
+        delay: 0.1,
+        clearProps: "all",
+      });
+    }, nav);
+    return () => ctx.revert();
+  }, []);
+
+  const nudge = (el: HTMLElement, x: number) => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    gsap.to(el, { x, duration: 0.3, ease: "power3.out" });
+  };
 
   return (
     <nav
+      ref={navRef}
       className="site-nav"
       aria-label="Site"
       onMouseLeave={() => setHovered(null)}
@@ -36,7 +65,11 @@ export default function Nav() {
             key={item.href}
             href={item.href}
             aria-current={active ? "page" : undefined}
-            onMouseEnter={() => setHovered(i)}
+            onMouseEnter={(e) => {
+              setHovered(i);
+              nudge(e.currentTarget, 4);
+            }}
+            onMouseLeave={(e) => nudge(e.currentTarget, 0)}
           >
             {item.label}
           </Link>

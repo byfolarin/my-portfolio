@@ -42,8 +42,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.4375rem;
-  animation: staggerIn 0.5s ease 0.1s both;
+  gap: 0.875rem;
 }
 
 .site-nav a {
