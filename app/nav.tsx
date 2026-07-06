@@ -126,6 +126,15 @@ export default function Nav() {
     else tl.timeScale(1.4).reverse();
   };
 
+  // close the menu on any route change (e.g. tapping the music widget,
+  // which floats above the open overlay)
+  const openRef = useRef(open);
+  openRef.current = open;
+  useEffect(() => {
+    if (openRef.current) setMenu(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
+
   // lock scroll + escape to close
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
