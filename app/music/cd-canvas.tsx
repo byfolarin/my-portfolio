@@ -25,26 +25,35 @@ function makeCdTexture(img: HTMLImageElement | null) {
   ctx.arc(c, c, c - 6, 0, TAU);
   ctx.fill();
 
-  // iridescent sheen
-  const conic = ctx.createConicGradient(0.8, c, c);
-  const pastels = [
-    "#ffd9e8",
-    "#d9e6ff",
-    "#d9ffe9",
-    "#fff3d0",
-    "#e6d9ff",
-    "#d0f2ff",
-    "#ffd9e8",
-  ];
-  pastels.forEach((color, i) =>
-    conic.addColorStop(i / (pastels.length - 1), color)
+  // prismatic diffraction rainbow — the real CD look
+  const rainbow = ctx.createConicGradient(-0.6, c, c);
+  const hues = [
+    [0.0, 335], [0.08, 20], [0.16, 45], [0.24, 90], [0.34, 160],
+    [0.45, 195], [0.55, 225], [0.66, 265], [0.78, 300], [0.9, 325], [1.0, 335],
+  ] as const;
+  hues.forEach(([stop, h]) =>
+    rainbow.addColorStop(stop, `hsl(${h}, 80%, 62%)`)
   );
-  ctx.globalAlpha = 0.45;
-  ctx.fillStyle = conic;
+  ctx.globalAlpha = 0.55;
+  ctx.fillStyle = rainbow;
   ctx.beginPath();
   ctx.arc(c, c, c - 6, 0, TAU);
   ctx.fill();
   ctx.globalAlpha = 1;
+
+  // angular white glints where light catches the surface
+  const glint = ctx.createConicGradient(0.4, c, c);
+  glint.addColorStop(0, "rgba(255,255,255,0)");
+  glint.addColorStop(0.06, "rgba(255,255,255,0.85)");
+  glint.addColorStop(0.13, "rgba(255,255,255,0)");
+  glint.addColorStop(0.52, "rgba(255,255,255,0)");
+  glint.addColorStop(0.58, "rgba(255,255,255,0.6)");
+  glint.addColorStop(0.66, "rgba(255,255,255,0)");
+  glint.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.fillStyle = glint;
+  ctx.beginPath();
+  ctx.arc(c, c, c - 6, 0, TAU);
+  ctx.fill();
 
   // fine radial grooves
   ctx.globalAlpha = 0.08;
@@ -160,7 +169,7 @@ export default function CdCanvas({
     <div className="cd-canvas">
       <Canvas
         dpr={[1, 2]}
-        camera={{ position: [0, 0, 5.9], fov: 34 }}
+        camera={{ position: [0, 0, 7], fov: 34 }}
         gl={{ antialias: true, alpha: true }}
       >
         <ambientLight intensity={1.1} />
