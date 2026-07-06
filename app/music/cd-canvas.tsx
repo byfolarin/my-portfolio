@@ -1,0 +1,191 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Environment, Lightformer } from "@react-three/drei";
+import * as THREE from "three";
+
+const TAU = Math.PI * 2;
+
+// Draws a CD face: iridescent silver disc, circular album-art label,
+// silver hub and a real (transparent) center hole.
+function makeCdTexture(img: HTMLImageElement | null) {
+  const S = 1024;
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = S;
+  const ctx = canvas.getContext("2d")!;
+  const c = S / 2;
+
+  // base silver
+  const base = ctx.createRadialGradient(c, c, 60, c, c, c);
+  base.addColorStop(0, "#ececee");
+  base.addColorStop(1, "#c9cbd1");
+  ctx.fillStyle = base;
+  ctx.beginPath();
+  ctx.arc(c, c, c - 6, 0, TAU);
+  ctx.fill();
+
+  // iridescent sheen
+  const conic = ctx.createConicGradient(0.8, c, c);
+  const pastels = [
+    "#ffd9e8",
+    "#d9e6ff",
+    "#d9ffe9",
+    "#fff3d0",
+    "#e6d9ff",
+    "#d0f2ff",
+    "#ffd9e8",
+  ];
+  pastels.forEach((color, i) =>
+    conic.addColorStop(i / (pastels.length - 1), color)
+  );
+  ctx.globalAlpha = 0.45;
+  ctx.fillStyle = conic;
+  ctx.beginPath();
+  ctx.arc(c, c, c - 6, 0, TAU);
+  ctx.fill();
+  ctx.globalAlpha = 1;
+
+  // fine radial grooves
+  ctx.globalAlpha = 0.08;
+  ctx.strokeStyle = "#555";
+  for (let r = 170; r < c - 14; r += 7) {
+    ctx.beginPath();
+    ctx.arc(c, c, r, 0, TAU);
+    ctx.lineWidth = 0.75;
+    ctx.stroke();
+  }
+  ctx.globalAlpha = 1;
+
+  // album art label
+  if (img) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(c, c, 385, 0, TAU);
+    ctx.clip();
+    ctx.drawImage(img, c - 385, c - 385, 770, 770);
+    ctx.restore();
+  }
+
+  // hub
+  ctx.beginPath();
+  ctx.arc(c, c, 148, 0, TAU);
+  ctx.fillStyle = "rgba(236, 236, 239, 0.94)";
+  ctx.fill();
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "rgba(0, 0, 0, 0.14)";
+  ctx.stroke();
+
+  // center hole (transparent)
+  ctx.globalCompositeOperation = "destination-out";
+  ctx.beginPath();
+  ctx.arc(c, c, 56, 0, TAU);
+  ctx.fill();
+  ctx.globalCompositeOperation = "source-over";
+  ctx.beginPath();
+  ctx.arc(c, c, 56, 0, TAU);
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = "rgba(0, 0, 0, 0.18)";
+  ctx.stroke();
+
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 8;
+  return tex;
+}
+
+function Disc({ art, spinning }: { art?: string; spinning: boolean }) {
+  const disc = useRef<THREE.Mesh>(null);
+  const group = useRef<THREE.Group>(null);
+  const [texture, setTexture] = useState<THREE.CanvasTexture | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    if (!art) {
+      setTexture(makeCdTexture(null));
+      return;
+    }
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => alive && setTexture(makeCdTexture(img));
+    img.onerror = () => alive && setTexture(makeCdTexture(null));
+    img.src = art;
+    return () => {
+      alive = false;
+    };
+  }, [art]);
+
+  useFrame((state, delta) => {
+    if (disc.current) {
+      disc.current.rotation.z -= (spinning ? 1.6 : 0.12) * delta;
+    }
+    if (group.current) {
+      // gentle parallax toward the pointer
+      const tx = -0.42 + state.pointer.y * 0.1;
+      const ty = state.pointer.x * 0.16;
+      group.current.rotation.x += (tx - group.current.rotation.x) * 0.06;
+      group.current.rotation.y += (ty - group.current.rotation.y) * 0.06;
+    }
+  });
+
+  if (!texture) return null;
+
+  return (
+    <group ref={group} rotation={[-0.42, 0, 0]}>
+      <mesh ref={disc}>
+        <circleGeometry args={[2, 96]} />
+        <meshPhysicalMaterial
+          map={texture}
+          transparent
+          alphaTest={0.1}
+          side={THREE.DoubleSide}
+          roughness={0.32}
+          metalness={0.1}
+          clearcoat={1}
+          clearcoatRoughness={0.22}
+        />
+      </mesh>
+    </group>
+  );
+}
+
+export default function CdCanvas({
+  art,
+  spinning,
+}: {
+  art?: string;
+  spinning: boolean;
+}) {
+  return (
+    <div className="cd-canvas">
+      <Canvas
+        dpr={[1, 2]}
+        camera={{ position: [0, 0, 5.9], fov: 34 }}
+        gl={{ antialias: true, alpha: true }}
+      >
+        <ambientLight intensity={1.1} />
+        <directionalLight position={[3, 4, 5]} intensity={1.4} />
+        <Disc art={art} spinning={spinning} />
+        <Environment resolution={256}>
+          <Lightformer
+            intensity={1.8}
+            position={[0, 5, 4]}
+            scale={[14, 4, 1]}
+          />
+          <Lightformer
+            intensity={0.8}
+            position={[-6, 0, -2]}
+            rotation={[0, Math.PI / 2, 0]}
+            scale={[8, 3, 1]}
+          />
+          <Lightformer
+            intensity={0.6}
+            position={[6, -2, 1]}
+            rotation={[0, -Math.PI / 2, 0]}
+            scale={[8, 3, 1]}
+          />
+        </Environment>
+      </Canvas>
+    </div>
+  );
+}

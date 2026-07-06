@@ -966,6 +966,186 @@ a.music-now-row:hover .music-titles h2 {
   padding-top: 1.25rem;
 }
 
+/* ---- CD player view ---- */
+
+.music-stage {
+  position: relative;
+}
+
+.music-viewbar {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 1rem;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4375rem;
+  padding: 0.4375rem 0.875rem;
+  border-radius: 999px;
+  background: #f4f4f2;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.04),
+    0 1px 2px rgba(0, 0, 0, 0.04);
+  color: var(--heading-color);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: -0.0025rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.pill:hover {
+  background: #eeeeec;
+}
+
+.pill-ghost {
+  background: transparent;
+  box-shadow: none;
+  color: var(--muted);
+}
+
+.pill-ghost:hover {
+  background: #f4f4f2;
+  color: var(--heading-color);
+}
+
+.player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 1.5rem;
+}
+
+.cd-canvas {
+  width: 100%;
+  height: 22rem;
+  touch-action: pan-y;
+}
+
+@media screen and (max-width: 520px) {
+  .cd-canvas {
+    height: 17rem;
+  }
+}
+
+.player-meta {
+  text-align: center;
+  padding-top: 0.25rem;
+}
+
+.player-meta p {
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-weight: 460;
+  letter-spacing: -0.0025rem;
+}
+
+.player-meta h2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--heading-color);
+  font-size: 0.9375rem;
+  font-weight: 560;
+  line-height: 1.375rem;
+  letter-spacing: -0.00563rem;
+  padding-top: 0.125rem;
+}
+
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 1rem;
+  padding: 0.3125rem 0.625rem;
+  border-radius: 999px;
+  background: #f4f4f2;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.04),
+    0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.player-controls button,
+.player-controls .player-play {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  color: rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.player-controls button:hover,
+.player-controls .player-play:hover {
+  color: var(--heading-color);
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.player-controls button:disabled {
+  color: rgba(0, 0, 0, 0.18);
+  cursor: default;
+  background: none;
+}
+
+.player-controls .player-play {
+  color: var(--heading-color);
+}
+
+.player-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0.5rem;
+  width: 100%;
+  padding-top: 2.5rem;
+}
+
+@media screen and (max-width: 520px) {
+  .player-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.player-grid button {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: #ececea;
+  cursor: pointer;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.player-grid button:hover {
+  transform: translateY(-2px);
+}
+
+.player-grid button[data-active] {
+  box-shadow:
+    0 0 0 2px #fdfdfc,
+    0 0 0 3.5px #111;
+}
+
+.player-grid button img,
+.player-grid button span {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media screen and (min-width: 520px) {
+  .player-grid:hover button:not(:hover):not([data-active]) {
+    opacity: 0.55;
+  }
+}
+
 /* loading skeletons */
 .music-art-skeleton {
   animation: music-pulse 1.4s ease-in-out infinite;
