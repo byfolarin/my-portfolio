@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import Clock from "../../clock";
 import { books, palettes, slugify, bookIndex } from "../books";
 import Book3D from "./book3d";
+import BackLink from "../../back-link";
 
 export function generateStaticParams() {
   return books.map((book) => ({ slug: slugify(book.title) }));
@@ -40,9 +41,7 @@ export default async function BookPage({
   return (
     <div className="homepage">
       <div className="detail-top">
-        <Link className="back-link" href="/reading">
-          ← Reading
-        </Link>
+        <BackLink href="/reading" label="Reading" />
         <span className="detail-count">
           {index + 1} / {books.length}
         </span>

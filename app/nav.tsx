@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { navState } from "./nav-state";
 
 const items = [
   { label: "Home", href: "/", preview: "/previews/home.png" },
@@ -21,6 +22,12 @@ export default function Nav() {
   const pathname = usePathname();
   const [hovered, setHovered] = useState<number | null>(null);
   const navRef = useRef<HTMLElement>(null);
+
+  // count route views; BackLink (a page child) reads this before we
+  // increment, so the first page of a session correctly sees zero
+  useEffect(() => {
+    navState.count++;
+  }, [pathname]);
 
   useLayoutEffect(() => {
     const nav = navRef.current;

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Clock from "../clock";
 import { books } from "./books";
 import ReadingGrid from "./grid";
+import BackLink from "../back-link";
 
 export const metadata: Metadata = {
   title: "Reading — Folarin Folarin",
@@ -14,9 +14,7 @@ export default function Reading() {
     <div className="homepage">
       <article className="article">
         <header>
-          <Link className="back-link" href="/">
-            ← Folarin Folarin
-          </Link>
+          <BackLink href="/" label="Folarin Folarin" />
           <h1>Reading</h1>
           <time>
             {books.length} books · Updated Jul 4, 2026

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Clock from "../clock";
+import BackLink from "../back-link";
 
 export const metadata: Metadata = {
   title: "About — Folarin Folarin",
@@ -19,9 +20,7 @@ export default function About() {
     <div className="homepage">
       <article className="article">
         <header>
-          <Link className="back-link" href="/">
-            ← Folarin Folarin
-          </Link>
+          <BackLink href="/" label="Folarin Folarin" />
           <h1>About</h1>
           <time>Lagos, Nigeria</time>
         </header>

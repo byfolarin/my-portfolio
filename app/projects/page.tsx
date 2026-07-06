@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Clock from "../clock";
 import { projects } from "./projects";
+import BackLink from "../back-link";
 
 export const metadata: Metadata = {
   title: "Projects — Folarin Folarin",
@@ -13,9 +13,7 @@ export default function Projects() {
     <div className="homepage">
       <article className="article">
         <header>
-          <Link className="back-link" href="/">
-            ← Folarin Folarin
-          </Link>
+          <BackLink href="/" label="Folarin Folarin" />
           <h1>Projects</h1>
           <time>
             {projects.length} projects · Updated Jul 6, 2026

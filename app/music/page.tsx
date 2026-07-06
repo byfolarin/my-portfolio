@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Clock from "../clock";
 import MusicClient from "./music-client";
+import BackLink from "../back-link";
 
 export const metadata: Metadata = {
   title: "Music — Folarin Folarin",
@@ -13,9 +13,7 @@ export default function Music() {
     <div className="homepage">
       <article className="article">
         <header>
-          <Link className="back-link" href="/">
-            ← Folarin Folarin
-          </Link>
+          <BackLink href="/" label="Folarin Folarin" />
           <h1>Music</h1>
           <time>Live from Spotify</time>
         </header>
