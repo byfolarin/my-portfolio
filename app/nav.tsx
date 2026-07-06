@@ -134,15 +134,15 @@ export default function Nav({
         { clipPath: `circle(0% at ${origin})` },
         {
           clipPath: `circle(142% at ${origin})`,
-          duration: 0.55,
+          duration: 0.45,
           ease: "power3.inOut",
         }
       )
       .fromTo(
         overlay.querySelector(".mnav-greeting"),
-        { y: 18, autoAlpha: 0 },
-        { y: 0, autoAlpha: 1, duration: 0.4, ease: "power3.out" },
-        "-=0.25"
+        { y: 14, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 0.3, ease: "power3.out" },
+        "-=0.28"
       )
       .fromTo(
         overlay.querySelectorAll(".mnav-ch"),
@@ -150,23 +150,23 @@ export default function Nav({
         {
           yPercent: 0,
           rotate: 0,
-          duration: 0.5,
+          duration: 0.32,
           ease: "power3.out",
-          stagger: 0.012,
+          stagger: 0.005,
         },
-        "-=0.3"
+        "-=0.26"
       )
       .fromTo(
         overlay.querySelectorAll(".mnav-meta"),
-        { y: 8, autoAlpha: 0 },
-        { y: 0, autoAlpha: 1, duration: 0.35, ease: "power2.out", stagger: 0.05 },
-        "-=0.45"
+        { y: 6, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 0.25, ease: "power2.out", stagger: 0.03 },
+        "-=0.3"
       )
       .fromTo(
         overlay.querySelector(".mnav-foot"),
         { autoAlpha: 0 },
-        { autoAlpha: 1, duration: 0.3 },
-        "-=0.25"
+        { autoAlpha: 1, duration: 0.2 },
+        "-=0.2"
       );
     tlRef.current = tl;
     return () => {
