@@ -137,6 +137,67 @@ body {
   }
 }
 
+/* ---- now playing widget ---- */
+
+.np-widget {
+  position: fixed;
+  top: 2rem;
+  right: 2.5rem;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3125rem 0.625rem 0.3125rem 0.3125rem;
+  border-radius: 999px;
+  background: #f4f4f2;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.04),
+    0 1px 2px rgba(0, 0, 0, 0.04);
+  animation: staggerIn 0.5s ease 0.2s both;
+  transition: background 0.15s ease;
+}
+
+.np-widget:hover {
+  background: #eeeeec;
+}
+
+.np-widget img,
+.np-widget-art {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  object-fit: cover;
+  background: #ececea;
+  flex: none;
+}
+
+.np-widget-title {
+  color: var(--heading-color);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: -0.0025rem;
+  max-width: 9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.np-widget-eq {
+  height: 0.625rem;
+  margin-left: 0;
+}
+
+.np-widget-note {
+  color: rgba(0, 0, 0, 0.3);
+  flex: none;
+}
+
+@media screen and (max-width: 768px) {
+  .np-widget {
+    display: none;
+  }
+}
+
 /* ---- page container ---- */
 
 .page {
