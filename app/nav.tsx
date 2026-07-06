@@ -24,14 +24,18 @@ export default function Nav() {
   const navRef = useRef<HTMLElement>(null);
 
   // count route CHANGES only — the first page of a session must leave the
-  // counter at zero no matter what order effects flush in
+  // counter at zero no matter what order effects flush in. Also record
+  // whether the change came from a nav click.
   const firstRoute = useRef(true);
   useEffect(() => {
     if (firstRoute.current) {
       firstRoute.current = false;
+      navState.pendingNavClick = false;
       return;
     }
     navState.count++;
+    navState.viaNav = navState.pendingNavClick;
+    navState.pendingNavClick = false;
   }, [pathname]);
 
   useLayoutEffect(() => {
@@ -82,6 +86,9 @@ export default function Nav() {
               nudge(e.currentTarget, 4);
             }}
             onMouseLeave={(e) => nudge(e.currentTarget, 0)}
+            onClick={() => {
+              navState.pendingNavClick = true;
+            }}
           >
             {item.label}
           </Link>

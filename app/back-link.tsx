@@ -20,10 +20,9 @@ export default function BackLink({
     // defer past the whole effect flush so this never races the nav's
     // route counter, regardless of tree order
     const id = setTimeout(() => {
-      const sameOrigin =
-        document.referrer !== "" &&
-        document.referrer.startsWith(window.location.origin);
-      if (navState.count >= 1 || sameOrigin) setShow(true);
+      // earned only by in-content navigation — nav-bar clicks and deep
+      // links don't get a back button
+      if (navState.count >= 1 && !navState.viaNav) setShow(true);
     }, 0);
     return () => clearTimeout(id);
   }, []);
