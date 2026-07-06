@@ -10,6 +10,7 @@ const items = [
   { label: "About", href: "/about", preview: "/previews/about.png" },
   { label: "Projects", href: "/projects", preview: "/previews/projects.png" },
   { label: "Writings", href: "/writing", preview: "/previews/writing.png" },
+  { label: "Music", href: "/music", preview: "/previews/music.png" },
 ];
 
 // vertical rhythm of the nav list: 1rem line + 0.4375rem gap
