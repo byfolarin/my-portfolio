@@ -707,13 +707,12 @@ a.project-name:hover {
   object-fit: cover;
 }
 
-/* portrait app demos sit letterboxed on the brand tint */
 .project-media video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .project-media-mark {
