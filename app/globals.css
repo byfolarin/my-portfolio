@@ -65,12 +65,26 @@ body {
 
 @media screen and (max-width: 900px) {
   .site-nav {
+    top: 2rem;
+    right: 1.5rem;
+  }
+  /* keep the centered column clear of the fixed nav */
+  .page {
+    padding-right: 5.5rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .site-nav {
     position: static;
     flex-direction: row;
     justify-content: flex-end;
     flex-wrap: wrap;
     gap: 1rem;
     padding: 2rem 1.5rem 0;
+  }
+  .page {
+    padding-right: 1.5rem;
   }
 }
 
