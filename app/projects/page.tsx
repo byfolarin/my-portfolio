@@ -50,7 +50,17 @@ export default function Projects() {
               className="project-media"
               style={{ "--tint": project.tint } as React.CSSProperties}
             >
-              {project.image ? (
+              {project.video ? (
+                <video
+                  src={project.video}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  aria-label={`${project.name} preview`}
+                />
+              ) : project.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={project.image} alt={`${project.name} preview`} />
               ) : (

@@ -707,6 +707,15 @@ a.project-name:hover {
   object-fit: cover;
 }
 
+/* portrait app demos sit letterboxed on the brand tint */
+.project-media video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .project-media-mark {
   color: color-mix(in srgb, var(--tint, #888) 55%, transparent);
   font-size: 0.8125rem;

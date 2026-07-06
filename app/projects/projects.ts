@@ -11,6 +11,7 @@ export type Project = {
   description: string;
   href?: string;
   image?: string;
+  video?: string;
   tint: string;
 };
 
@@ -23,6 +24,7 @@ export const projects: Project[] = [
     description:
       "Credit building and cross-border payments for Africans. I lead design across the product — from the mobile app and web experience to the design system that keeps a fast-moving fintech shipping consistently.",
     href: "https://kredete.com",
+    video: "/projects/kredete.mp4",
     tint: "#1f4fd8",
   },
   {
