@@ -23,9 +23,14 @@ export default function Nav() {
   const [hovered, setHovered] = useState<number | null>(null);
   const navRef = useRef<HTMLElement>(null);
 
-  // count route views; BackLink (a page child) reads this before we
-  // increment, so the first page of a session correctly sees zero
+  // count route CHANGES only — the first page of a session must leave the
+  // counter at zero no matter what order effects flush in
+  const firstRoute = useRef(true);
   useEffect(() => {
+    if (firstRoute.current) {
+      firstRoute.current = false;
+      return;
+    }
     navState.count++;
   }, [pathname]);
 

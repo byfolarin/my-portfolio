@@ -392,6 +392,7 @@ body {
   letter-spacing: -0.0025rem;
   padding-bottom: 0.75rem;
   transition: color 0.15s ease;
+  animation: staggerIn 0.35s ease both;
 }
 
 .back-link:hover {
