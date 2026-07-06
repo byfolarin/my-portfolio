@@ -183,19 +183,50 @@ body {
   will-change: clip-path;
 }
 
+.mnav-greeting {
+  color: rgba(0, 0, 0, 0.22);
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: -0.02rem;
+  padding-bottom: 2rem;
+}
+
 .mnav-links {
   display: flex;
   flex-direction: column;
-  gap: 1.125rem;
+  gap: 1.375rem;
 }
 
 .mnav-links a {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3125rem;
   color: rgba(0, 0, 0, 0.35);
   font-size: 2rem;
   font-weight: 500;
   line-height: 1;
   letter-spacing: -0.04rem;
   transition: color 0.15s ease;
+}
+
+/* mask for the character cascade */
+.mnav-word {
+  display: inline-flex;
+  overflow: hidden;
+  padding-bottom: 0.125rem;
+}
+
+.mnav-ch {
+  display: inline-block;
+  will-change: transform;
+}
+
+.mnav-meta {
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-weight: 460;
+  letter-spacing: -0.0025rem;
+  font-variant-numeric: tabular-nums;
 }
 
 .mnav-links a[aria-current="page"] {

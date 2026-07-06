@@ -15,7 +15,7 @@ const items = [
   { label: "Music", href: "/music", preview: "/previews/music.png" },
 ];
 
-// vertical rhythm of the nav list: 1rem line + 0.875rem gap
+// vertical rhythm of the desktop nav list: 1rem line + 0.875rem gap
 const ITEM_PITCH = 30;
 
 const reduceMotion = () =>
@@ -25,13 +25,56 @@ function isActive(href: string, pathname: string) {
   return href === "/" ? pathname === "/" : pathname.startsWith(href);
 }
 
-export default function Nav() {
+function lagosTime() {
+  return new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+    timeZone: "Africa/Lagos",
+  })
+    .format(new Date())
+    .toLowerCase()
+    .replace(" ", "");
+}
+
+function lagosGreeting() {
+  const hour = Number(
+    new Intl.DateTimeFormat("en-GB", {
+      hour: "numeric",
+      hour12: false,
+      timeZone: "Africa/Lagos",
+    }).format(new Date())
+  );
+  if (hour < 12) return "Good morning.";
+  if (hour < 17) return "Good afternoon.";
+  return "Good evening.";
+}
+
+export default function Nav({
+  readingCount,
+  projectsCount,
+}: {
+  readingCount: number;
+  projectsCount: number;
+}) {
   const pathname = usePathname();
   const [hovered, setHovered] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
+  const [greeting, setGreeting] = useState("Hello.");
+  const [time, setTime] = useState<string | null>(null);
+  const [musicMeta, setMusicMeta] = useState("live from Spotify");
   const navRef = useRef<HTMLElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
+
+  const metas: Record<string, string> = {
+    "/": "the front door",
+    "/reading": `${readingCount} books`,
+    "/about": "who I am",
+    "/projects": `${projectsCount} projects`,
+    "/writing": "coming soon",
+    "/music": musicMeta,
+  };
 
   // count route CHANGES only — the first page of a session must leave the
   // counter at zero no matter what order effects flush in. Also record
@@ -47,6 +90,15 @@ export default function Nav() {
     navState.viaNav = navState.pendingNavClick;
     navState.pendingNavClick = false;
   }, [pathname]);
+
+  // greeting + ticking Lagos clock for the overlay
+  useEffect(() => {
+    setGreeting(lagosGreeting());
+    const tick = () => setTime(lagosTime());
+    tick();
+    const id = setInterval(tick, 30_000);
+    return () => clearInterval(id);
+  }, []);
 
   // desktop entrance
   useLayoutEffect(() => {
@@ -66,7 +118,8 @@ export default function Nav() {
     return () => ctx.revert();
   }, []);
 
-  // mobile overlay timeline: circular bloom from the button, then links
+  // mobile overlay timeline: circular bloom from the button, greeting,
+  // then a character cascade through the links and their meta lines
   useLayoutEffect(() => {
     const overlay = overlayRef.current;
     if (!overlay) return;
@@ -86,22 +139,34 @@ export default function Nav() {
         }
       )
       .fromTo(
-        overlay.querySelectorAll(".mnav-links a"),
-        { y: 30, autoAlpha: 0 },
+        overlay.querySelector(".mnav-greeting"),
+        { y: 18, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 0.4, ease: "power3.out" },
+        "-=0.25"
+      )
+      .fromTo(
+        overlay.querySelectorAll(".mnav-ch"),
+        { yPercent: 115, rotate: 5 },
         {
-          y: 0,
-          autoAlpha: 1,
-          duration: 0.45,
+          yPercent: 0,
+          rotate: 0,
+          duration: 0.5,
           ease: "power3.out",
-          stagger: 0.06,
+          stagger: 0.012,
         },
-        "-=0.18"
+        "-=0.3"
+      )
+      .fromTo(
+        overlay.querySelectorAll(".mnav-meta"),
+        { y: 8, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 0.35, ease: "power2.out", stagger: 0.05 },
+        "-=0.45"
       )
       .fromTo(
         overlay.querySelector(".mnav-foot"),
         { autoAlpha: 0 },
         { autoAlpha: 1, duration: 0.3 },
-        "-=0.3"
+        "-=0.25"
       );
     tlRef.current = tl;
     return () => {
@@ -112,14 +177,30 @@ export default function Nav() {
 
   const setMenu = (next: boolean) => {
     setOpen(next);
+    if (next) {
+      // refresh the music line each time the menu opens
+      fetch("/api/spotify/now")
+        .then((res) => res.json())
+        .then((data) => {
+          if (data?.track) {
+            setMusicMeta(
+              data.playing
+                ? `${data.track.title} — playing now`
+                : `last: ${data.track.title}`
+            );
+          }
+        })
+        .catch(() => {});
+    }
     const tl = tlRef.current;
     const overlay = overlayRef.current;
     if (!tl || !overlay) return;
     if (reduceMotion()) {
       gsap.set(overlay, { display: next ? "flex" : "none", clipPath: "none" });
-      gsap.set(overlay.querySelectorAll(".mnav-links a, .mnav-foot"), {
-        clearProps: "all",
-      });
+      gsap.set(
+        overlay.querySelectorAll(".mnav-ch, .mnav-meta, .mnav-greeting, .mnav-foot"),
+        { clearProps: "all" }
+      );
       return;
     }
     if (next) tl.timeScale(1).play();
@@ -206,22 +287,33 @@ export default function Nav() {
       </button>
 
       <div ref={overlayRef} className="mnav-overlay" aria-hidden={!open}>
+        <p className="mnav-greeting">{greeting}</p>
         <div className="mnav-links">
           {items.map((item) => (
             <Link
               key={item.href}
               href={item.href}
+              aria-label={item.label}
               aria-current={isActive(item.href, pathname) ? "page" : undefined}
               onClick={() => {
                 navState.pendingNavClick = true;
                 setMenu(false);
               }}
             >
-              {item.label}
+              <span className="mnav-word" aria-hidden>
+                {item.label.split("").map((ch, i) => (
+                  <span key={i} className="mnav-ch">
+                    {ch === " " ? " " : ch}
+                  </span>
+                ))}
+              </span>
+              <span className="mnav-meta">{metas[item.href]}</span>
             </Link>
           ))}
         </div>
-        <p className="mnav-foot">Folarin Folarin — Lagos, Nigeria</p>
+        <p className="mnav-foot">
+          Folarin Folarin — {time ?? "…"} in Lagos
+        </p>
       </div>
     </>
   );

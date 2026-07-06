@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Nav from "./nav";
 import NowPlayingWidget from "./now-playing-widget";
+import { books } from "./reading/books";
+import { projects } from "./projects/projects";
 import "./globals.css";
 
 const inter = Inter({
@@ -22,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} antialiased`}>
       <body>
-        <Nav />
+        <Nav readingCount={books.length} projectsCount={projects.length} />
         <NowPlayingWidget />
         <div className="page">{children}</div>
       </body>
