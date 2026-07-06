@@ -18,10 +18,20 @@ const items = [
 // vertical rhythm of the nav list: 1rem line + 0.875rem gap
 const ITEM_PITCH = 30;
 
+const reduceMotion = () =>
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function isActive(href: string, pathname: string) {
+  return href === "/" ? pathname === "/" : pathname.startsWith(href);
+}
+
 export default function Nav() {
   const pathname = usePathname();
   const [hovered, setHovered] = useState<number | null>(null);
+  const [open, setOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const tlRef = useRef<gsap.core.Timeline | null>(null);
 
   // count route CHANGES only — the first page of a session must leave the
   // counter at zero no matter what order effects flush in. Also record
@@ -38,15 +48,12 @@ export default function Nav() {
     navState.pendingNavClick = false;
   }, [pathname]);
 
+  // desktop entrance
   useLayoutEffect(() => {
     const nav = navRef.current;
-    if (!nav) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
-
-    const links = nav.querySelectorAll("a");
+    if (!nav || reduceMotion()) return;
     const ctx = gsap.context(() => {
-      gsap.from(links, {
+      gsap.from(nav.querySelectorAll("a"), {
         x: -14,
         autoAlpha: 0,
         duration: 0.55,
@@ -59,28 +66,94 @@ export default function Nav() {
     return () => ctx.revert();
   }, []);
 
+  // mobile overlay timeline: circular bloom from the button, then links
+  useLayoutEffect(() => {
+    const overlay = overlayRef.current;
+    if (!overlay) return;
+    const origin = "calc(100% - 3.125rem) calc(100% - 3.125rem)";
+    const tl = gsap.timeline({
+      paused: true,
+      onReverseComplete: () => gsap.set(overlay, { display: "none" }),
+    });
+    tl.set(overlay, { display: "flex" })
+      .fromTo(
+        overlay,
+        { clipPath: `circle(0% at ${origin})` },
+        {
+          clipPath: `circle(142% at ${origin})`,
+          duration: 0.55,
+          ease: "power3.inOut",
+        }
+      )
+      .fromTo(
+        overlay.querySelectorAll(".mnav-links a"),
+        { y: 30, autoAlpha: 0 },
+        {
+          y: 0,
+          autoAlpha: 1,
+          duration: 0.45,
+          ease: "power3.out",
+          stagger: 0.06,
+        },
+        "-=0.18"
+      )
+      .fromTo(
+        overlay.querySelector(".mnav-foot"),
+        { autoAlpha: 0 },
+        { autoAlpha: 1, duration: 0.3 },
+        "-=0.3"
+      );
+    tlRef.current = tl;
+    return () => {
+      tl.kill();
+      tlRef.current = null;
+    };
+  }, []);
+
+  const setMenu = (next: boolean) => {
+    setOpen(next);
+    const tl = tlRef.current;
+    const overlay = overlayRef.current;
+    if (!tl || !overlay) return;
+    if (reduceMotion()) {
+      gsap.set(overlay, { display: next ? "flex" : "none", clipPath: "none" });
+      gsap.set(overlay.querySelectorAll(".mnav-links a, .mnav-foot"), {
+        clearProps: "all",
+      });
+      return;
+    }
+    if (next) tl.timeScale(1).play();
+    else tl.timeScale(1.4).reverse();
+  };
+
+  // lock scroll + escape to close
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMenu(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
   const nudge = (el: HTMLElement, x: number) => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (reduceMotion()) return;
     gsap.to(el, { x, duration: 0.3, ease: "power3.out" });
   };
 
   return (
-    <nav
-      ref={navRef}
-      className="site-nav"
-      aria-label="Site"
-      onMouseLeave={() => setHovered(null)}
-    >
-      {items.map((item, i) => {
-        const active =
-          item.href === "/"
-            ? pathname === "/"
-            : pathname.startsWith(item.href);
-        return (
+    <>
+      <nav
+        ref={navRef}
+        className="site-nav"
+        aria-label="Site"
+        onMouseLeave={() => setHovered(null)}
+      >
+        {items.map((item, i) => (
           <Link
             key={item.href}
             href={item.href}
-            aria-current={active ? "page" : undefined}
+            aria-current={isActive(item.href, pathname) ? "page" : undefined}
             onMouseEnter={(e) => {
               setHovered(i);
               nudge(e.currentTarget, 4);
@@ -92,24 +165,55 @@ export default function Nav() {
           >
             {item.label}
           </Link>
-        );
-      })}
-      <div
-        className="nav-preview"
-        data-show={hovered !== null || undefined}
-        style={{ "--y": `${(hovered ?? 0) * ITEM_PITCH}px` } as React.CSSProperties}
-        aria-hidden
-      >
-        {items.map((item, i) => (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            key={item.href}
-            src={item.preview}
-            alt=""
-            data-visible={hovered === i || undefined}
-          />
         ))}
+        <div
+          className="nav-preview"
+          data-show={hovered !== null || undefined}
+          style={{ "--y": `${(hovered ?? 0) * ITEM_PITCH}px` } as React.CSSProperties}
+          aria-hidden
+        >
+          {items.map((item, i) => (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              key={item.href}
+              src={item.preview}
+              alt=""
+              data-visible={hovered === i || undefined}
+            />
+          ))}
+        </div>
+      </nav>
+
+      <button
+        type="button"
+        className="mnav-btn"
+        aria-label={open ? "Close menu" : "Open menu"}
+        aria-expanded={open}
+        data-open={open || undefined}
+        onClick={() => setMenu(!open)}
+      >
+        <span />
+        <span />
+      </button>
+
+      <div ref={overlayRef} className="mnav-overlay" aria-hidden={!open}>
+        <div className="mnav-links">
+          {items.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-current={isActive(item.href, pathname) ? "page" : undefined}
+              onClick={() => {
+                navState.pendingNavClick = true;
+                setMenu(false);
+              }}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+        <p className="mnav-foot">Folarin Folarin — Lagos, Nigeria</p>
       </div>
-    </nav>
+    </>
   );
 }

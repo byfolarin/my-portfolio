@@ -125,15 +125,107 @@ body {
 
 @media screen and (max-width: 768px) {
   .site-nav {
-    position: static;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 1rem;
-    padding: 2rem 1.5rem 0;
+    display: none;
   }
   .page {
     padding-left: 1.5rem;
+  }
+}
+
+/* ---- mobile nav: hamburger + full-screen bloom ---- */
+
+.mnav-btn {
+  display: none;
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 60;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 999px;
+  background: #111;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.16),
+    0 8px 24px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.mnav-btn span {
+  display: block;
+  width: 1.125rem;
+  height: 1.5px;
+  border-radius: 1px;
+  background: #fdfdfc;
+  transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.mnav-btn[data-open] span:first-child {
+  transform: translateY(3.25px) rotate(45deg);
+}
+
+.mnav-btn[data-open] span:last-child {
+  transform: translateY(-3.25px) rotate(-45deg);
+}
+
+.mnav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  background: #fdfdfc;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem 2rem 6rem;
+  will-change: clip-path;
+}
+
+.mnav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1.125rem;
+}
+
+.mnav-links a {
+  color: rgba(0, 0, 0, 0.35);
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.04rem;
+  transition: color 0.15s ease;
+}
+
+.mnav-links a[aria-current="page"] {
+  color: var(--heading-color);
+}
+
+.mnav-links a:active {
+  color: var(--heading-color);
+}
+
+.mnav-foot {
+  position: absolute;
+  left: 2rem;
+  bottom: 2.25rem;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-weight: 460;
+  letter-spacing: -0.0025rem;
+}
+
+@media screen and (max-width: 768px) {
+  .mnav-btn {
+    display: flex;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .mnav-btn,
+  .mnav-overlay {
+    display: none !important;
   }
 }
 
