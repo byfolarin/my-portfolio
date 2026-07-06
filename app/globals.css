@@ -37,11 +37,11 @@ body {
 .site-nav {
   position: fixed;
   top: 5rem;
-  right: 2.5rem;
+  left: 2.5rem;
   z-index: 20;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: 0.4375rem;
   animation: staggerIn 0.5s ease 0.1s both;
 }
@@ -66,11 +66,11 @@ body {
 @media screen and (max-width: 900px) {
   .site-nav {
     top: 2rem;
-    right: 1.5rem;
+    left: 1.5rem;
   }
   /* keep the centered column clear of the fixed nav */
   .page {
-    padding-right: 5.5rem;
+    padding-left: 5.5rem;
   }
 }
 
@@ -78,13 +78,13 @@ body {
   .site-nav {
     position: static;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: flex-start;
     flex-wrap: wrap;
     gap: 1rem;
     padding: 2rem 1.5rem 0;
   }
   .page {
-    padding-right: 1.5rem;
+    padding-left: 1.5rem;
   }
 }
 
