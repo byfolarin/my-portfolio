@@ -13,6 +13,7 @@ const items = [
   { label: "Projects", href: "/projects", preview: "/previews/projects.png" },
   { label: "Writings", href: "/writing", preview: "/previews/writing.png" },
   { label: "Music", href: "/music", preview: "/previews/music.png" },
+  { label: "Ask", href: "/ask", preview: "/previews/ask.png" },
 ];
 
 // vertical rhythm of the desktop nav list: 1rem line + 0.875rem gap
