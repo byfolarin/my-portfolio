@@ -17,6 +17,11 @@ export async function GET() {
           configured: true,
           playing: data.is_playing === true,
           track: mapTrack(data.item),
+          progress: typeof data.progress_ms === "number" ? data.progress_ms : null,
+          duration:
+            typeof data.item.duration_ms === "number"
+              ? data.item.duration_ms
+              : null,
         });
       }
     }

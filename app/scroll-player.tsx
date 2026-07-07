@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 type Track = { title: string; artist: string; art?: string; url: string };
@@ -8,16 +8,29 @@ type Track = { title: string; artist: string; art?: string; url: string };
 const THUMB_H = 112; // keep in sync with .sp-thumb height
 const PAD_TOP = 20;
 const PAD_BOTTOM = 20;
+const BARS = 27;
+
+function fmt(ms: number) {
+  const s = Math.max(0, Math.floor(ms / 1000));
+  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+}
 
 export default function ScrollPlayer() {
   const router = useRouter();
   const pathname = usePathname();
   const [track, setTrack] = useState<Track | null>(null);
   const [playing, setPlaying] = useState(false);
+  const [progress, setProgress] = useState<{
+    ms: number;
+    duration: number;
+    at: number;
+  } | null>(null);
   const [time, setTime] = useState<{ hm: string; ampm: string } | null>(null);
+  const [hovered, setHovered] = useState(false);
+  const [, setTick] = useState(0);
   const thumbRef = useRef<HTMLDivElement>(null);
 
-  // spotify: what's playing
+  // spotify: what's playing + where in the song
   useEffect(() => {
     let alive = true;
     const load = async () => {
@@ -27,6 +40,11 @@ export default function ScrollPlayer() {
         if (!alive) return;
         setTrack(data?.track ?? null);
         setPlaying(data?.playing === true);
+        setProgress(
+          typeof data?.progress === "number" && typeof data?.duration === "number"
+            ? { ms: data.progress, duration: data.duration, at: Date.now() }
+            : null
+        );
       } catch {
         if (alive) setTrack(null);
       }
@@ -38,6 +56,13 @@ export default function ScrollPlayer() {
       clearInterval(id);
     };
   }, []);
+
+  // advance the sound map while hovered and playing
+  useEffect(() => {
+    if (!hovered || !playing) return;
+    const id = setInterval(() => setTick((t) => t + 1), 500);
+    return () => clearInterval(id);
+  }, [hovered, playing]);
 
   // visitor's local time, like a system clock
   useEffect(() => {
@@ -138,12 +163,28 @@ export default function ScrollPlayer() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
+  // stable pseudo-random waveform silhouette
+  const heights = useMemo(
+    () =>
+      Array.from({ length: BARS }, (_, i) => 30 + Math.abs(Math.sin(i * 2.7)) * 65),
+    []
+  );
+
+  const elapsed = progress
+    ? Math.min(
+        progress.duration,
+        progress.ms + (playing ? Date.now() - progress.at : 0)
+      )
+    : 0;
+  const fraction = progress && progress.duration > 0 ? elapsed / progress.duration : 0;
+
   return (
     <div className="sp-track" aria-hidden>
       <div
         ref={thumbRef}
         className="sp-thumb"
-        title={track ? `${track.title} — ${track.artist}` : undefined}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
       >
         <span className="sp-art" data-playing={playing || undefined}>
           {track?.art ? (
@@ -153,7 +194,7 @@ export default function ScrollPlayer() {
             <svg viewBox="0 0 16 16" width="9" height="9" aria-hidden>
               <path
                 d="M6 13.5a2 2 0 1 1-1.2-1.83V4.2L13 2.5v8.5a2 2 0 1 1-1.2-1.83V5.1L6 6.2z"
-                fill="rgba(255,255,255,0.8)"
+                fill="rgba(0,0,0,0.45)"
               />
             </svg>
           )}
@@ -163,6 +204,51 @@ export default function ScrollPlayer() {
             {time.hm}
             <em>{time.ampm}</em>
           </span>
+        )}
+
+        {track && (
+          <a
+            className="sp-card"
+            data-show={hovered || undefined}
+            href={track.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            onPointerDown={(e) => e.stopPropagation()}
+          >
+            <div className="sp-card-top">
+              {track.art ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={track.art} alt="" draggable={false} />
+              ) : (
+                <span className="sp-card-noart" />
+              )}
+              <div className="sp-card-meta">
+                <strong>{track.title}</strong>
+                <span>{track.artist}</span>
+              </div>
+              {playing && (
+                <span className="music-eq sp-card-eq">
+                  <i />
+                  <i />
+                  <i />
+                </span>
+              )}
+            </div>
+            <div className="sp-card-wave">
+              {heights.map((h, i) => (
+                <i
+                  key={i}
+                  style={{ height: `${h}%` }}
+                  data-played={i / BARS <= fraction || undefined}
+                />
+              ))}
+            </div>
+            <div className="sp-card-times">
+              <span>{progress ? fmt(elapsed) : "–:––"}</span>
+              <span>{playing ? "Playing now" : "Paused"}</span>
+              <span>{progress ? fmt(progress.duration) : "–:––"}</span>
+            </div>
+          </a>
         )}
       </div>
     </div>
