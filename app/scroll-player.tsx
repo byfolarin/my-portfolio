@@ -8,7 +8,7 @@ type Track = { title: string; artist: string; art?: string; url: string };
 const THUMB_H = 112; // keep in sync with .sp-thumb height
 const PAD_TOP = 20;
 const PAD_BOTTOM = 20;
-const BARS = 27;
+const BARS = 21;
 
 function fmt(ms: number) {
   const s = Math.max(0, Math.floor(ms / 1000));
@@ -163,10 +163,14 @@ export default function ScrollPlayer() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
-  // stable pseudo-random waveform silhouette
+  // stable organic waveform silhouette
   const heights = useMemo(
     () =>
-      Array.from({ length: BARS }, (_, i) => 30 + Math.abs(Math.sin(i * 2.7)) * 65),
+      Array.from({ length: BARS }, (_, i) => {
+        const wave =
+          Math.abs(Math.sin(i * 1.7)) * 0.55 + Math.abs(Math.sin(i * 0.6 + 2)) * 0.45;
+        return 22 + wave * 74;
+      }),
     []
   );
 
