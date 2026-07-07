@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Caveat, Inter } from "next/font/google";
 import Nav from "./nav";
-import NowPlayingWidget from "./now-playing-widget";
+import ScrollPlayer from "./scroll-player";
 import AskWidget from "./ask-widget";
 import Splash from "./splash";
 import { books } from "./reading/books";
@@ -34,7 +34,7 @@ export default function RootLayout({
       <body>
         <Splash />
         <Nav readingCount={books.length} projectsCount={projects.length} />
-        <NowPlayingWidget />
+        <ScrollPlayer />
         <AskWidget />
         <div className="page">{children}</div>
       </body>

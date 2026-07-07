@@ -16,6 +16,12 @@ html {
   background: var(--body-bg);
   color: var(--body-color);
   scroll-behavior: smooth;
+  /* the scroll player pill is the scrollbar */
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
 }
 
 body {
@@ -260,71 +266,105 @@ body {
   }
 }
 
-/* ---- now playing widget ---- */
+/* ---- scroll player: music + time as the scrollbar ---- */
 
-.np-widget {
+.sp-track {
   position: fixed;
-  top: 2rem;
-  right: 2.5rem;
-  /* above the mobile nav overlay (55) so it stays visible while the
-     menu is open, below the hamburger button (60) */
-  z-index: 58;
+  top: 0;
+  right: 0.625rem;
+  height: 100vh;
+  width: 1.75rem;
+  z-index: 45;
+  pointer-events: none;
+}
+
+.sp-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1.75rem;
+  height: 7rem; /* keep in sync with THUMB_H */
+  border-radius: 999px;
+  background: #111;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.25),
+    0 6px 18px rgba(0, 0, 0, 0.18);
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.3125rem 0 0.625rem;
+  /* opacity-only entrance: the transform channel belongs to the JS
+     scrollbar positioning and must never be animated by CSS */
+  animation: sp-in 0.5s ease 0.2s backwards;
+}
+
+@keyframes sp-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.sp-art {
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.12);
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.3125rem 0.625rem 0.3125rem 0.3125rem;
-  border-radius: 999px;
-  background: #f4f4f2;
-  box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.04),
-    0 1px 2px rgba(0, 0, 0, 0.04);
-  animation: staggerIn 0.5s ease 0.2s both;
-  transition: background 0.15s ease;
+  justify-content: center;
+  flex: none;
 }
 
-.np-widget:hover {
-  background: #eeeeec;
-}
-
-.np-widget img,
-.np-widget-art {
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 999px;
+.sp-art img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  background: #ececea;
-  flex: none;
+  border-radius: 999px;
+  animation: sp-spin 6s linear infinite;
+  animation-play-state: paused;
 }
 
-.np-widget-title {
-  color: var(--heading-color);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: -0.0025rem;
-  max-width: 9rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.sp-art[data-playing] img {
+  animation-play-state: running;
 }
 
-.np-widget-eq {
-  height: 0.625rem;
-  margin-left: 0;
-}
-
-.np-widget-note {
-  color: rgba(0, 0, 0, 0.3);
-  flex: none;
-}
-
-@media screen and (max-width: 768px) {
-  .np-widget {
-    top: 1.25rem;
-    right: 1.25rem;
+@keyframes sp-spin {
+  to {
+    transform: rotate(360deg);
   }
+}
 
-  .np-widget-title {
-    max-width: 6.5rem;
+.sp-time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.0625rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.5rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+}
+
+.sp-time em {
+  font-style: normal;
+  font-size: 0.4375rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-art img {
+    animation: none;
   }
 }
 
