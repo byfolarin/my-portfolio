@@ -1,15 +1,107 @@
 @import "tailwindcss";
 
 :root {
+  color-scheme: light;
   --body-bg: #fdfdfc;
-  --body-color: rgba(0, 0, 0, 0.45);
-  --heading-color: #111;
+  --panel-bg: #ffffff;
+  --surface: #f4f4f2;
+  --surface-hover: #eeeeec;
+  --skeleton: #ececea;
+  --body-color: var(--ink-45);
+  --heading-color: var(--heading-color);
   --muted: rgba(0, 0, 0, 0.4);
+  --ink-60: rgba(0, 0, 0, 0.6);
+  --ink-55: rgba(0, 0, 0, 0.55);
+  --ink-45: rgba(0, 0, 0, 0.45);
+  --ink-35: rgba(0, 0, 0, 0.35);
+  --ink-30: rgba(0, 0, 0, 0.3);
+  --ink-25: rgba(0, 0, 0, 0.25);
+  --ink-22: rgba(0, 0, 0, 0.22);
+  --ink-18: rgba(0, 0, 0, 0.18);
+  --ink-12: rgba(0, 0, 0, 0.12);
   --hairline: #f2f2f2;
+  --hairline-strong: #ededed;
   --underline: #d9d9d9;
   --underline-hover: #666;
+  --ring: rgba(0, 0, 0, 0.06);
+  --kbd-bg: rgba(0, 0, 0, 0.045);
+  --wave-bg: rgba(0, 0, 0, 0.12);
+  --btn-bg: #111;
+  --btn-fg: #fdfdfc;
+  --glass: rgba(253, 253, 252, 0.85);
+  --panel-glass: rgba(255, 255, 255, 0.96);
+  --scrim: rgba(253, 253, 252, 0.7);
   --font-body: var(--font-inter), system-ui, -apple-system, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* dark palette — applied by system preference or explicit choice */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --body-bg: #101010;
+  --panel-bg: #191919;
+  --surface: #1e1e1d;
+  --surface-hover: #262625;
+  --skeleton: #242423;
+  --body-color: rgba(255, 255, 255, 0.55);
+  --heading-color: #f1f1ef;
+  --muted: rgba(255, 255, 255, 0.45);
+  --ink-60: rgba(255, 255, 255, 0.66);
+  --ink-55: rgba(255, 255, 255, 0.6);
+  --ink-45: rgba(255, 255, 255, 0.5);
+  --ink-35: rgba(255, 255, 255, 0.42);
+  --ink-30: rgba(255, 255, 255, 0.38);
+  --ink-25: rgba(255, 255, 255, 0.32);
+  --ink-22: rgba(255, 255, 255, 0.3);
+  --ink-18: rgba(255, 255, 255, 0.22);
+  --ink-12: rgba(255, 255, 255, 0.16);
+  --hairline: #232322;
+  --hairline-strong: #2e2e2d;
+  --underline: #3d3d3c;
+  --underline-hover: #8a8a88;
+  --ring: rgba(255, 255, 255, 0.09);
+  --kbd-bg: rgba(255, 255, 255, 0.08);
+  --wave-bg: rgba(255, 255, 255, 0.16);
+  --btn-bg: #f1f1ef;
+  --btn-fg: #111;
+  --glass: rgba(18, 18, 18, 0.85);
+  --panel-glass: rgba(26, 26, 26, 0.96);
+  --scrim: rgba(16, 16, 16, 0.72);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --body-bg: #101010;
+    --panel-bg: #191919;
+    --surface: #1e1e1d;
+    --surface-hover: #262625;
+    --skeleton: #242423;
+    --body-color: rgba(255, 255, 255, 0.55);
+    --heading-color: #f1f1ef;
+    --muted: rgba(255, 255, 255, 0.45);
+    --ink-60: rgba(255, 255, 255, 0.66);
+    --ink-55: rgba(255, 255, 255, 0.6);
+    --ink-45: rgba(255, 255, 255, 0.5);
+    --ink-35: rgba(255, 255, 255, 0.42);
+    --ink-30: rgba(255, 255, 255, 0.38);
+    --ink-25: rgba(255, 255, 255, 0.32);
+    --ink-22: rgba(255, 255, 255, 0.3);
+    --ink-18: rgba(255, 255, 255, 0.22);
+    --ink-12: rgba(255, 255, 255, 0.16);
+    --hairline: #232322;
+    --hairline-strong: #2e2e2d;
+    --underline: #3d3d3c;
+    --underline-hover: #8a8a88;
+    --ring: rgba(255, 255, 255, 0.09);
+    --kbd-bg: rgba(255, 255, 255, 0.08);
+    --wave-bg: rgba(255, 255, 255, 0.16);
+    --btn-bg: #f1f1ef;
+    --btn-fg: #111;
+    --glass: rgba(18, 18, 18, 0.85);
+    --panel-glass: rgba(26, 26, 26, 0.96);
+    --scrim: rgba(16, 16, 16, 0.72);
+  }
 }
 
 html {
@@ -34,8 +126,8 @@ body {
 }
 
 ::selection {
-  color: #111;
-  background: #ededed;
+  color: var(--heading-color);
+  background: var(--hairline-strong);
 }
 
 /* ---- site nav ---- */
@@ -52,7 +144,7 @@ body {
 }
 
 .site-nav a {
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--ink-30);
   font-size: 0.8125rem;
   font-weight: 460;
   line-height: 1rem;
@@ -78,9 +170,9 @@ body {
   aspect-ratio: 16 / 10;
   border-radius: 0.5rem;
   overflow: hidden;
-  background: #fff;
+  background: var(--panel-bg);
   box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.05),
+    0 0 0 1px var(--ring),
     0 4px 12px rgba(0, 0, 0, 0.05),
     0 12px 32px rgba(0, 0, 0, 0.07);
   opacity: 0;
@@ -149,7 +241,7 @@ body {
   width: 3.25rem;
   height: 3.25rem;
   border-radius: 999px;
-  background: #111;
+  background: var(--btn-bg);
   box-shadow:
     0 2px 8px rgba(0, 0, 0, 0.16),
     0 8px 24px rgba(0, 0, 0, 0.12);
@@ -165,7 +257,7 @@ body {
   width: 1.125rem;
   height: 1.5px;
   border-radius: 1px;
-  background: #fdfdfc;
+  background: var(--body-bg);
   transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
@@ -182,7 +274,7 @@ body {
   position: fixed;
   inset: 0;
   z-index: 55;
-  background: #fdfdfc;
+  background: var(--body-bg);
   flex-direction: column;
   justify-content: center;
   padding: 2rem 2rem 6rem;
@@ -190,7 +282,7 @@ body {
 }
 
 .mnav-greeting {
-  color: rgba(0, 0, 0, 0.22);
+  color: var(--ink-22);
   font-size: 1.5rem;
   font-weight: 500;
   letter-spacing: -0.02rem;
@@ -207,7 +299,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.3125rem;
-  color: rgba(0, 0, 0, 0.35);
+  color: var(--ink-35);
   font-size: 2rem;
   font-weight: 500;
   line-height: 1;
@@ -285,11 +377,11 @@ body {
   width: 1.75rem;
   height: 7rem; /* keep in sync with THUMB_H */
   border-radius: 999px;
-  background: rgba(253, 253, 252, 0.88);
+  background: var(--glass);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.07),
+    0 0 0 1px var(--ring),
     0 2px 6px rgba(0, 0, 0, 0.06),
     0 8px 22px rgba(0, 0, 0, 0.08);
   pointer-events: auto;
@@ -319,8 +411,8 @@ body {
   height: 1.125rem;
   border-radius: 999px;
   overflow: hidden;
-  background: rgba(0, 0, 0, 0.06);
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06);
+  background: var(--kbd-bg);
+  box-shadow: 0 0 0 1px var(--ring);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -351,7 +443,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 0.0625rem;
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--ink-60);
   font-size: 0.5rem;
   font-weight: 500;
   line-height: 1;
@@ -363,7 +455,7 @@ body {
 .sp-time em {
   font-style: normal;
   font-size: 0.4375rem;
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--ink-30);
 }
 
 /* hover widget: track, sound map, progress */
@@ -375,11 +467,11 @@ body {
   width: 15.5rem;
   padding: 0.625rem;
   border-radius: 0.75rem;
-  background: rgba(255, 255, 255, 0.96);
+  background: var(--panel-glass);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.05),
+    0 0 0 1px var(--ring),
     0 4px 12px rgba(0, 0, 0, 0.06),
     0 14px 38px rgba(0, 0, 0, 0.1);
   opacity: 0;
@@ -410,8 +502,8 @@ body {
   height: 2.5rem;
   border-radius: 0.5rem;
   object-fit: cover;
-  background: #ececea;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
+  background: var(--skeleton);
+  box-shadow: 0 0 0 1px var(--ring);
   flex: none;
 }
 
@@ -459,7 +551,7 @@ body {
 .sp-card-wave i {
   flex: 1;
   border-radius: 1px;
-  background: rgba(0, 0, 0, 0.12);
+  background: var(--wave-bg);
   transition: background 0.3s ease;
 }
 
@@ -472,7 +564,7 @@ body {
   align-items: center;
   justify-content: space-between;
   margin-top: 0.375rem;
-  color: rgba(0, 0, 0, 0.35);
+  color: var(--ink-35);
   font-size: 0.625rem;
   font-weight: 460;
   font-variant-numeric: tabular-nums;
@@ -658,9 +750,9 @@ body {
   aspect-ratio: 3 / 4;
   border-radius: 3px;
   overflow: hidden;
-  background: var(--cover-bg, #ececea);
+  background: var(--cover-bg, var(--skeleton));
   box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.04),
+    0 0 0 1px var(--ring),
     0 1px 2px rgba(0, 0, 0, 0.05),
     0 4px 10px rgba(0, 0, 0, 0.05);
 }
@@ -770,7 +862,7 @@ body {
   min-width: 1.75rem;
   height: 1.75rem;
   border-radius: 0.375rem;
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--ink-30);
   font-size: 0.8125rem;
   font-weight: 460;
   font-variant-numeric: tabular-nums;
@@ -784,12 +876,12 @@ body {
 
 .pagination button[aria-current="page"] {
   color: var(--heading-color);
-  background: rgba(0, 0, 0, 0.045);
+  background: var(--kbd-bg);
   cursor: default;
 }
 
 .pagination button:disabled {
-  color: rgba(0, 0, 0, 0.12);
+  color: var(--ink-12);
   cursor: default;
 }
 
@@ -802,7 +894,7 @@ body {
 }
 
 .detail-count {
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--ink-30);
   font-size: 0.8125rem;
   font-weight: 460;
   font-variant-numeric: tabular-nums;
@@ -882,7 +974,7 @@ body {
   margin: -0.5rem 0 0 -0.5rem;
   border-radius: 50%;
   border: 1.5px solid rgba(0, 0, 0, 0.08);
-  border-top-color: rgba(0, 0, 0, 0.35);
+  border-top-color: var(--ink-35);
   animation: book3d-spin 0.8s linear infinite;
 }
 
@@ -895,7 +987,7 @@ body {
 .book3d-hint {
   padding-top: 0.25rem;
   text-align: center;
-  color: rgba(0, 0, 0, 0.25);
+  color: var(--ink-25);
   font-size: 0.75rem;
   font-weight: 460;
   letter-spacing: 0.00063rem;
@@ -1047,10 +1139,10 @@ a.project-name:hover {
   background:
     linear-gradient(
       140deg,
-      color-mix(in srgb, var(--tint, #888) 9%, #fdfdfc) 0%,
-      color-mix(in srgb, var(--tint, #888) 4%, #fdfdfc) 100%
+      color-mix(in srgb, var(--tint, #888) 9%, var(--body-bg)) 0%,
+      color-mix(in srgb, var(--tint, #888) 4%, var(--body-bg)) 100%
     );
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.045);
+  box-shadow: inset 0 0 0 1px var(--ring);
 }
 
 .project-media img {
@@ -1185,8 +1277,8 @@ a.music-now-row:hover .music-titles h2 {
   height: 3.5rem;
   border-radius: 0.375rem;
   object-fit: cover;
-  background: #ececea;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
+  background: var(--skeleton);
+  box-shadow: 0 0 0 1px var(--ring);
   flex: none;
 }
 
@@ -1195,8 +1287,8 @@ a.music-now-row:hover .music-titles h2 {
   height: 2.25rem;
   border-radius: 0.25rem;
   object-fit: cover;
-  background: #ececea;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
+  background: var(--skeleton);
+  box-shadow: 0 0 0 1px var(--ring);
   flex: none;
 }
 
@@ -1311,7 +1403,7 @@ a.music-now-row:hover .music-titles h2 {
 }
 
 .music-index {
-  color: rgba(0, 0, 0, 0.25);
+  color: var(--ink-25);
   font-size: 0.75rem;
   font-weight: 460;
   font-variant-numeric: tabular-nums;
@@ -1345,9 +1437,9 @@ a.music-now-row:hover .music-titles h2 {
   gap: 0.4375rem;
   padding: 0.4375rem 0.875rem;
   border-radius: 999px;
-  background: #f4f4f2;
+  background: var(--surface);
   box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.04),
+    0 0 0 1px var(--ring),
     0 1px 2px rgba(0, 0, 0, 0.04);
   color: var(--heading-color);
   font-size: 0.8125rem;
@@ -1358,7 +1450,7 @@ a.music-now-row:hover .music-titles h2 {
 }
 
 .pill:hover {
-  background: #eeeeec;
+  background: var(--surface-hover);
 }
 
 .pill-ghost {
@@ -1368,7 +1460,7 @@ a.music-now-row:hover .music-titles h2 {
 }
 
 .pill-ghost:hover {
-  background: #f4f4f2;
+  background: var(--surface);
   color: var(--heading-color);
 }
 
@@ -1434,9 +1526,9 @@ a.music-now-row:hover .music-titles h2 {
   margin-top: 1rem;
   padding: 0.3125rem 0.625rem;
   border-radius: 999px;
-  background: #f4f4f2;
+  background: var(--surface);
   box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.04),
+    0 0 0 1px var(--ring),
     0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
@@ -1448,7 +1540,7 @@ a.music-now-row:hover .music-titles h2 {
   width: 2rem;
   height: 2rem;
   border-radius: 999px;
-  color: rgba(0, 0, 0, 0.55);
+  color: var(--ink-55);
   cursor: pointer;
   transition: color 0.15s ease, background 0.15s ease;
 }
@@ -1456,11 +1548,11 @@ a.music-now-row:hover .music-titles h2 {
 .player-controls button:hover,
 .player-controls .player-play:hover {
   color: var(--heading-color);
-  background: rgba(0, 0, 0, 0.05);
+  background: var(--kbd-bg);
 }
 
 .player-controls button:disabled {
-  color: rgba(0, 0, 0, 0.18);
+  color: var(--ink-18);
   cursor: default;
   background: none;
 }
@@ -1488,9 +1580,9 @@ a.music-now-row:hover .music-titles h2 {
   aspect-ratio: 1;
   border-radius: 0.5rem;
   overflow: hidden;
-  background: #ececea;
+  background: var(--skeleton);
   cursor: pointer;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 0 1px var(--ring);
   transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
@@ -1528,7 +1620,7 @@ a.music-now-row:hover .music-titles h2 {
   display: block;
   height: 0.625rem;
   border-radius: 0.3125rem;
-  background: #ececea;
+  background: var(--skeleton);
   animation: music-pulse 1.4s ease-in-out infinite;
 }
 
@@ -1559,11 +1651,11 @@ a.music-now-row:hover .music-titles h2 {
   gap: 0.5rem;
   padding: 0.5rem 0.875rem;
   border-radius: 999px;
-  background: rgba(253, 253, 252, 0.85);
+  background: var(--glass);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.06),
+    0 0 0 1px var(--ring),
     0 2px 6px rgba(0, 0, 0, 0.05),
     0 10px 28px rgba(0, 0, 0, 0.07);
   color: var(--muted);
@@ -1590,22 +1682,22 @@ a.music-now-row:hover .music-titles h2 {
   color: var(--heading-color);
   transform: translateX(-50%) translateY(-1px);
   box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.08),
+    0 0 0 1px var(--ring),
     0 4px 10px rgba(0, 0, 0, 0.06),
     0 14px 34px rgba(0, 0, 0, 0.09);
 }
 
 .ask-trigger svg {
-  color: rgba(0, 0, 0, 0.35);
+  color: var(--ink-35);
 }
 
 .ask-trigger kbd {
   font-family: inherit;
   font-size: 0.6875rem;
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--ink-30);
   padding: 0.125rem 0.375rem;
   border-radius: 0.3125rem;
-  background: rgba(0, 0, 0, 0.045);
+  background: var(--kbd-bg);
 }
 
 @media screen and (max-width: 768px) {
@@ -1622,7 +1714,7 @@ a.music-now-row:hover .music-titles h2 {
   align-items: flex-start;
   justify-content: center;
   padding: 14vh 1.25rem 2rem;
-  background: rgba(253, 253, 252, 0.7);
+  background: var(--scrim);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   will-change: clip-path;
@@ -1634,9 +1726,9 @@ a.music-now-row:hover .music-titles h2 {
   display: flex;
   flex-direction: column;
   border-radius: 1rem;
-  background: #fff;
+  background: var(--panel-bg);
   box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.05),
+    0 0 0 1px var(--ring),
     0 8px 24px rgba(0, 0, 0, 0.07),
     0 24px 64px rgba(0, 0, 0, 0.1);
   padding: 0.875rem;
@@ -1660,7 +1752,7 @@ a.music-now-row:hover .music-titles h2 {
 }
 
 .ask-head-title svg {
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--ink-30);
 }
 
 .ask-head-hint {
@@ -1672,14 +1764,14 @@ a.music-now-row:hover .music-titles h2 {
 .ask-head-hint kbd {
   font-family: inherit;
   font-size: 0.625rem;
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--ink-30);
   padding: 0.125rem 0.375rem;
   border-radius: 0.3125rem;
-  background: rgba(0, 0, 0, 0.045);
+  background: var(--kbd-bg);
 }
 
 .ask-reset {
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--ink-30);
   font-size: 0.75rem;
   font-weight: 460;
   cursor: pointer;
@@ -1692,7 +1784,7 @@ a.music-now-row:hover .music-titles h2 {
 
 .ask-footnote {
   padding: 0.875rem 0.25rem 0.125rem;
-  color: rgba(0, 0, 0, 0.25);
+  color: var(--ink-25);
   font-size: 0.6875rem;
   font-weight: 460;
   letter-spacing: 0.00063rem;
@@ -1725,9 +1817,9 @@ a.music-now-row:hover .music-titles h2 {
   font-family: var(--font-script), cursive;
   font-size: 8.75rem;
   letter-spacing: 0.02em;
-  fill: #111;
+  fill: var(--heading-color);
   fill-opacity: 0;
-  stroke: #111;
+  stroke: var(--heading-color);
   stroke-width: 1.25;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -1756,16 +1848,16 @@ a.music-now-row:hover .music-titles h2 {
   gap: 0.5rem;
   padding: 0.375rem 0.375rem 0.375rem 1rem;
   border-radius: 999px;
-  background: #f4f4f2;
+  background: var(--surface);
   box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.04),
+    0 0 0 1px var(--ring),
     0 1px 2px rgba(0, 0, 0, 0.04);
   transition: box-shadow 0.15s ease;
 }
 
 .ask-form:focus-within {
   box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.1),
+    0 0 0 1px var(--ring),
     0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
@@ -1781,7 +1873,7 @@ a.music-now-row:hover .music-titles h2 {
 }
 
 .ask-form input::placeholder {
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--ink-30);
 }
 
 .ask-form button {
@@ -1791,8 +1883,8 @@ a.music-now-row:hover .music-titles h2 {
   width: 2rem;
   height: 2rem;
   border-radius: 999px;
-  background: #111;
-  color: #fdfdfc;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
   cursor: pointer;
   flex: none;
   transition: opacity 0.15s ease;
@@ -1854,7 +1946,7 @@ a.music-now-row:hover .music-titles h2 {
   display: block;
   height: 1px;
   width: 3.125rem;
-  background: #ededed;
+  background: var(--hairline-strong);
   margin: 0 0 2.375rem;
 }
 
@@ -1864,4 +1956,38 @@ a.music-now-row:hover .music-titles h2 {
   font-weight: 460;
   letter-spacing: -0.0025rem;
   font-variant-numeric: tabular-nums;
+}
+
+/* ---- theme toggle ---- */
+
+.theme-toggle {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow:
+    0 0 0 1px var(--ring),
+    0 2px 6px rgba(0, 0, 0, 0.05);
+  color: var(--ink-30);
+  cursor: pointer;
+  transition: color 0.15s ease, transform 0.2s ease;
+  animation: sp-in 0.5s ease 0.35s backwards;
+}
+
+.theme-toggle:hover {
+  color: var(--heading-color);
+  transform: translateY(-1px);
+}
+
+.sp-art {
+  color: var(--ink-45);
 }

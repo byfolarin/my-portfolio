@@ -4,6 +4,7 @@ import Nav from "./nav";
 import ScrollPlayer from "./scroll-player";
 import AskWidget from "./ask-widget";
 import Splash from "./splash";
+import ThemeToggle from "./theme-toggle";
 import { books } from "./reading/books";
 import { projects } from "./projects/projects";
 import "./globals.css";
@@ -30,12 +31,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${caveat.variable} antialiased`}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${caveat.variable} antialiased`}
+      suppressHydrationWarning
+    >
       <body>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              '(function(){try{var p=new URLSearchParams(location.search).get("theme");var t=p||localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}})()',
+          }}
+        />
         <Splash />
         <Nav readingCount={books.length} projectsCount={projects.length} />
         <ScrollPlayer />
         <AskWidget />
+        <ThemeToggle />
         <div className="page">{children}</div>
       </body>
     </html>

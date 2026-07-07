@@ -194,7 +194,7 @@ export default function ScrollPlayer() {
             <svg viewBox="0 0 16 16" width="9" height="9" aria-hidden>
               <path
                 d="M6 13.5a2 2 0 1 1-1.2-1.83V4.2L13 2.5v8.5a2 2 0 1 1-1.2-1.83V5.1L6 6.2z"
-                fill="rgba(0,0,0,0.45)"
+                fill="currentColor"
               />
             </svg>
           )}
