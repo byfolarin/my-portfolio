@@ -103,16 +103,10 @@ function makeCdTexture(img: HTMLImageElement | null) {
   return tex;
 }
 
-// disc thickness in scene units — slightly exaggerated so the edge reads
-const T = 0.06;
-const HOLE_R = 0.22; // matches the transparent hole in the face texture
-
 function Disc({ art, spinning }: { art?: string; spinning: boolean }) {
-  const disc = useRef<THREE.Group>(null);
+  const disc = useRef<THREE.Mesh>(null);
   const group = useRef<THREE.Group>(null);
   const [texture, setTexture] = useState<THREE.CanvasTexture | null>(null);
-  // the back of a CD is the plain shiny data side — no album art
-  const [backTexture] = useState(() => makeCdTexture(null));
 
   useEffect(() => {
     let alive = true;
@@ -145,50 +139,21 @@ function Disc({ art, spinning }: { art?: string; spinning: boolean }) {
 
   if (!texture) return null;
 
-  const faceProps = {
-    transparent: true,
-    alphaTest: 0.1,
-    roughness: 0.32,
-    metalness: 0.1,
-    clearcoat: 1,
-    clearcoatRoughness: 0.22,
-  };
-
   return (
     <group ref={group} rotation={[-0.42, 0, 0]}>
-      <group ref={disc}>
-        {/* label side */}
-        <mesh position={[0, 0, T / 2]}>
-          <circleGeometry args={[2, 96]} />
-          <meshPhysicalMaterial map={texture} {...faceProps} />
-        </mesh>
-        {/* data side */}
-        <mesh position={[0, 0, -T / 2]} rotation={[0, Math.PI, 0]}>
-          <circleGeometry args={[2, 96]} />
-          <meshPhysicalMaterial map={backTexture} {...faceProps} />
-        </mesh>
-        {/* outer rim */}
-        <mesh rotation={[Math.PI / 2, 0, 0]}>
-          <cylinderGeometry args={[2, 2, T, 96, 1, true]} />
-          <meshPhysicalMaterial
-            color="#cdd0d6"
-            roughness={0.4}
-            metalness={0.55}
-            clearcoat={0.6}
-            side={THREE.DoubleSide}
-          />
-        </mesh>
-        {/* center-hole wall */}
-        <mesh rotation={[Math.PI / 2, 0, 0]}>
-          <cylinderGeometry args={[HOLE_R, HOLE_R, T, 48, 1, true]} />
-          <meshPhysicalMaterial
-            color="#e4e5e9"
-            roughness={0.5}
-            metalness={0.3}
-            side={THREE.DoubleSide}
-          />
-        </mesh>
-      </group>
+      <mesh ref={disc}>
+        <circleGeometry args={[2, 96]} />
+        <meshPhysicalMaterial
+          map={texture}
+          transparent
+          alphaTest={0.1}
+          side={THREE.DoubleSide}
+          roughness={0.32}
+          metalness={0.1}
+          clearcoat={1}
+          clearcoatRoughness={0.22}
+        />
+      </mesh>
     </group>
   );
 }
