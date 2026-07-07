@@ -21,3 +21,22 @@ Personal site of Folarin Folarin, product designer in Lagos, Nigeria.
 - GSAP for nav choreography
 - Spotify Web API (server-side refresh-token flow) for live listening data
 - Deployed on Vercel
+
+## Running locally
+
+```bash
+npm install
+npm run dev
+```
+
+The music page needs Spotify credentials — copy `.env.example` to `.env.local`
+and fill in the three values. To get a refresh token, create an app at
+[developer.spotify.com](https://developer.spotify.com/dashboard) with
+`http://127.0.0.1:8888/callback` as a redirect URI, then run:
+
+```bash
+SPOTIFY_CLIENT_ID=xxx SPOTIFY_CLIENT_SECRET=yyy node scripts/spotify-token.mjs
+```
+
+Without credentials the site still runs; the music page just shows its
+not-connected state.
