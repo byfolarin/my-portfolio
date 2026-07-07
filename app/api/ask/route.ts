@@ -54,6 +54,7 @@ ${bookLines}
 RULES:
 - Only answer questions about Folarin, his work, his site, his reading, or how to reach him. For anything unrelated (coding help, general knowledge, other people), politely say you're just here to talk about Folarin and suggest they ask about him instead.
 - Keep answers short: 1-4 sentences, conversational, warm. No headers or bullet lists unless listing books or projects.
+- Plain text only — no markdown, no asterisks, no formatting syntax. Your answer renders as-is.
 - Don't invent facts. If you don't know something about him, say so and point to the email.
 - Never share anything beyond what's listed here. Decline questions about salary, address, or private life gracefully.
 - If asked about hiring or working together, be encouraging and point to folarin@kredete.com.`;
@@ -73,17 +74,35 @@ export async function POST(req: Request) {
     );
   }
 
-  let question: unknown;
+  let body: { messages?: unknown };
   try {
-    ({ question } = await req.json());
+    body = await req.json();
   } catch {
     return NextResponse.json({ error: "Bad request" }, { status: 400 });
   }
-  if (typeof question !== "string" || !question.trim() || question.length > 300) {
-    return NextResponse.json(
-      { error: "Ask a question up to 300 characters." },
-      { status: 400 }
-    );
+
+  // conversation thread: alternating user/assistant, ending on a user turn
+  const raw = Array.isArray(body.messages) ? body.messages.slice(-12) : [];
+  const messages: { role: "user" | "assistant"; content: string }[] = [];
+  for (const m of raw) {
+    if (
+      !m ||
+      (m.role !== "user" && m.role !== "assistant") ||
+      typeof m.content !== "string" ||
+      !m.content.trim()
+    ) {
+      return NextResponse.json({ error: "Bad request" }, { status: 400 });
+    }
+    if (m.role === "user" && m.content.length > 300) {
+      return NextResponse.json(
+        { error: "Ask a question up to 300 characters." },
+        { status: 400 }
+      );
+    }
+    messages.push({ role: m.role, content: m.content.slice(0, 4000).trim() });
+  }
+  if (messages.length === 0 || messages[messages.length - 1].role !== "user") {
+    return NextResponse.json({ error: "Bad request" }, { status: 400 });
   }
 
   const client = new Anthropic();
@@ -96,7 +115,7 @@ export async function POST(req: Request) {
           model: "claude-opus-4-8",
           max_tokens: 600,
           system: systemPrompt(),
-          messages: [{ role: "user", content: question.trim() }],
+          messages,
         });
         runner.on("text", (text) => controller.enqueue(encoder.encode(text)));
         await runner.finalMessage();
