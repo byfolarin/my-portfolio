@@ -3,9 +3,19 @@ import { isConfigured, mapTrack, spotify } from "../lib";
 
 export const dynamic = "force-dynamic";
 
+// Short shared cache: many widgets poll this endpoint, but 10s of staleness
+// is invisible for a now-playing display and spares Spotify's rate limits.
+type NowPayload = Record<string, unknown>;
+let cache: { data: NowPayload; at: number } | null = null;
+const TTL_MS = 10_000;
+
 export async function GET() {
   if (!isConfigured()) {
     return NextResponse.json({ configured: false });
+  }
+
+  if (cache && Date.now() - cache.at < TTL_MS) {
+    return NextResponse.json(cache.data);
   }
 
   try {
@@ -13,7 +23,7 @@ export async function GET() {
     if (now.status === 200) {
       const data = await now.json();
       if (data?.item && data.currently_playing_type === "track") {
-        return NextResponse.json({
+        return respond({
           configured: true,
           playing: data.is_playing === true,
           track: mapTrack(data.item),
@@ -32,7 +42,7 @@ export async function GET() {
       const data = await recent.json();
       const item = data?.items?.[0]?.track;
       if (item) {
-        return NextResponse.json({
+        return respond({
           configured: true,
           playing: false,
           track: mapTrack(item),
@@ -40,11 +50,17 @@ export async function GET() {
       }
     }
 
-    return NextResponse.json({ configured: true, playing: false });
+    return respond({ configured: true, playing: false });
   } catch {
+    if (cache) return NextResponse.json(cache.data);
     return NextResponse.json(
       { configured: true, playing: false, error: true },
       { status: 502 }
     );
   }
+}
+
+function respond(data: NowPayload) {
+  cache = { data, at: Date.now() };
+  return NextResponse.json(data);
 }
