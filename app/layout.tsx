@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Caveat, Inter } from "next/font/google";
+import { Caveat, Inter, Newsreader } from "next/font/google";
 import Nav from "./nav";
 import ScrollPlayer from "./scroll-player";
 import AskWidget from "./ask-widget";
@@ -7,6 +7,7 @@ import Splash from "./splash";
 import ThemeToggle from "./theme-toggle";
 import { books } from "./reading/books";
 import { projects } from "./projects/projects";
+import { writings } from "./writing/writings";
 import "./globals.css";
 
 const inter = Inter({
@@ -18,6 +19,12 @@ const caveat = Caveat({
   variable: "--font-script",
   subsets: ["latin"],
   weight: ["600"],
+});
+
+const newsreader = Newsreader({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -33,7 +40,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${caveat.variable} antialiased`}
+      className={`${inter.variable} ${caveat.variable} ${newsreader.variable} antialiased`}
       suppressHydrationWarning
     >
       <body>
@@ -44,7 +51,11 @@ export default function RootLayout({
           }}
         />
         <Splash />
-        <Nav readingCount={books.length} projectsCount={projects.length} />
+        <Nav
+          readingCount={books.length}
+          projectsCount={projects.length}
+          writingCount={writings.length}
+        />
         <ScrollPlayer />
         <AskWidget />
         <ThemeToggle />

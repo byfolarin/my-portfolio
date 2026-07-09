@@ -9,6 +9,7 @@ export default function Splash() {
   useEffect(() => {
     if (
       sessionStorage.getItem("splash-seen") ||
+      new URLSearchParams(window.location.search).get("splash") === "0" ||
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
     ) {
       setState("gone");

@@ -53,9 +53,11 @@ function lagosGreeting() {
 export default function Nav({
   readingCount,
   projectsCount,
+  writingCount,
 }: {
   readingCount: number;
   projectsCount: number;
+  writingCount: number;
 }) {
   const pathname = usePathname();
   const [hovered, setHovered] = useState<number | null>(null);
@@ -72,7 +74,7 @@ export default function Nav({
     "/reading": `${readingCount} books`,
     "/about": "who I am",
     "/projects": `${projectsCount} projects`,
-    "/writing": "coming soon",
+    "/writing": `${writingCount} essays`,
     "/music": musicMeta,
   };
 
