@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Clock from "../clock";
 import BackLink from "../back-link";
-import { writings } from "./writings";
+import { writings, roman } from "./writings";
 
 export const metadata: Metadata = {
   title: "Writings — Folarin Folarin",
@@ -31,6 +31,7 @@ export default function Writing() {
               key={w.slug}
               href={`/writing/${w.slug}`}
               className="spine"
+              data-lean={i === writings.length - 1 || undefined}
               style={
                 {
                   "--spine-bg": w.spine.bg,
@@ -55,6 +56,9 @@ export default function Writing() {
       <section className="writing-list">
         {writings.map((w, i) => (
           <Link key={w.slug} href={`/writing/${w.slug}`} className="writing-row">
+            <span className="writing-no" aria-hidden>
+              {roman(i + 1)}
+            </span>
             <div className="writing-row-main">
               <h2>{w.title}</h2>
               <p>{w.excerpt}</p>

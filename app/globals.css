@@ -1076,14 +1076,14 @@ body {
   }
 }
 
-/* ---- projects page ---- */
+/* ---- projects page: case windows ---- */
 
 .projects {
   padding: 1.5rem 0 0;
 }
 
 .project {
-  padding: 1.75rem 0;
+  padding: 2.25rem 0;
   border-bottom: 1px solid var(--hairline);
   scroll-margin-top: 3rem;
 }
@@ -1092,19 +1092,34 @@ body {
   border-bottom: none;
 }
 
-.project > header {
+.project-head {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
   gap: 1rem;
+}
+
+.project-index {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 2rem;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1;
+  color: var(--ink-12);
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.project-title {
+  min-width: 0;
+  flex: 1;
 }
 
 .project-name {
   color: var(--heading-color);
-  font-size: 0.875rem;
-  font-weight: 560;
-  line-height: 1.25rem;
-  letter-spacing: -0.00563rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.375rem;
+  letter-spacing: -0.01rem;
 }
 
 a.project-name:hover {
@@ -1128,12 +1143,66 @@ a.project-name:hover {
   padding-top: 0.125rem;
 }
 
+/* the work, framed as an app window */
+
+.project-window {
+  margin-top: 1.25rem;
+  border-radius: 0.875rem;
+  overflow: hidden;
+  background: var(--panel-bg);
+  box-shadow:
+    0 0 0 1px var(--ring),
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    0 24px 48px -20px color-mix(in srgb, var(--tint, #888) 45%, transparent);
+  transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.3s ease;
+}
+
+.project-window:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 0 0 1px var(--ring),
+    0 6px 16px rgba(0, 0, 0, 0.05),
+    0 32px 64px -20px color-mix(in srgb, var(--tint, #888) 55%, transparent);
+}
+
+.project-chrome {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0 0.875rem;
+  height: 2rem;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.project-chrome i {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--tint, #888) 55%, var(--surface));
+}
+
+.project-chrome i:nth-child(2) {
+  opacity: 0.6;
+}
+
+.project-chrome i:nth-child(3) {
+  opacity: 0.35;
+}
+
+.project-chrome span {
+  margin: 0 auto;
+  padding: 0.1875rem 0.75rem;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-30);
+  font-size: 0.625rem;
+  font-weight: 460;
+  letter-spacing: 0.01em;
+}
+
 .project-media {
   position: relative;
   aspect-ratio: 16 / 9;
-  margin-top: 1rem;
-  border-radius: 0.5rem;
-  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1143,17 +1212,9 @@ a.project-name:hover {
       color-mix(in srgb, var(--tint, #888) 9%, var(--body-bg)) 0%,
       color-mix(in srgb, var(--tint, #888) 4%, var(--body-bg)) 100%
     );
-  box-shadow: inset 0 0 0 1px var(--ring);
 }
 
-.project-media img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
+.project-media img,
 .project-media video {
   position: absolute;
   inset: 0;
@@ -1172,9 +1233,9 @@ a.project-name:hover {
 .project-description {
   font-size: 0.875rem;
   font-weight: 460;
-  line-height: 1.25rem;
+  line-height: 1.375rem;
   letter-spacing: -0.00563rem;
-  padding-top: 0.75rem;
+  padding-top: 1rem;
   max-width: 60ch;
 }
 
@@ -1853,13 +1914,46 @@ a.music-now-row:hover .music-titles h2 {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem 0 0.5rem;
-  border-radius: 3px 3px 1px 1px;
-  background: var(--spine-bg, var(--surface));
-  box-shadow: inset -2px 0 4px rgba(0, 0, 0, 0.18);
+  padding: 1rem 0 0.75rem;
+  border-radius: 4px 4px 2px 2px;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.025) 0 1px,
+      transparent 1px 3px
+    ),
+    var(--spine-bg, var(--surface));
+  box-shadow:
+    inset -3px 0 5px rgba(0, 0, 0, 0.22),
+    inset 2px 0 3px rgba(255, 255, 255, 0.08),
+    3px 6px 12px -6px rgba(0, 0, 0, 0.3);
   transition: transform 0.25s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.25s ease;
   animation: staggerIn 0.5s ease backwards;
   overflow: hidden;
+}
+
+/* raised bands at head and tail, like a bound spine */
+.spine::before {
+  content: "";
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  top: 0.4375rem;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 0.25rem 0 rgba(255, 255, 255, 0.09);
+}
+
+.spine[data-lean] {
+  transform: rotate(-7deg) translateY(0.375rem);
+  transform-origin: bottom left;
+  margin-left: 0.25rem;
+  margin-right: 0.875rem;
+}
+
+.spine[data-lean]:hover {
+  transform: rotate(-7deg) translateY(-0.25rem);
 }
 
 /* spine ridge highlight */
@@ -1886,14 +1980,16 @@ a.music-now-row:hover .music-titles h2 {
 
 .spine-title {
   writing-mode: vertical-rl;
+  font-family: var(--font-serif), Georgia, serif;
   color: var(--spine-fg, var(--muted));
-  font-size: 0.6875rem;
-  font-weight: 560;
-  letter-spacing: 0.01rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.02rem;
   max-height: 78%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
 }
 
 .spine-year {
@@ -1930,22 +2026,36 @@ a.music-now-row:hover .music-titles h2 {
 .writing-row {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 1.5rem;
-  padding: 1rem 0;
+  gap: 1rem;
+  padding: 1.125rem 0;
   border-bottom: 1px solid var(--hairline);
+}
+
+.writing-no {
+  font-family: var(--font-serif), Georgia, serif;
+  font-style: italic;
+  color: var(--ink-18);
+  font-size: 1.125rem;
+  line-height: 1;
+  flex: 0 0 2rem;
 }
 
 .writing-row:last-child {
   border-bottom: none;
 }
 
+.writing-row-main {
+  flex: 1;
+  min-width: 0;
+}
+
 .writing-row-main h2 {
+  font-family: var(--font-serif), Georgia, serif;
   color: var(--heading-color);
-  font-size: 0.875rem;
-  font-weight: 560;
-  line-height: 1.25rem;
-  letter-spacing: -0.00563rem;
+  font-size: 1.0625rem;
+  font-weight: 500;
+  line-height: 1.375rem;
+  letter-spacing: -0.005rem;
   transition: opacity 0.15s ease;
 }
 

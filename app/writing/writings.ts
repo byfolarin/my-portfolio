@@ -23,8 +23,8 @@ export const writings: Writing[] = [
     minutes: 4,
     excerpt: "Craft isn't the polish you add at the end. It's the whole thing.",
     spine: { bg: "#12372a", fg: "#efece2" },
-    height: 11.5,
-    thick: 2.375,
+    height: 14,
+    thick: 3,
     paragraphs: [
       "People talk about craft like it's a finishing step — the polish you apply once the real work is done. Ship the feature, then tidy the spacing. I've come to believe the opposite: the details are not the last mile of the design. They are the design.",
       "A button that sits one pixel off its baseline doesn't just look slightly wrong. It tells the user, quietly, that nobody here is paying attention. Every hairline, every easing curve, every label is a small promise about how much the people behind the product care. Users can't always articulate it, but they always feel it.",
@@ -41,8 +41,8 @@ export const writings: Writing[] = [
     minutes: 5,
     excerpt: "What fintech design looks like when your users' trust is earned in naira.",
     spine: { bg: "#243b53", fg: "#dfe8f0" },
-    height: 10.75,
-    thick: 2.125,
+    height: 12.75,
+    thick: 2.625,
     paragraphs: [
       "Most fintech design patterns were invented for people who already trust banks. The onboarding flows, the cheerful empty states, the confetti after your first deposit — they assume a user whose money has always been safe, for whom an app is just a nicer interface to a system that works.",
       "Lagos teaches you different assumptions. Here, trust is not a default; it's earned transaction by transaction. A user sending money across a border is often sending a meaningful fraction of everything they have, to someone who needs it urgently, through rails they have every historical reason to doubt.",
@@ -59,8 +59,8 @@ export const writings: Writing[] = [
     minutes: 4,
     excerpt: "What I learned building HDS: the system is social before it's technical.",
     spine: { bg: "#83322a", fg: "#f4e8e2" },
-    height: 10,
-    thick: 1.875,
+    height: 12,
+    thick: 2.375,
     paragraphs: [
       "When I started building HDS, I thought the deliverable was a component library. Buttons, inputs, tokens, documentation — the artifacts. I finished the artifacts and discovered I'd barely started.",
       "A design system is a promise between people. The designer promises the engineer that the spec is the spec — no surprise variants hiding in a detached frame. The engineer promises the designer that what ships matches what was drawn. The system is just the written form of that promise.",
@@ -77,8 +77,8 @@ export const writings: Writing[] = [
     minutes: 3,
     excerpt: "Fifty books a year isn't a hobby beside the work. It's how the work gets better.",
     spine: { bg: "#5b3a2e", fg: "#f2e9df" },
-    height: 9.25,
-    thick: 1.75,
+    height: 10.75,
+    thick: 2.25,
     paragraphs: [
       "Designers are told to study interfaces. Collect screenshots, dissect flows, know the patterns. Useful, but it produces a strange sameness — everyone studying the same apps arrives at the same screens.",
       "Books are my way out of that loop. Almost none of what has improved my design work came from design books alone. Kahneman taught me more about onboarding than any teardown — because onboarding is a parade of System 1 judgments. Achebe taught me about voice, and voice is what a brand actually is.",
