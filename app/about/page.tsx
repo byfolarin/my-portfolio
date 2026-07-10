@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Clock from "../clock";
+import Bento from "./bento";
+import { books, slugify } from "../reading/books";
+import { projects } from "../projects/projects";
 import BackLink from "../back-link";
 
 export const metadata: Metadata = {
@@ -74,6 +77,14 @@ export default function About() {
           .
         </p>
       </article>
+
+      <Bento
+        bookTitle={books[0].title}
+        bookAuthor={books[0].author}
+        bookSlug={slugify(books[0].title)}
+        bookCount={books.length}
+        projectCount={projects.length}
+      />
 
       <section className="experience">
         <h3>Experience</h3>
