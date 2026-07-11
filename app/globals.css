@@ -125,6 +125,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
 ::selection {
   color: var(--heading-color);
   background: var(--hairline-strong);
@@ -639,11 +649,13 @@ body {
 }
 
 .article > header h1 {
+  font-family: var(--font-serif), Georgia, serif;
   color: var(--heading-color);
-  font-size: 0.875rem;
+  font-size: 2rem;
   font-weight: 500;
-  line-height: 1.25rem;
-  letter-spacing: -0.00563rem;
+  line-height: 2.375rem;
+  letter-spacing: -0.02rem;
+  padding-top: 0.25rem;
 }
 
 .article > header time {
@@ -701,11 +713,12 @@ body {
 }
 
 .books > h3 {
-  color: var(--muted);
-  font-size: 0.875rem;
-  font-weight: 460;
-  letter-spacing: -0.00563rem;
-  padding-bottom: 0.5rem;
+  color: var(--ink-30);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding-bottom: 0.625rem;
   border-bottom: 1px solid var(--hairline);
 }
 
@@ -946,6 +959,11 @@ body {
   padding-top: 0;
 }
 
+.detail-body header h1 {
+  font-size: 1.5rem;
+  line-height: 1.875rem;
+}
+
 .book3d-wrap {
   flex: 0 0 46%;
   min-width: 0;
@@ -1018,11 +1036,12 @@ body {
 }
 
 .home-list > h3 {
-  color: var(--muted);
-  font-size: 0.875rem;
-  font-weight: 460;
-  letter-spacing: -0.00563rem;
-  padding-bottom: 0.5rem;
+  color: var(--ink-30);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding-bottom: 0.625rem;
   border-bottom: 1px solid var(--hairline);
 }
 
@@ -1246,11 +1265,12 @@ a.project-name:hover {
 }
 
 .experience > h3 {
-  color: var(--muted);
-  font-size: 0.875rem;
-  font-weight: 460;
-  letter-spacing: -0.00563rem;
-  padding-bottom: 0.5rem;
+  color: var(--ink-30);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding-bottom: 0.625rem;
   border-bottom: 1px solid var(--hairline);
 }
 
@@ -1315,11 +1335,12 @@ a.project-name:hover {
 
 .music-now > h3,
 .music-top > h3 {
-  color: var(--muted);
-  font-size: 0.875rem;
-  font-weight: 460;
-  letter-spacing: -0.00563rem;
-  padding-bottom: 0.5rem;
+  color: var(--ink-30);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding-bottom: 0.625rem;
   border-bottom: 1px solid var(--hairline);
 }
 
