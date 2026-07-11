@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Newsreader } from "next/font/google";
+import { Inter } from "next/font/google";
 import Nav from "./nav";
 import ScrollPlayer from "./scroll-player";
 import AskWidget from "./ask-widget";
@@ -12,12 +12,6 @@ import "./globals.css";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-});
-
-const newsreader = Newsreader({
-  variable: "--font-serif",
-  subsets: ["latin"],
-  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -33,7 +27,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${newsreader.variable} antialiased`}
+      className={`${inter.variable} antialiased`}
       suppressHydrationWarning
     >
       <body>

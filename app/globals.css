@@ -649,7 +649,6 @@ body::after {
 }
 
 .article > header h1 {
-  font-family: var(--font-serif), Georgia, serif;
   color: var(--heading-color);
   font-size: 2rem;
   font-weight: 500;
@@ -1118,7 +1117,6 @@ body::after {
 }
 
 .project-index {
-  font-family: var(--font-serif), Georgia, serif;
   font-size: 2rem;
   font-weight: 400;
   font-style: italic;
@@ -2141,7 +2139,6 @@ a.music-now-row:hover .music-titles h2 {
 
 .spine-title {
   writing-mode: vertical-rl;
-  font-family: var(--font-serif), Georgia, serif;
   color: var(--spine-fg, var(--muted));
   font-size: 0.875rem;
   font-weight: 500;
@@ -2193,7 +2190,6 @@ a.music-now-row:hover .music-titles h2 {
 }
 
 .writing-no {
-  font-family: var(--font-serif), Georgia, serif;
   font-style: italic;
   color: var(--ink-18);
   font-size: 1.125rem;
@@ -2211,7 +2207,6 @@ a.music-now-row:hover .music-titles h2 {
 }
 
 .writing-row-main h2 {
-  font-family: var(--font-serif), Georgia, serif;
   color: var(--heading-color);
   font-size: 1.0625rem;
   font-weight: 500;
@@ -2275,7 +2270,6 @@ a.music-now-row:hover .music-titles h2 {
 }
 
 .essay-head h1 {
-  font-family: var(--font-serif), Georgia, serif;
   color: var(--heading-color);
   font-size: 1.75rem;
   font-weight: 500;
@@ -2300,7 +2294,6 @@ a.music-now-row:hover .music-titles h2 {
 }
 
 .essay-body p {
-  font-family: var(--font-serif), Georgia, serif;
   color: var(--ink-60);
   font-size: 1.0625rem;
   line-height: 1.8;
@@ -2313,7 +2306,6 @@ a.music-now-row:hover .music-titles h2 {
 
 .essay-body > p:first-child::first-letter {
   float: left;
-  font-family: var(--font-serif), Georgia, serif;
   font-size: 3.6em;
   line-height: 0.82;
   font-weight: 500;
@@ -2541,7 +2533,6 @@ a.bento-tile:hover {
 }
 
 .bento-book-meta strong {
-  font-family: var(--font-serif), Georgia, serif;
   color: var(--heading-color);
   font-size: 0.9375rem;
   font-weight: 500;
@@ -2571,7 +2562,6 @@ a.bento-tile:hover {
 }
 
 .bento-stat strong {
-  font-family: var(--font-serif), Georgia, serif;
   color: var(--heading-color);
   font-size: 1.5rem;
   font-weight: 500;
