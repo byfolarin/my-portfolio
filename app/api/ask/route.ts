@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
 import { books } from "../../reading/books";
 import { projects } from "../../projects/projects";
+import { personalContext } from "./context";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -50,6 +51,13 @@ EXPERIENCE:
 
 HIS READING LIST (${books.length} books):
 ${bookLines}
+
+${
+  personalContext.includes("(Write your story")
+    ? ""
+    : `MORE ABOUT FOLARIN, IN HIS OWN WORDS:
+${personalContext}`
+}
 
 RULES:
 - Only answer questions about Folarin, his work, his site, his reading, or how to reach him. For anything unrelated (coding help, general knowledge, other people), politely say you're just here to talk about Folarin and suggest they ask about him instead.

@@ -1788,7 +1788,6 @@ a.music-now-row:hover .music-titles h2 {
   flex-direction: column;
   background: var(--panel-bg);
   border-left: 1px solid var(--hairline);
-  box-shadow: -24px 0 64px -32px rgba(0, 0, 0, 0.28);
   padding: 1.125rem 1.25rem 1rem;
   will-change: transform;
 }
