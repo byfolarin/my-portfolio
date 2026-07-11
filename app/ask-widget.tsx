@@ -28,36 +28,28 @@ export default function AskWidget() {
   const tlRef = useRef<gsap.core.Timeline | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
-  // the spotlight blooms out of the trigger pill at the bottom center
+  // drawer slides in from the right edge
   useLayoutEffect(() => {
     const overlay = overlayRef.current;
     if (!overlay) return;
-    const panel = overlay.querySelector(".ask-panel");
+    const panel = overlay.querySelector(".ask-side");
     const tl = gsap.timeline({
       paused: true,
       onReverseComplete: () => gsap.set(overlay, { display: "none" }),
     });
-    tl.set(overlay, { display: "flex" })
-      .fromTo(
-        overlay,
-        { clipPath: "circle(0% at 50% calc(100% - 2.5rem))" },
-        {
-          clipPath: "circle(142% at 50% calc(100% - 2.5rem))",
-          duration: 0.5,
-          ease: "power3.inOut",
-        }
-      )
+    tl.set(overlay, { display: "block" })
+      .fromTo(overlay, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.22 })
       .fromTo(
         panel,
-        { y: 26, scale: 0.96, autoAlpha: 0 },
-        { y: 0, scale: 1, autoAlpha: 1, duration: 0.45, ease: "power3.out" },
-        "-=0.24"
+        { xPercent: 100 },
+        { xPercent: 0, duration: 0.5, ease: "power3.out" },
+        "-=0.1"
       )
       .fromTo(
         overlay.querySelectorAll(".ask-stagger"),
-        { y: 12, autoAlpha: 0 },
+        { y: 14, autoAlpha: 0 },
         { y: 0, autoAlpha: 1, duration: 0.3, ease: "power2.out", stagger: 0.05 },
-        "-=0.28"
+        "-=0.3"
       );
     tlRef.current = tl;
     return () => {
@@ -66,15 +58,15 @@ export default function AskWidget() {
     };
   }, []);
 
-  const setSpotlight = (next: boolean) => {
+  const setDrawer = (next: boolean) => {
     setOpen(next);
     const tl = tlRef.current;
     const overlay = overlayRef.current;
     if (!tl || !overlay) return;
     if (reduceMotion()) {
-      gsap.set(overlay, { display: next ? "flex" : "none", clipPath: "none" });
-      gsap.set(overlay.querySelectorAll(".ask-panel, .ask-stagger"), {
-        clearProps: "all",
+      gsap.set(overlay, { display: next ? "block" : "none", autoAlpha: 1 });
+      gsap.set(overlay.querySelectorAll(".ask-side, .ask-stagger"), {
+        clearProps: "transform,opacity,visibility",
       });
       return;
     }
@@ -88,11 +80,11 @@ export default function AskWidget() {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
         setOpen((o) => {
-          setSpotlight(!o);
+          setDrawer(!o);
           return !o;
         });
       }
-      if (e.key === "Escape") setSpotlight(false);
+      if (e.key === "Escape") setDrawer(false);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -101,7 +93,7 @@ export default function AskWidget() {
 
   useEffect(() => {
     if (open) {
-      const id = setTimeout(() => inputRef.current?.focus(), 220);
+      const id = setTimeout(() => inputRef.current?.focus(), 260);
       document.body.style.overflow = "hidden";
       return () => {
         clearTimeout(id);
@@ -186,7 +178,7 @@ export default function AskWidget() {
       <button
         type="button"
         className="ask-trigger"
-        onClick={() => setSpotlight(true)}
+        onClick={() => setDrawer(true)}
         aria-label="Ask anything about Folarin"
       >
         <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden>
@@ -207,11 +199,11 @@ export default function AskWidget() {
         aria-label="Ask about Folarin"
         aria-hidden={!open}
         onClick={(e) => {
-          if (e.target === e.currentTarget) setSpotlight(false);
+          if (e.target === e.currentTarget) setDrawer(false);
         }}
       >
-        <div className="ask-panel">
-          <div className="ask-head ask-stagger">
+        <aside className="ask-side">
+          <div className="ask-head">
             <span className="ask-head-title">
               <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden>
                 <path
@@ -236,36 +228,77 @@ export default function AskWidget() {
                   Start over
                 </button>
               )}
-              <kbd>esc</kbd>
+              <button
+                type="button"
+                className="ask-close"
+                aria-label="Close"
+                onClick={() => setDrawer(false)}
+              >
+                <svg viewBox="0 0 12 12" width="10" height="10" aria-hidden>
+                  <path
+                    d="M2 2l8 8M10 2l-8 8"
+                    stroke="currentColor"
+                    strokeWidth="1.4"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </button>
             </span>
           </div>
 
-          {thread.length > 0 && (
-            <div className="ask-thread">
-              {thread.map((m, i) =>
-                m.role === "user" ? (
-                  <p key={i} className="ask-question">
-                    {m.content}
-                  </p>
-                ) : (
-                  <p key={i} className="ask-answer">
-                    {m.content}
-                  </p>
-                )
-              )}
-              {waitingForFirstToken && (
-                <p className="ask-answer ask-pulse">Thinking…</p>
-              )}
-              {status === "unconfigured" && (
-                <p className="ask-answer">
-                  The assistant isn&rsquo;t connected yet — just{" "}
-                  <a className="basic-link" href="mailto:folarin@kredete.com">
-                    email Folarin
-                  </a>
-                  .
+          <div className="ask-thread">
+            {thread.length === 0 && (
+              <div className="ask-empty ask-stagger">
+                <svg viewBox="0 0 16 16" width="20" height="20" aria-hidden>
+                  <path
+                    d="M8 1.5 9.4 6 14 7.5 9.4 9 8 13.5 6.6 9 2 7.5 6.6 6z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <p>
+                  Ask me anything about Folarin — his work, his shelf, or how
+                  to reach him.
                 </p>
-              )}
-              <div ref={endRef} />
+              </div>
+            )}
+            {thread.map((m, i) =>
+              m.role === "user" ? (
+                <p key={i} className="ask-question">
+                  {m.content}
+                </p>
+              ) : (
+                <p key={i} className="ask-answer">
+                  {m.content}
+                </p>
+              )
+            )}
+            {waitingForFirstToken && (
+              <p className="ask-answer ask-pulse">Thinking…</p>
+            )}
+            {status === "unconfigured" && (
+              <p className="ask-answer">
+                The assistant isn&rsquo;t connected yet — just{" "}
+                <a className="basic-link" href="mailto:folarin@kredete.com">
+                  email Folarin
+                </a>
+                .
+              </p>
+            )}
+            <div ref={endRef} />
+          </div>
+
+          {thread.length === 0 && (
+            <div className="ask-suggestions">
+              {suggestions.map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className="ask-chip ask-stagger"
+                  onClick={() => ask(s)}
+                >
+                  {s}
+                </button>
+              ))}
             </div>
           )}
 
@@ -305,25 +338,8 @@ export default function AskWidget() {
             </button>
           </form>
 
-          {thread.length === 0 && (
-            <div className="ask-suggestions">
-              {suggestions.map((s) => (
-                <button
-                  key={s}
-                  type="button"
-                  className="pill pill-ghost ask-stagger"
-                  onClick={() => ask(s)}
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
-          )}
-
-          <p className="ask-footnote ask-stagger">
-            Answered by AI · may be imperfect
-          </p>
-        </div>
+          <p className="ask-footnote">Answered by AI · may be imperfect</p>
+        </aside>
       </div>
     </>
   );
