@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Geist } from "next/font/google";
 import Nav from "./nav";
 import ScrollPlayer from "./scroll-player";
 import AskWidget from "./ask-widget";
@@ -9,8 +9,8 @@ import { projects } from "./projects/projects";
 import { writings } from "./writing/writings";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const geist = Geist({
+  variable: "--font-geist",
   subsets: ["latin"],
 });
 
@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} antialiased`}
+      className={`${geist.variable} antialiased`}
       suppressHydrationWarning
     >
       <body>
