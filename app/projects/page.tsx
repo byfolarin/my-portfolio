@@ -61,57 +61,91 @@ export default function Projects() {
               className="project-window"
               style={{ "--tint": project.tint } as React.CSSProperties}
             >
-              <div className="project-media">
-                {project.video ? (
-                  <video
-                    src={project.video}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    aria-label={`${project.name} preview`}
-                  />
-                ) : project.image ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={project.image} alt={`${project.name} preview`} />
-                ) : (
-                  <span className="project-media-mark">{project.name}</span>
-                )}
+              <div className="project-media-card">
+                <div className="project-media">
+                  {project.video ? (
+                    <video
+                      src={project.video}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                      aria-label={`${project.name} preview`}
+                    />
+                  ) : project.image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={project.image} alt={`${project.name} preview`} />
+                  ) : (
+                    <span className="project-media-mark">{project.name}</span>
+                  )}
+                </div>
               </div>
-              <div className="project-topics">
-                <span className="project-topics-label">Topics</span>
-                <span className="project-tags">
-                  {project.topics.join(" · ")}
-                </span>
-              </div>
-              <div className="project-chrome">
-                <svg viewBox="0 0 16 16" width="9" height="9" aria-hidden>
-                  <path
-                    d="M10 2.5 4.5 8l5.5 5.5"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                <svg viewBox="0 0 16 16" width="10" height="10" aria-hidden>
-                  <path
-                    d="M13 8A5 5 0 1 1 11.4 4.3M13 2v3.2h-3.2"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.4"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                <span>{windowLabel(project.href, project.name)}</span>
-                <span className="project-chrome-more">
-                  <i />
-                  <i />
-                  <i />
-                </span>
+
+              <div className="project-info-card">
+                <div className="project-topics">
+                  <span className="project-topics-label">Topics</span>
+                  {project.topics.map((topic) => (
+                    <span key={topic} className="project-tag">
+                      {topic}
+                    </span>
+                  ))}
+                </div>
+                <div className="project-chrome">
+                  <span className="project-chrome-btn" aria-hidden>
+                    <svg viewBox="0 0 16 16" width="9" height="9" aria-hidden>
+                      <path
+                        d="M10 2.5 4.5 8l5.5 5.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.6"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                  <span className="project-chrome-domain">
+                    <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden>
+                      <rect
+                        x="2.5"
+                        y="3.5"
+                        width="11"
+                        height="4.5"
+                        rx="1.2"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.2"
+                      />
+                      <path
+                        d="M4.5 11.5h7"
+                        stroke="currentColor"
+                        strokeWidth="1.2"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                    {windowLabel(project.href, project.name)}
+                  </span>
+                  <span className="project-chrome-btn" aria-hidden>
+                    <svg viewBox="0 0 16 16" width="10" height="10" aria-hidden>
+                      <path
+                        d="M13 8A5 5 0 1 1 11.4 4.3M13 2v3.2h-3.2"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                  <span
+                    className="project-chrome-btn project-chrome-more"
+                    aria-hidden
+                  >
+                    <i />
+                    <i />
+                    <i />
+                  </span>
+                </div>
               </div>
             </div>
 
