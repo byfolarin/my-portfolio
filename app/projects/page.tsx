@@ -61,12 +61,6 @@ export default function Projects() {
               className="project-window"
               style={{ "--tint": project.tint } as React.CSSProperties}
             >
-              <div className="project-chrome">
-                <i />
-                <i />
-                <i />
-                <span>{windowLabel(project.href, project.name)}</span>
-              </div>
               <div className="project-media">
                 {project.video ? (
                   <video
@@ -84,6 +78,40 @@ export default function Projects() {
                 ) : (
                   <span className="project-media-mark">{project.name}</span>
                 )}
+              </div>
+              <div className="project-topics">
+                <span className="project-topics-label">Topics</span>
+                <span className="project-tags">
+                  {project.topics.join(" · ")}
+                </span>
+              </div>
+              <div className="project-chrome">
+                <svg viewBox="0 0 16 16" width="9" height="9" aria-hidden>
+                  <path
+                    d="M10 2.5 4.5 8l5.5 5.5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <svg viewBox="0 0 16 16" width="10" height="10" aria-hidden>
+                  <path
+                    d="M13 8A5 5 0 1 1 11.4 4.3M13 2v3.2h-3.2"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span>{windowLabel(project.href, project.name)}</span>
+                <span className="project-chrome-more">
+                  <i />
+                  <i />
+                  <i />
+                </span>
               </div>
             </div>
 
