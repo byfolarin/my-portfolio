@@ -6,7 +6,6 @@ import AskWidget from "./ask-widget";
 import ThemeToggle from "./theme-toggle";
 import { books } from "./reading/books";
 import { projects } from "./projects/projects";
-import { writings } from "./writing/writings";
 import "./globals.css";
 
 const geist = Geist({
@@ -37,11 +36,7 @@ export default function RootLayout({
               '(function(){try{var p=new URLSearchParams(location.search).get("theme");var t=p||localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}})()',
           }}
         />
-        <Nav
-          readingCount={books.length}
-          projectsCount={projects.length}
-          writingCount={writings.length}
-        />
+        <Nav readingCount={books.length} projectsCount={projects.length} />
         <ScrollPlayer />
         <AskWidget />
         <ThemeToggle />

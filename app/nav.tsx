@@ -11,7 +11,6 @@ const items = [
   { label: "Reading", href: "/reading", preview: "/previews/reading.png" },
   { label: "About", href: "/about", preview: "/previews/about.png" },
   { label: "Projects", href: "/projects", preview: "/previews/projects.png" },
-  { label: "Writings", href: "/writing", preview: "/previews/writing.png" },
   { label: "Music", href: "/music", preview: "/previews/music.png" },
 ];
 
@@ -53,11 +52,9 @@ function lagosGreeting() {
 export default function Nav({
   readingCount,
   projectsCount,
-  writingCount,
 }: {
   readingCount: number;
   projectsCount: number;
-  writingCount: number;
 }) {
   const pathname = usePathname();
   const [hovered, setHovered] = useState<number | null>(null);
@@ -74,7 +71,6 @@ export default function Nav({
     "/reading": `${readingCount} books`,
     "/about": "who I am",
     "/projects": `${projectsCount} projects`,
-    "/writing": `${writingCount} essays`,
     "/music": musicMeta,
   };
 
