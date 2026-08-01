@@ -62,6 +62,14 @@ export default function Projects() {
               style={{ "--tint": project.tint } as React.CSSProperties}
             >
               <div className="project-media-card">
+                <div className="project-media-titlebar" aria-hidden>
+                  <span className="project-media-dots">
+                    <i />
+                    <i />
+                    <i />
+                  </span>
+                  <span className="project-media-title">{project.name}</span>
+                </div>
                 <div className="project-media">
                   {project.video ? (
                     <video

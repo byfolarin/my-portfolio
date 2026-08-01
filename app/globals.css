@@ -1098,16 +1098,9 @@ body::after {
 
 .projects {
   padding: 1.5rem 0 0;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2.5rem 1.5rem;
-}
-
-@media screen and (max-width: 560px) {
-  .projects {
-    grid-template-columns: 1fr;
-    gap: 2.25rem;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
 }
 
 .project {
@@ -1181,6 +1174,45 @@ a.project-name:hover {
 
 .project-media-card {
   padding: 1rem 1rem 1.5rem;
+}
+
+.project-media-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0 0.25rem 0.75rem;
+}
+
+.project-media-dots {
+  display: flex;
+  align-items: center;
+  gap: 0.3125rem;
+  flex: none;
+}
+
+.project-media-dots i {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+}
+
+.project-media-dots i:nth-child(1) {
+  background: #ff5f57;
+}
+
+.project-media-dots i:nth-child(2) {
+  background: #febc2e;
+}
+
+.project-media-dots i:nth-child(3) {
+  background: #28c840;
+}
+
+.project-media-title {
+  color: var(--ink-35);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: -0.0025rem;
 }
 
 .project-media {
