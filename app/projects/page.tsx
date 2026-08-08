@@ -24,7 +24,7 @@ export default function Projects() {
         <header>
           <BackLink href="/" label="Folarin Folarin" />
           <h1>Projects</h1>
-          <time>{projects.length} projects · Updated Jul 6, 2026</time>
+          <time>{projects.length} projects · Updated Aug 2, 2026</time>
         </header>
         <p>
           Selected work across fintech, design systems, and brand — the
