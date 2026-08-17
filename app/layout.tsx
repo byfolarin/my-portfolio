@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
 import Nav from "./nav";
 import ScrollPlayer from "./scroll-player";
 import AskWidget from "./ask-widget";
@@ -7,11 +6,6 @@ import ThemeToggle from "./theme-toggle";
 import { books } from "./reading/books";
 import { projects } from "./projects/projects";
 import "./globals.css";
-
-const geist = Geist({
-  variable: "--font-geist",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Folarin Folarin",
@@ -24,11 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geist.variable} antialiased`}
-      suppressHydrationWarning
-    >
+    <html lang="en" className="antialiased" suppressHydrationWarning>
       <body>
         <script
           dangerouslySetInnerHTML={{
