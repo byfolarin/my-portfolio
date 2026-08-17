@@ -111,21 +111,10 @@ export default function MusicClient() {
       {view === "player" ? (
         <div className="player">
           {shown && (
-            <a
-              className="pill"
-              href={shown.url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a className="pill" href={shown.url} target="_blank" rel="noopener noreferrer">
               <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden>
                 <circle cx="12" cy="12" r="12" fill="#1db954" />
-                <path
-                  d="M6.8 9.7c3.4-1 7.7-.8 10.6 1M7.4 12.6c2.9-.85 6.4-.6 8.9.85M8 15.4c2.4-.7 5.1-.45 7.2.7"
-                  stroke="#fff"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  fill="none"
-                />
+                <path d="M6.8 9.7c3.4-1 7.7-.8 10.6 1M7.4 12.6c2.9-.85 6.4-.6 8.9.85M8 15.4c2.4-.7 5.1-.45 7.2.7" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" fill="none" />
               </svg>
               Open in Spotify
             </a>
@@ -135,63 +124,16 @@ export default function MusicClient() {
 
           <div className="player-meta">
             {now.status === "loading" && !shown ? (
-              <>
-                <span className="music-skeleton-line" style={{ width: "5rem", margin: "0 auto" }} />
-                <span className="music-skeleton-line" style={{ width: "8rem", margin: "0.5rem auto 0" }} />
-              </>
+              <><span className="music-skeleton-line" style={{ width: "5rem", margin: "0 auto" }} /><span className="music-skeleton-line" style={{ width: "8rem", margin: "0.5rem auto 0" }} /></>
             ) : shown ? (
-              <>
-                <p>{shown.artist}</p>
-                <h2>
-                  {shown.title}
-                  {spinning && (
-                    <span className="music-eq" aria-label="Playing">
-                      <i />
-                      <i />
-                      <i />
-                    </span>
-                  )}
-                </h2>
-              </>
-            ) : (
-              <p>Nothing to show yet.</p>
-            )}
+              <><p>{shown.artist}</p><h2>{shown.title}{spinning && <span className="music-eq" aria-label="Playing"><i /><i /><i /></span>}</h2></>
+            ) : <p>Nothing to show yet.</p>}
           </div>
 
           <div className="player-controls">
-            <button
-              type="button"
-              onClick={() => step(-1)}
-              aria-label="Previous"
-              disabled={gridTracks.length === 0}
-            >
-              <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden>
-                <path d="M3.5 2.5v11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                <path d="M13.5 3.2v9.6L6 8z" fill="currentColor" strokeLinejoin="round" />
-              </svg>
-            </button>
-            <a
-              href={shown?.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Play in Spotify"
-              className="player-play"
-            >
-              <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden>
-                <path d="M4.5 2.8v10.4L13 8z" fill="currentColor" strokeLinejoin="round" />
-              </svg>
-            </a>
-            <button
-              type="button"
-              onClick={() => step(1)}
-              aria-label="Next"
-              disabled={gridTracks.length === 0}
-            >
-              <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden>
-                <path d="M12.5 2.5v11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                <path d="M2.5 3.2v9.6L10 8z" fill="currentColor" strokeLinejoin="round" />
-              </svg>
-            </button>
+            <button type="button" onClick={() => step(-1)} aria-label="Previous" disabled={gridTracks.length === 0}><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden><path d="M3.5 2.5v11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /><path d="M13.5 3.2v9.6L6 8z" fill="currentColor" strokeLinejoin="round" /></svg></button>
+            <a href={shown?.url} target="_blank" rel="noopener noreferrer" aria-label="Play in Spotify" className="player-play"><svg viewBox="0 0 16 16" width="15" height="15" aria-hidden><path d="M4.5 2.8v10.4L13 8z" fill="currentColor" strokeLinejoin="round" /></svg></a>
+            <button type="button" onClick={() => step(1)} aria-label="Next" disabled={gridTracks.length === 0}><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden><path d="M12.5 2.5v11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /><path d="M2.5 3.2v9.6L10 8z" fill="currentColor" strokeLinejoin="round" /></svg></button>
           </div>
 
           <div className="player-grid">

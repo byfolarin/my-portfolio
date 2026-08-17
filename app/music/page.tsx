@@ -13,8 +13,8 @@ export default function Music() {
     <div className="homepage">
       <article className="article">
         <header>
-          <BackLink href="/" label="Folarin Folarin" />
-          <h1>Music</h1>
+          <BackLink href="/about" label="About" />
+          <h1>A live record of the sounds that shape how I think and work.</h1>
           <time>Live from Spotify</time>
         </header>
         <p>

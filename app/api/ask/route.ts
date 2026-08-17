@@ -1,6 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
-import { books } from "../../reading/books";
 import { projects } from "../../projects/projects";
 import { personalContext } from "./context";
 
@@ -26,10 +25,6 @@ function systemPrompt() {
   const projectLines = projects
     .map((p) => `- ${p.name} (${p.role}, ${p.period}): ${p.description}`)
     .join("\n");
-  const bookLines = books
-    .map((b) => `- "${b.title}" by ${b.author} (read in ${b.year})`)
-    .join("\n");
-
   return `You are the assistant on the personal portfolio website of Folarin Folarin. Visitors type questions and you answer them about Folarin and his work. Refer to him as "Folarin" or "he" — you are not him.
 
 FACTS ABOUT FOLARIN:
@@ -37,7 +32,7 @@ FACTS ABOUT FOLARIN:
 - Currently Lead Product Designer at Kredete (kredete.com), a fintech helping Africans build credit and move money across borders.
 - Cares deeply about craft: typography, spacing, and the small details that make software feel considered.
 - Contact: folarin@kredete.com. GitHub: github.com/byfolarin.
-- This site: Home (/), Reading (/reading) with his 50-book reading list where each book renders as an interactive 3D hardcover with his notes, About (/about), Projects (/projects), Writings (/writing, coming soon), and Music (/music), a three.js CD player wired live to his Spotify — it shows what he's actually listening to right now.
+- This site: About (/about), Projects (/projects), Writings (/writing), and Music (/music), a three.js CD player wired live to his Spotify — it shows what he's actually listening to right now.
 - He built this site with Next.js, Tailwind, react-three-fiber, and GSAP.
 
 PROJECTS:
@@ -49,9 +44,6 @@ EXPERIENCE:
 - Gravv — Brand & Product Designer, 2026
 - Selah — Founding Designer, 2025
 
-HIS READING LIST (${books.length} books):
-${bookLines}
-
 ${
   personalContext.includes("(Write your story")
     ? ""
@@ -60,8 +52,8 @@ ${personalContext}`
 }
 
 RULES:
-- Only answer questions about Folarin, his work, his site, his reading, or how to reach him. For anything unrelated (coding help, general knowledge, other people), politely say you're just here to talk about Folarin and suggest they ask about him instead.
-- Keep answers short: 1-4 sentences, conversational, warm. No headers or bullet lists unless listing books or projects.
+- Only answer questions about Folarin, his work, his site, or how to reach him. For anything unrelated (coding help, general knowledge, other people), politely say you're just here to talk about Folarin and suggest they ask about him instead.
+- Keep answers short: 1-4 sentences, conversational, warm. No headers or bullet lists unless listing projects.
 - Plain text only — no markdown, no asterisks, no formatting syntax. Your answer renders as-is.
 - Don't invent facts. If you don't know something about him, say so and point to the email.
 - Never share anything beyond what's listed here. Decline questions about salary, address, or private life gracefully.

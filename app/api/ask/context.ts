@@ -3,7 +3,7 @@
 // ============================================================
 // Everything between the backticks is given to the AI on every
 // question, alongside what the site already knows (bio,
-// projects, reading list, experience, contact). Edit freely in
+// projects, experience, contact). Edit freely in
 // plain text, then have Claude deploy (or push + `npx vercel
 // --prod`). Avoid backtick characters inside the text.
 // ============================================================

@@ -7,15 +7,10 @@ import gsap from "gsap";
 import { navState } from "./nav-state";
 
 const items = [
-  { label: "Home", href: "/", preview: "/previews/home.png" },
-  { label: "Reading", href: "/reading", preview: "/previews/reading.png" },
   { label: "About", href: "/about", preview: "/previews/about.png" },
   { label: "Projects", href: "/projects", preview: "/previews/projects.png" },
   { label: "Music", href: "/music", preview: "/previews/music.png" },
 ];
-
-// vertical rhythm of the desktop nav list: 1rem line + 0.875rem gap
-const ITEM_PITCH = 30;
 
 const reduceMotion = () =>
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -50,10 +45,8 @@ function lagosGreeting() {
 }
 
 export default function Nav({
-  readingCount,
   projectsCount,
 }: {
-  readingCount: number;
   projectsCount: number;
 }) {
   const pathname = usePathname();
@@ -67,8 +60,6 @@ export default function Nav({
   const tlRef = useRef<gsap.core.Timeline | null>(null);
 
   const metas: Record<string, string> = {
-    "/": "the front door",
-    "/reading": `${readingCount} books`,
     "/about": "who I am",
     "/projects": `${projectsCount} projects`,
     "/music": musicMeta,
@@ -237,6 +228,10 @@ export default function Nav({
         aria-label="Site"
         onMouseLeave={() => setHovered(null)}
       >
+        <Link className="site-brand" href="/about" aria-label="Folarin Folarin — about">
+          Folarin <span>Folarin</span>
+        </Link>
+        <div className="site-nav-links">
         {items.map((item, i) => (
           <Link
             key={item.href}
@@ -257,7 +252,6 @@ export default function Nav({
         <div
           className="nav-preview"
           data-show={hovered !== null || undefined}
-          style={{ "--y": `${(hovered ?? 0) * ITEM_PITCH}px` } as React.CSSProperties}
           aria-hidden
         >
           {items.map((item, i) => (
@@ -269,6 +263,7 @@ export default function Nav({
               data-visible={hovered === i || undefined}
             />
           ))}
+        </div>
         </div>
       </nav>
 

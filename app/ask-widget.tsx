@@ -5,7 +5,6 @@ import gsap from "gsap";
 
 const suggestions = [
   "What does Folarin do?",
-  "What's he reading right now?",
   "What projects has he shipped?",
   "How do I get in touch?",
 ];

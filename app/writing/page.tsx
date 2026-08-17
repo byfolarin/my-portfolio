@@ -14,7 +14,7 @@ export default function Writing() {
     <div className="homepage">
       <article className="article">
         <header>
-          <BackLink href="/" label="Folarin Folarin" />
+          <BackLink href="/about" label="About" />
           <h1>Writings</h1>
           <time>{writings.length} essays · bound &amp; shelved</time>
         </header>
