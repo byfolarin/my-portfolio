@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import AskWidget from "../ask-widget";
 
 export const metadata: Metadata = {
   title: "About — Folarin Folarin",
@@ -29,6 +30,11 @@ export default function About() {
           </div>
         </header>
 
+        <figure className="about-headshot">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/folarin-headshot.jpg" alt="Folarin Folarin" />
+        </figure>
+
         <div className="about-story">
           <span>001</span>
           <div>
@@ -56,7 +62,7 @@ export default function About() {
               I&rsquo;ve built design systems, redesigned email programs end to
               end, shaped brands, and taken products from first sketch to
               shipped experience. You can see that work on the{" "}
-              <Link href="/projects">projects page</Link>.
+              <Link href="/">selected work</Link>.
             </p>
           </div>
 
@@ -91,15 +97,8 @@ export default function About() {
         </section>
       </article>
 
-      <aside className="about-visual" aria-label="Design statement">
-        <div className="about-poster">
-          <span className="about-poster-kicker">Product designer · Lagos</span>
-          <p>DESIGN</p>
-          <p>WITH</p>
-          <p>INTENT</p>
-          <span className="about-poster-sign">Folarin</span>
-        </div>
-        <p className="about-copyright">© 2026 Folarin Folarin.</p>
+      <aside className="about-visual about-chat-host" aria-label="Ask about Folarin">
+        <AskWidget embedded />
       </aside>
     </main>
   );

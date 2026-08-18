@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Nav from "./nav";
 import ScrollPlayer from "./scroll-player";
-import AskWidget from "./ask-widget";
+import AskWidgetRouter from "./ask-widget-router";
 import ThemeToggle from "./theme-toggle";
 import { projects } from "./projects/projects";
 import "./globals.css";
@@ -27,7 +27,7 @@ export default function RootLayout({
         />
         <Nav projectsCount={projects.length} />
         <ScrollPlayer />
-        <AskWidget />
+        <AskWidgetRouter />
         <ThemeToggle />
         <div className="page">{children}</div>
       </body>

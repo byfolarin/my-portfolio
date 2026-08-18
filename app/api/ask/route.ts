@@ -32,7 +32,7 @@ FACTS ABOUT FOLARIN:
 - Currently Lead Product Designer at Kredete (kredete.com), a fintech helping Africans build credit and move money across borders.
 - Cares deeply about craft: typography, spacing, and the small details that make software feel considered.
 - Contact: folarin@kredete.com. GitHub: github.com/byfolarin.
-- This site: About (/about), Projects (/projects), Writings (/writing), and Music (/music), a three.js CD player wired live to his Spotify — it shows what he's actually listening to right now.
+- This site: Home (/) featuring his selected projects, About (/about), Writings (/writing), and Music (/music), a three.js CD player wired live to his Spotify — it shows what he's actually listening to right now.
 - He built this site with Next.js, Tailwind, react-three-fiber, and GSAP.
 
 PROJECTS:

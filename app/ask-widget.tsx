@@ -15,8 +15,8 @@ type Status = "idle" | "thinking" | "streaming" | "unconfigured" | "error";
 const reduceMotion = () =>
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-export default function AskWidget() {
-  const [open, setOpen] = useState(false);
+export default function AskWidget({ embedded = false }: { embedded?: boolean }) {
+  const [open, setOpen] = useState(embedded);
   const [isMac, setIsMac] = useState(true);
   const [question, setQuestion] = useState("");
   const [thread, setThread] = useState<Msg[]>([]);
@@ -29,6 +29,7 @@ export default function AskWidget() {
 
   // drawer slides in from the right edge
   useLayoutEffect(() => {
+    if (embedded) return;
     const overlay = overlayRef.current;
     if (!overlay) return;
     const panel = overlay.querySelector(".ask-side");
@@ -55,7 +56,7 @@ export default function AskWidget() {
       tl.kill();
       tlRef.current = null;
     };
-  }, []);
+  }, [embedded]);
 
   const setDrawer = (next: boolean) => {
     setOpen(next);
@@ -74,6 +75,7 @@ export default function AskWidget() {
   };
 
   useEffect(() => {
+    if (embedded) return;
     setIsMac(/Mac|iPhone|iPad/.test(navigator.platform));
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
@@ -88,9 +90,10 @@ export default function AskWidget() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [embedded]);
 
   useEffect(() => {
+    if (embedded) return;
     if (open) {
       const id = setTimeout(() => inputRef.current?.focus(), 260);
       document.body.style.overflow = "hidden";
@@ -99,7 +102,7 @@ export default function AskWidget() {
         document.body.style.overflow = "";
       };
     }
-  }, [open]);
+  }, [open, embedded]);
 
   // keep the newest exchange in view as answers stream in
   useEffect(() => {
@@ -174,7 +177,7 @@ export default function AskWidget() {
 
   return (
     <>
-      <button
+      {!embedded && <button
         type="button"
         className="ask-trigger"
         onClick={() => setDrawer(true)}
@@ -186,19 +189,19 @@ export default function AskWidget() {
             fill="currentColor"
           />
         </svg>
-        <span>Ask anything</span>
+        <span>Ask anything about Folarin</span>
         <kbd>{isMac ? "⌘K" : "Ctrl K"}</kbd>
-      </button>
+      </button>}
 
       <div
         ref={overlayRef}
-        className="ask-overlay"
+        className={`ask-overlay${embedded ? " ask-embedded" : ""}`}
         role="dialog"
-        aria-modal="true"
+        aria-modal={!embedded}
         aria-label="Ask about Folarin"
         aria-hidden={!open}
         onClick={(e) => {
-          if (e.target === e.currentTarget) setDrawer(false);
+          if (!embedded && e.target === e.currentTarget) setDrawer(false);
         }}
       >
         <aside className="ask-side">
@@ -227,7 +230,7 @@ export default function AskWidget() {
                   Start over
                 </button>
               )}
-              <button
+              {!embedded && <button
                 type="button"
                 className="ask-close"
                 aria-label="Close"
@@ -241,7 +244,7 @@ export default function AskWidget() {
                     strokeLinecap="round"
                   />
                 </svg>
-              </button>
+              </button>}
             </span>
           </div>
 
@@ -255,7 +258,7 @@ export default function AskWidget() {
                   />
                 </svg>
                 <p>
-                  Ask me anything about Folarin — his work, his shelf, or how
+                  Ask me anything about Folarin — his work, experience, or how
                   to reach him.
                 </p>
               </div>
