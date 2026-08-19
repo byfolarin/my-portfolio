@@ -1760,7 +1760,7 @@ body:has(.reading-shelf) .theme-toggle {
   margin-top: 0.75rem;
   color: light-dark(#171719, #f1f1ef);
   font-family: var(--font-body);
-  font-size: clamp(1.2rem, 1.65vw, 1.8rem);
+  font-size: clamp(1.6rem, 2.2vw, 2.5rem);
   font-weight: 560;
   line-height: 1.12;
   letter-spacing: -0.035em;
@@ -1845,6 +1845,10 @@ body:has(.reading-shelf) .theme-toggle {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.pb-section-detail {
+  display: none;
 }
 
 .pb-frame {
@@ -2041,6 +2045,7 @@ body:has(.reading-shelf) .theme-toggle {
   align-items: center;
   justify-content: space-between;
   gap: 2rem;
+  margin-bottom: clamp(1rem, 2vw, 2rem);
 }
 
 .pb-case-tabs {
@@ -2097,9 +2102,9 @@ body:has(.reading-shelf) .theme-toggle {
   align-self: start;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.65rem;
   min-width: 0;
-  padding-bottom: 3rem;
+  padding: clamp(1.5rem, 3vw, 3rem) 0 clamp(4.5rem, 7vw, 7rem);
 }
 
 .pb-case-copy h2 {
@@ -2113,7 +2118,8 @@ body:has(.reading-shelf) .theme-toggle {
 
 .pb-case-copy .pb-description {
   width: 100%;
-  max-width: none;
+  max-width: 96ch;
+  line-height: 1.8;
 }
 
 .pb-case-copy .pb-role,
@@ -2141,6 +2147,7 @@ body:has(.reading-shelf) .theme-toggle {
   gap: clamp(3rem, 6vw, 7rem);
   padding: clamp(2rem, 5vw, 6rem) 0 3rem;
 }
+
 
 .pb-case-metrics-panel > header {
   max-width: 58rem;
@@ -2172,8 +2179,360 @@ body:has(.reading-shelf) .theme-toggle {
   line-height: 1.65;
 }
 
+.metric-charts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--hairline-strong);
+  border: 1px solid var(--hairline-strong);
+}
+
+.metric-controls,
+.metric-inspector {
+  grid-column: 1 / -1;
+  background: var(--body-bg);
+}
+
+.metric-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem 2.5rem;
+  padding: 1rem clamp(1.25rem, 2.5vw, 2.5rem);
+}
+
+.metric-controls > div {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.metric-controls span,
+.metric-inspector > span {
+  margin-right: 0.4rem;
+  color: var(--ink-30);
+  font-size: 0.55rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.metric-controls button {
+  border: 1px solid var(--hairline-strong);
+  padding: 0.35rem 0.55rem;
+  background: transparent;
+  color: var(--ink-45);
+  font: inherit;
+  font-size: 0.575rem;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.metric-controls button[data-active] {
+  border-color: var(--project-accent);
+  background: var(--project-accent);
+  color: #fff;
+}
+
+.metric-controls > p {
+  margin-left: auto;
+  color: var(--ink-55);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+}
+
+.metric-controls > p span {
+  display: block;
+  margin: 0 0 0.15rem;
+}
+
+.metric-inspector {
+  display: grid;
+  grid-template-columns: 8rem minmax(0, 1fr);
+  gap: 1rem;
+  min-height: 4.5rem;
+  align-items: center;
+  padding: 1rem clamp(1.25rem, 2.5vw, 2.5rem);
+  border-left: 2px solid var(--project-accent);
+}
+
+.metric-inspector p {
+  max-width: 76ch;
+  color: var(--ink-55);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.metric-chart {
+  min-width: 0;
+  min-height: 26rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+  margin: 0;
+  padding: clamp(1.25rem, 2.5vw, 2.5rem);
+  overflow: hidden;
+  background: var(--body-bg);
+}
+
+.metric-chart-wide {
+  grid-column: 1 / -1;
+  min-height: 30rem;
+}
+
+.metric-chart figcaption {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.metric-chart figcaption > span {
+  color: var(--project-accent);
+  font-size: 0.575rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.metric-chart figcaption > strong {
+  color: var(--heading-color);
+  font-family: var(--font-body);
+  font-size: clamp(1.15rem, 1.65vw, 1.75rem);
+  font-weight: 540;
+  letter-spacing: -0.025em;
+}
+
+.metric-chart figcaption > small {
+  color: var(--ink-30);
+  font-size: 0.575rem;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+.metric-chart figcaption > p {
+  max-width: 48ch;
+  margin-top: 0.65rem;
+  color: var(--ink-55);
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+
+.metric-chart-wide figcaption > p {
+  max-width: 62ch;
+}
+
+.metric-chart svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.metric-grid path {
+  fill: none;
+  stroke: var(--ink-12);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.metric-line,
+.metric-distribution-a,
+.metric-distribution-b {
+  fill: none;
+  stroke: var(--project-accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.metric-line {
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  animation: metric-line-draw 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.metric-area {
+  fill: color-mix(in srgb, var(--project-accent) 10%, transparent);
+}
+
+.metric-points circle,
+.metric-point-a {
+  fill: var(--body-bg);
+  stroke: var(--project-accent);
+  stroke-width: 2;
+}
+
+.metric-points circle {
+  cursor: crosshair;
+  transition: r 0.2s ease, fill 0.2s ease;
+}
+
+.metric-points circle:hover,
+.metric-points circle:focus {
+  r: 8px;
+  fill: var(--project-accent);
+  outline: none;
+}
+
+.metric-distribution-b {
+  stroke: var(--ink-30);
+  stroke-dasharray: 5 6;
+}
+
+.metric-point-b {
+  fill: var(--body-bg);
+  stroke: var(--ink-45);
+  stroke-width: 2;
+}
+
+@keyframes metric-line-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+.metric-funnel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  padding-bottom: 1rem;
+}
+
+.metric-funnel > div {
+  position: relative;
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 0.85rem;
+  background: color-mix(in srgb, var(--project-accent) 12%, var(--surface));
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.metric-funnel span {
+  color: var(--ink-45);
+  font-size: 0.6rem;
+}
+
+.metric-funnel i {
+  height: 1px;
+  flex: 1;
+  background: var(--project-accent);
+}
+
+.metric-chart-radial svg {
+  width: min(100%, 18rem);
+  align-self: center;
+}
+
+.metric-ring-base,
+.metric-ring-value {
+  fill: none;
+  stroke-width: 9;
+}
+
+.metric-ring-base {
+  stroke: var(--surface);
+}
+
+.metric-ring-value {
+  stroke: var(--project-accent);
+  stroke-linecap: round;
+  stroke-dasharray: 73 27;
+  transform: rotate(-90deg);
+  transform-origin: center;
+}
+
+.metric-ring-target {
+  fill: none;
+  stroke: var(--heading-color);
+  stroke-width: 2;
+}
+
+.metric-chart-radial text {
+  fill: var(--heading-color);
+  font-family: var(--font-body);
+  font-size: 2.5rem;
+  font-weight: 520;
+}
+
+.metric-chart-radial .metric-ring-label {
+  fill: var(--ink-30);
+  font-family: ui-monospace, "SF Mono", monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+}
+
+.metric-heatmap {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem;
+  padding-bottom: 1rem;
+}
+
+.metric-heatmap i {
+  aspect-ratio: 1;
+  background: color-mix(
+    in srgb,
+    var(--project-accent) var(--heat),
+    var(--surface)
+  );
+}
+
+.metric-bars {
+  display: grid;
+  gap: 1.25rem;
+  padding-bottom: 1rem;
+}
+
+.metric-bars > div {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+
+.metric-bars span {
+  color: var(--ink-45);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+}
+
+.metric-bars > div > div {
+  position: relative;
+  height: 1.15rem;
+  background: var(--surface);
+}
+
+.metric-bars i,
+.metric-bars b {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.metric-bars i {
+  background: var(--ink-18);
+}
+
+.metric-bars b {
+  height: 0.35rem;
+  top: 50%;
+  bottom: auto;
+  background: var(--project-accent);
+  transform: translateY(-50%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .metric-line {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
 .pb-case-section {
-  max-width: 58rem;
+  width: 100%;
+  max-width: none;
 }
 
 .pb-case-section > span,
@@ -2319,7 +2678,7 @@ body:has(.reading-shelf) .theme-toggle {
     z-index: auto;
     width: 100%;
     height: auto;
-    min-height: 100vh;
+    min-height: 100dvh;
     margin: 0;
     transform: none;
     overflow: visible;
@@ -2351,27 +2710,67 @@ body:has(.reading-shelf) .theme-toggle {
 
   .pb {
     height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1.5rem;
+    display: block;
     padding: 0 0 5rem;
   }
 
+  /* no nested scroll-snap carousel on mobile — vh-based sizing made it
+     visibly resize as the browser chrome showed/hid mid-scroll, and
+     swipe gestures fought the outer page scroll. Every project is just
+     a normal stacked card instead. */
   .pb-stage {
-    order: -1;
-    height: min(65vh, 32rem);
-    gap: 1rem;
-    padding-block: 14vh;
-    scroll-padding-block: 14vh;
+    height: auto;
+    overflow: visible;
+    scroll-snap-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    padding-block: 0;
+    scroll-padding-block: 0;
+  }
+
+  .pb-section {
+    scroll-snap-align: none;
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 1.25rem;
   }
 
   .pb-list {
-    order: 1;
+    display: none;
   }
 
   .pb-detail {
-    order: 2;
+    display: none;
+  }
+
+  .pb-section-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    margin-top: 2.5rem;
+  }
+
+  .pb-section-name {
+    color: var(--cv-ink, var(--heading-color));
+    font-size: 1.125rem;
+    font-weight: bold;
+  }
+
+  .pb-case-view-link {
+    border: none;
+    background: none;
+    padding: 0;
+    color: var(--project-accent);
+    font-family: inherit;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    width: fit-content;
   }
 
   .pb-focused {
@@ -2409,6 +2808,14 @@ body:has(.reading-shelf) .theme-toggle {
 
   .pb-case-metrics-panel {
     order: 2;
+  }
+
+  .metric-charts {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-chart-wide {
+    grid-column: auto;
   }
 
   .pb-case-section-split,
