@@ -373,7 +373,7 @@ export default function ProjectBrowser({ projects }: { projects: Project[] }) {
       stage.removeEventListener("wheel", onWheel);
       list.removeEventListener("wheel", onWheel);
     };
-  }, [focused, goTo, projects.length]);
+  }, [focused, goTo, isDesktop, projects.length]);
 
   const openProject = (index: number) => {
     activeRef.current = index;
