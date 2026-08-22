@@ -25,7 +25,7 @@ export default function About() {
             things.
           </h1>
           <div className="about-meta">
-            <time>August 17, 2026</time>
+            <time>August 22, 2026</time>
             <span>Product designer</span>
           </div>
         </header>
