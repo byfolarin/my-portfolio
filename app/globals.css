@@ -5502,3 +5502,55 @@ a.bento-tile:hover {
     grid-column: auto;
   }
 }
+
+/* ---- home on phones: one image, a name, two lines, a link ---- */
+@media (max-width: 768px) {
+  .aw-columns {
+    display: none;
+  }
+  /* labels that only make sense on the wide grid */
+  .aw-intro .aw-num,
+  .aw-title,
+  .aw-blurb,
+  .aw-section-head > span:last-child {
+    display: none;
+  }
+  .aw-section-head {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.9375rem;
+  }
+  .aw-cta {
+    min-height: 0;
+    padding-top: 4rem;
+  }
+  .aw-mail {
+    margin-top: 3rem;
+    padding-top: 0;
+  }
+  /* just the hero frame, full width, no drag */
+  .aw-strip {
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+  .aw-strip > .aw-frame:not(.aw-frame-hero),
+  .aw-drag {
+    display: none;
+  }
+  .aw-frame {
+    flex-basis: 100%;
+  }
+  .aw-headline {
+    padding-bottom: 1.25rem;
+  }
+  .aw-row {
+    gap: 1rem;
+    padding-top: 1.25rem;
+  }
+  .aw-name {
+    font-size: 2.25rem;
+  }
+  .aw-display {
+    margin-bottom: 4rem;
+  }
+}
