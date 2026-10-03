@@ -5384,13 +5384,34 @@ a.bento-tile:hover {
 
 /* closing call — always dark, with a live Lagos clock */
 .aw-cta {
+  --p: 0;
+  position: relative;
+  overflow: hidden;
+  margin-top: clamp(6rem, 15vh, 10rem);
+  background: #1d1d1d;
+  color: #f1f1ef;
+}
+/* the light page's curved bottom edge, flattening as --p goes 0 → 1 */
+.aw-curve {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  z-index: 2;
+  width: 100%;
+  height: clamp(4rem, 12vh, 9rem);
+  fill: var(--body-bg);
+  transform: scaleY(calc(1 - var(--p)));
+  transform-origin: top;
+  pointer-events: none;
+}
+/* content lags behind the scroll, settling as the section reaches the top */
+.aw-cta-body {
   display: flex;
   flex-direction: column;
   min-height: 100svh;
-  margin-top: clamp(6rem, 15vh, 10rem);
   padding: clamp(5rem, 12vh, 7rem) 0 2rem;
-  background: #1d1d1d;
-  color: #f1f1ef;
+  transform: translateY(calc((var(--p) - 1) * 22vh));
+  will-change: transform;
 }
 .aw-mail {
   display: block;
@@ -5403,7 +5424,7 @@ a.bento-tile:hover {
 .aw-mail:hover {
   color: var(--accent);
 }
-.aw-cta > .aw-ctas {
+.aw-cta-body > .aw-ctas {
   padding: 0 var(--gutter);
 }
 .aw-cta .aw-btn {
@@ -5520,7 +5541,7 @@ a.bento-tile:hover {
     gap: 0.75rem;
     font-size: 0.9375rem;
   }
-  .aw-cta {
+  .aw-cta-body {
     min-height: 0;
     padding-top: 4rem;
   }

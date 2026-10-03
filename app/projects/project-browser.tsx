@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import Link from "next/link";
 import type { Project } from "./projects";
-import { LagosClock, ProjectMedia, Reveal, ShowcaseStrip } from "./showcase";
+import { ClosingReveal, LagosClock, ProjectMedia, Reveal, ShowcaseStrip } from "./showcase";
 
 function windowLabel(href: string | undefined, name: string) {
   if (href) {
@@ -589,7 +589,7 @@ export default function ProjectBrowser({ projects }: { projects: Project[] }) {
         ))}
       </section>
 
-      <section className="aw-cta">
+      <ClosingReveal>
         <div className="aw-grid aw-section-head">
           <span className="aw-num">03/</span>
           <span>
@@ -629,7 +629,7 @@ export default function ProjectBrowser({ projects }: { projects: Project[] }) {
           </a>
           <a href="#top">Back to top ↑</a>
         </footer>
-      </section>
+      </ClosingReveal>
 
       {focused && renderCaseStudy()}
     </div>

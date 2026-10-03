@@ -192,3 +192,52 @@ export function LagosClock() {
     </span>
   );
 }
+
+// closing section reveal: the light page above ends in a downward curve that
+// flattens as the dark section scrolls in, while its content rises a little
+// slower than the page so it feels uncovered from underneath
+export function ClosingReveal({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const section = ref.current;
+    if (!section) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      section.style.setProperty("--p", "1");
+      return;
+    }
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const vh = window.innerHeight;
+      const y = window.scrollY;
+      const top = section.getBoundingClientRect().top + y;
+      // 0 as the section's top enters the bottom of the screen; 1 once it reaches
+      // the top — or at the end of the page, if the page can't scroll that far
+      const start = top - vh;
+      const end = Math.min(top, document.documentElement.scrollHeight - vh);
+      const p = Math.min(1, Math.max(0, (y - start) / Math.max(1, end - start)));
+      section.style.setProperty("--p", p.toFixed(4));
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
+  return (
+    <section ref={ref} className="aw-cta">
+      <svg className="aw-curve" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+        <path d="M0 0H100V0Q50 200 0 0Z" />
+      </svg>
+      <div className="aw-cta-body">{children}</div>
+    </section>
+  );
+}
