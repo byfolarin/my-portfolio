@@ -170,16 +170,9 @@ body::after {
   right: 0;
   left: 0;
   z-index: -1;
-  height: 6rem;
-  /* solid behind the two text lines so scrolled content never ghosts through */
-  background: linear-gradient(
-    to bottom,
-    var(--body-bg) 0%,
-    var(--body-bg) 72%,
-    transparent 100%
-  );
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  height: 5.25rem;
+  /* plain solid band behind the two text lines — no blur, no fade */
+  background: var(--body-bg);
   pointer-events: none;
 }
 
@@ -4993,6 +4986,35 @@ a.bento-tile:hover {
   font-family: var(--sans);
 }
 
+/* 12-column guide lines behind the page; every third line meets the
+   four-column grid, so labels and lines share the same edges */
+.aw {
+  position: relative;
+  isolation: isolate;
+}
+.aw-columns {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(1rem, 2.5vw, 2.5rem);
+  padding: 0 var(--gutter);
+  pointer-events: none;
+}
+.aw-columns i {
+  border-right: 1px solid var(--hairline);
+  border-left: 1px solid var(--hairline);
+}
+@media (max-width: 900px) {
+  .aw-columns {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .aw-columns i:nth-child(n + 5) {
+    display: none;
+  }
+}
+
 /* four-column editorial grid with numbered sections (01/ 02/ 03/) */
 .aw-grid {
   display: grid;
@@ -5140,6 +5162,26 @@ a.bento-tile:hover {
   letter-spacing: -0.04em;
   text-align: right;
 }
+.aw-mobile-info {
+  display: none;
+}
+@media (max-width: 768px) {
+  .aw-mobile-info {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem 1rem;
+    color: var(--ink-45);
+    font-size: 0.9375rem;
+    line-height: 1.25;
+  }
+  .aw-mobile-info p {
+    margin: 0;
+  }
+  .aw-mobile-info p:first-child {
+    grid-column: 1 / -1;
+    color: var(--ink);
+  }
+}
 .aw-intro .aw-num {
   font-size: 1.125rem;
 }
@@ -5162,8 +5204,9 @@ a.bento-tile:hover {
   margin-bottom: clamp(4rem, 10vh, 6rem);
 }
 
+/* generous gap between projects */
 .aw-project + .aw-project {
-  margin-top: clamp(6rem, 15vh, 10rem);
+  margin-top: clamp(11rem, 26vh, 16rem);
 }
 .aw-headline {
   align-items: end;
@@ -5183,8 +5226,9 @@ a.bento-tile:hover {
   letter-spacing: -0.05em;
 }
 /* the headline number sits beside the name, wrapping beneath when tight */
-/* same size, weight and colour as the project name */
+/* same size and weight as the project name, in a muted tone */
 .aw-metric {
+  color: var(--ink-30);
   white-space: nowrap;
 }
 .aw-blurb {
@@ -5299,19 +5343,6 @@ a.bento-tile:hover {
 .aw-title .aw-num {
   font-size: 1.125rem;
 }
-.aw-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin: 1.25rem 0 0;
-}
-.aw-tags span {
-  padding: 0.35rem 0.5rem;
-  background: var(--surface-hover);
-  color: var(--ink-55);
-  font: 0.75rem/1 var(--mono);
-  text-transform: uppercase;
-}
 .aw-desc {
   max-width: 34em;
   margin: 0;
@@ -5324,18 +5355,6 @@ a.bento-tile:hover {
   flex-direction: column;
   gap: 1.25rem;
   min-width: 11rem;
-}
-.aw-meta {
-  margin: 0;
-}
-.aw-meta dt {
-  color: var(--ink-45);
-  font: 0.75rem/1 var(--mono);
-  text-transform: uppercase;
-}
-.aw-meta dd {
-  margin: 0.45rem 0 0.9rem;
-  font-size: 1.0625rem;
 }
 .aw-links {
   display: flex;
@@ -5461,6 +5480,9 @@ a.bento-tile:hover {
   }
   .aw-metric {
     white-space: normal;
+  }
+  .aw-project + .aw-project {
+    margin-top: 9rem;
   }
   .aw-section-head > span:last-child {
     grid-column: auto;

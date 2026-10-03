@@ -478,7 +478,27 @@ export default function ProjectBrowser({ projects }: { projects: Project[] }) {
 
   return (
     <div className="aw" id="top">
+      <div className="aw-columns" aria-hidden>
+        {Array.from({ length: 12 }, (_, k) => (
+          <i key={k} />
+        ))}
+      </div>
       <section className="aw-hero">
+        {/* phones hide the top nav, so its name / role / location live here */}
+        <div className="aw-mobile-info">
+          <p>Folarin Folarin</p>
+          <p>
+            Design Director
+            <br />
+            at Kredete
+          </p>
+          <p>
+            Based in Lagos
+            <br />
+            Nigeria
+          </p>
+        </div>
+
         <h1 className="aw-display">
           <Reveal text="Senior Product" />
           <span className="aw-display-row">
@@ -545,22 +565,9 @@ export default function ProjectBrowser({ projects }: { projects: Project[] }) {
                 <p className="aw-num">
                   {pad(i + 1)}/{pad(projects.length)}
                 </p>
-                <p className="aw-tags">
-                  {project.topics.map((topic, k) => (
-                    <span key={k}>{topic}</span>
-                  ))}
-                </p>
               </div>
               <p className="aw-desc">{project.description}</p>
               <div className="aw-side">
-                <dl className="aw-meta">
-                  <dt>Industry</dt>
-                  <dd>{project.industry}</dd>
-                  <dt>Role</dt>
-                  <dd>
-                    {project.role} · {project.period}
-                  </dd>
-                </dl>
                 <div className="aw-links">
                   <button type="button" className="aw-link" onClick={() => openProject(i)}>
                     Case study →
