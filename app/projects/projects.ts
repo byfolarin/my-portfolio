@@ -1,27 +1,68 @@
-// Edit this file to manage the projects page.
+// Edit this file to manage the projects shown on the homepage.
 // Add a screenshot by dropping an image in /public/projects and setting
 // `image: "/projects/name.png"` — until then a tinted placeholder shows.
 // `tint` is the project's brand color, used for the placeholder wash.
+// `metric` is the headline number shown beside the name — keep it to
+// publicly sourced figures (source noted next to each).
+// `draft: true` marks placeholder copy: it still shows on the homepage,
+// but the ask assistant ignores it until the real details are in.
 
 export type Project = {
   slug: string;
   name: string;
+  summary: string;
   role: string;
   period: string;
+  industry: string;
+  metric?: string;
   description: string;
   topics: string[];
   href?: string;
   image?: string;
   video?: string;
   tint: string;
+  draft?: boolean;
 };
 
 export const projects: Project[] = [
   {
+    slug: "hinstantt",
+    name: "Hinstantt",
+    summary: "Design system and core flows for a third-party risk platform",
+    role: "Product Designer",
+    period: "2025 — 2026",
+    industry: "Third-Party Risk",
+    // hinstantt.com: "10,000+ businesses, $12B+ in annual volume", 60+ markets
+    metric: "$12B+ annual volume",
+    description:
+      "Product design for Hinstantt's third-party risk management platform. I built HDS, a complete design system with clear foundations and reusable components, organized vendor onboarding into a clearer sequence, and redesigned 127 transactional emails into one coherent communication system.",
+    topics: ["Design Systems", "Product Design", "Enterprise UX"],
+    tint: "#004b87",
+  },
+  {
+    slug: "gravv",
+    name: "Gravv",
+    summary: "Identity and developer docs for a USDC payments platform",
+    role: "Brand & Product Designer",
+    period: "2026",
+    industry: "Payments",
+    // Kredete acquisition coverage, Sep 2026: $3B+ annualised volume,
+    // 1,000+ businesses, 100+ countries
+    metric: "$3B+ processed",
+    description:
+      "The identity for a USDC payments platform, built around a distinctive deep green and a direct, dependable visual language — and developer documentation redesigned to shorten the path from discovery to first payment.",
+    topics: ["Brand Design", "Developer Experience", "Payments"],
+    tint: "#077155",
+  },
+  {
     slug: "kredete-mobile",
     name: "Kredete Mobile",
-    role: "Lead Product Designer",
+    summary: "Mobile app for building credit and moving money across borders",
+    role: "Design Director",
     period: "2024 — Present",
+    industry: "Fintech",
+    // Series A coverage, Sep 2025: $500M remitted, 700,000+ monthly users
+    metric: "$500M+ remitted",
     description:
       "The mobile experience for a fintech helping Africans build credit and move money across borders. I lead the product design from core journeys through the details that make complex financial actions feel clear.",
     topics: ["Mobile Product", "Credit Building", "Fintech"],
@@ -30,95 +71,43 @@ export const projects: Project[] = [
     tint: "#1f4fd8",
   },
   {
-    slug: "kredete-web",
-    name: "Kredete Web",
-    role: "Lead Product Designer",
-    period: "2024 — Present",
+    slug: "blockstale",
+    name: "Blockstale",
+    summary: "A cash-to-crypto kiosk designed for everyday, non-technical users",
+    role: "Senior Product Designer",
+    period: "2018 — 2021",
+    industry: "Crypto Hardware",
+    // press coverage, Apr 2020 (first in Nigeria); West Africa's first per Folarin
+    metric: "West Africa's first Bitcoin ATM",
     description:
-      "The web experience supporting Kredete's credit-building and cross-border payments product. Designed to keep important financial information understandable, consistent, and easy to act on.",
-    topics: ["Web Product", "Payments", "UX Design"],
-    href: "https://kredete.com",
-    tint: "#315fe3",
+      "Design lead on West Africa's first automated Bitcoin teller machine. I led a team of four developers and four designers, cut payment task time from 12 minutes to 2, and shipped language selection across 14 local and 27 foreign languages for non-literate users.",
+    topics: ["Hardware UX", "Accessibility", "Crypto"],
+    tint: "#c27a1a",
   },
   {
-    slug: "kredete-design-system",
-    name: "Kredete System",
-    role: "Lead Product Designer",
-    period: "2024 — Present",
-    description:
-      "A shared design language for a fast-moving fintech. I created the foundations and reusable patterns that help product and engineering teams ship coherent experiences across mobile and web.",
-    topics: ["Design Systems", "Components", "Product Operations"],
-    href: "https://kredete.com",
-    tint: "#183eaf",
-  },
-  {
-    slug: "hinstantt-design-system",
-    name: "Hinstantt HDS",
-    role: "Product Designer",
-    period: "2025 — 2026",
-    description:
-      "HDS is a complete light-theme design system built to bring consistency to Hinstantt's product. It combines clear foundations, reusable components, and practical guidance for everyday delivery.",
-    topics: ["Design Systems", "Foundations", "Component Libraries"],
-    tint: "#004b87",
-  },
-  {
-    slug: "hinstantt-tprm",
-    name: "TPRM Onboarding",
-    role: "Product Designer",
-    period: "2025 — 2026",
-    description:
-      "Vendor-onboarding flows for Hinstantt's third-party risk management product. I organized a complex operational process into a clearer sequence for teams inviting, reviewing, and managing vendors.",
-    topics: ["Product Design", "Vendor Onboarding", "Enterprise UX"],
-    tint: "#17679d",
-  },
-  {
-    slug: "hinstantt-email-system",
-    name: "Email System",
-    role: "Product Designer",
-    period: "2025 — 2026",
-    description:
-      "A redesign of 127 transactional emails into one coherent communication system. The work aligned structure, hierarchy, states, and visual language across the complete email experience.",
-    topics: ["Email Design", "Content Systems", "Visual Language"],
-    tint: "#3581ad",
-  },
-  {
-    slug: "gravv-brand",
-    name: "Gravv Brand",
-    role: "Brand & Product Designer",
-    period: "2026",
-    description:
-      "The identity for a USDC payments platform, built around a distinctive deep green and a direct, dependable visual language suited to modern payment infrastructure.",
-    topics: ["Brand Design", "Visual Identity", "Payments"],
-    tint: "#077155",
-  },
-  {
-    slug: "gravv-api-docs",
-    name: "Gravv API Docs",
-    role: "Brand & Product Designer",
-    period: "2026",
-    description:
-      "Developer documentation redesigned to shorten the path from discovery to first payment. The experience keeps implementation guidance and essential context together on the page.",
-    topics: ["API Documentation", "Developer Experience", "Payments"],
-    tint: "#0d5d49",
-  },
-  {
-    slug: "selah-app",
-    name: "Selah App",
+    slug: "selah",
+    name: "Selah",
+    summary: "A calm church app and the website that introduces it",
     role: "Founding Designer",
     period: "2025",
+    industry: "Faith & Community",
     description:
-      "A calm church app bringing scripture, sermons, and community into one focused experience. I designed the product end to end with quiet typography and an interface intended to slow you down.",
-    topics: ["Product Design", "Mobile App", "Typography"],
+      "A calm church app bringing scripture, sermons, and community into one focused experience, designed end to end with quiet typography — and a marketing site that carries the same thoughtful pace into a clear introduction.",
+    topics: ["Product Design", "Mobile App", "Web Design"],
     tint: "#8a6d3b",
   },
   {
-    slug: "selah-marketing-site",
-    name: "Selah Website",
-    role: "Founding Designer",
-    period: "2025",
+    // TODO: replace placeholder copy, then remove `draft`
+    slug: "newstips",
+    name: "Newstips",
+    summary: "One-line summary to come",
+    role: "Role to come",
+    period: "Year",
+    industry: "Industry to come",
     description:
-      "The marketing experience for Selah, translating the app's thoughtful pace and typographic character into a clear introduction to scripture, sermons, and community.",
-    topics: ["Marketing Site", "Web Design", "Typography"],
-    tint: "#a18453",
+      "Placeholder — describe what Newstips is, the problem it solves, and the design decisions you led.",
+    topics: ["Tag", "Tag", "Tag"],
+    tint: "#3f4a5a",
+    draft: true,
   },
 ];

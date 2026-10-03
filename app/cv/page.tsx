@@ -27,7 +27,7 @@ export default function CV() {
           <div className="cv-hero-links">
             <a href="/">Website</a>
             <a href="#">LinkedIn</a>
-            <a href="mailto:folarin@kredete.com">Email</a>
+            <a href="mailto:hello@folarin.design">Email</a>
             <a href="#">Mobile No</a>
             <span className="cv-hero-actions">
               <CVActions />

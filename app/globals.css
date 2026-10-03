@@ -145,19 +145,22 @@ body::after {
 
 /* ---- site nav ---- */
 
+/* four columns: name, role, location, links — lines up with the home grid */
 .site-nav {
   position: fixed;
-  top: 1.25rem;
-  left: 2.5rem;
-  right: 2.5rem;
+  top: 1.75rem;
+  left: clamp(1.25rem, 4.1vw, 3.75rem);
+  right: clamp(1.25rem, 4.1vw, 3.75rem);
   z-index: 100;
   isolation: isolate;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: clamp(3rem, 6vw, 7rem);
-  font-family: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
-  text-transform: uppercase;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: clamp(1rem, 2.5vw, 2.5rem);
+  align-items: start;
+  color: var(--heading-color);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.25;
 }
 
 .site-nav::before {
@@ -167,11 +170,12 @@ body::after {
   right: 0;
   left: 0;
   z-index: -1;
-  height: 4rem;
+  height: 6rem;
+  /* solid behind the two text lines so scrolled content never ghosts through */
   background: linear-gradient(
     to bottom,
-    color-mix(in srgb, var(--body-bg) 96%, transparent) 0%,
-    color-mix(in srgb, var(--body-bg) 88%, transparent) 72%,
+    var(--body-bg) 0%,
+    var(--body-bg) 72%,
     transparent 100%
   );
   backdrop-filter: blur(12px);
@@ -181,37 +185,29 @@ body::after {
 
 .site-brand {
   color: light-dark(#111, #f1f1ef) !important;
-  font-weight: 750 !important;
-  letter-spacing: -0.04em !important;
-  line-height: 0.9rem !important;
+  font-weight: 500;
 }
 
-.site-brand span {
-  display: block;
+.site-nav-info {
+  margin: 0;
 }
 
 .site-nav-links {
   position: relative;
   display: flex;
-  align-items: center;
-  gap: clamp(1.25rem, 2.5vw, 3rem);
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .site-nav-links > a {
-  color: var(--ink-30);
-  font-size: 0.6875rem;
-  font-weight: 600;
-  line-height: 1rem;
-  letter-spacing: 0.02em;
+  color: var(--ink-45);
   transition: color 0.15s ease;
 }
 
-.site-nav-links > a::before {
-  content: "[ ";
-}
-
-.site-nav-links > a::after {
-  content: " ]";
+/* Home, About, CV, Music */
+.site-nav-links > a:not(:last-of-type)::after {
+  content: ",\00a0";
+  color: var(--ink-45);
 }
 
 .site-nav-links > a:hover {
@@ -268,6 +264,15 @@ body::after {
 
 @media (hover: none), (max-width: 1120px) {
   .nav-preview {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 1120px) {
+  .site-nav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .site-nav-info + .site-nav-info {
     display: none;
   }
 }
@@ -1713,59 +1718,6 @@ body:has(.reading-shelf) .theme-toggle {
   font-family: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
 }
 
-.projects-intro {
-  position: absolute;
-  top: 8rem;
-  left: clamp(5rem, 9.5vw, 12rem);
-  z-index: 5;
-  width: min(
-    25rem,
-    calc(
-      (
-          100vw - 2rem - 2 * clamp(5rem, 9.5vw, 12rem) -
-            clamp(34rem, 34vw, 44rem) - 2 * clamp(3rem, 3.5vw, 5rem)
-        ) / 2
-    )
-  );
-}
-
-.projects-headshot {
-  position: absolute;
-  top: 4.5rem;
-  left: clamp(5rem, 9.5vw, 12rem);
-  z-index: 6;
-  width: 2.5rem;
-  aspect-ratio: 1;
-  overflow: hidden;
-  background: var(--surface);
-  border: 1px solid var(--hairline-strong);
-  border-radius: 50%;
-}
-
-.projects-headshot img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.projects-intro p {
-  color: var(--ink-30);
-  font-size: 0.625rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.projects-intro h1 {
-  margin-top: 0.75rem;
-  color: light-dark(#171719, #f1f1ef);
-  font-family: var(--font-body);
-  font-size: clamp(1.6rem, 2.2vw, 2.5rem);
-  font-weight: 560;
-  line-height: 1.12;
-  letter-spacing: -0.035em;
-}
-
 .pb {
   height: 100%;
   display: grid;
@@ -2684,21 +2636,6 @@ body:has(.reading-shelf) .theme-toggle {
     overflow: visible;
   }
 
-  .projects-intro {
-    position: relative;
-    top: auto;
-    left: auto;
-    width: min(100%, 30rem);
-    margin: 3.5rem 0 2.5rem;
-  }
-
-  .projects-headshot {
-    position: relative;
-    top: auto;
-    left: auto;
-    margin: 2rem 0 0;
-  }
-
   .projects-masthead {
     position: relative;
     padding: 0 0 2.5rem;
@@ -2859,7 +2796,8 @@ body:has(.reading-shelf) .theme-toggle {
   color: var(--about-paper);
 }
 
-body:has(.about-split) .site-nav a {
+body:has(.about-split) .site-nav a,
+body:has(.about-split) .site-nav-info {
   color: var(--about-muted);
 }
 
@@ -4487,6 +4425,8 @@ a.bento-tile:hover {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 15px;
   line-height: 1.55;
+  /* clears the two-line fixed nav */
+  padding-top: 3rem;
   padding-bottom: 3.75rem;
 }
 
@@ -5032,5 +4972,497 @@ a.bento-tile:hover {
   .cv-page,
   body {
     background: #ffffff;
+  }
+}
+
+/* ---- home: work index (hero, showcase rows, closing call) ---- */
+
+.page:has(.home) {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.aw {
+  --ink: light-dark(#171719, #f1f1ef);
+  /* same system stack as the About page headline */
+  --sans: var(--font-body);
+  --mono: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+  --gutter: clamp(1.25rem, 4.1vw, 3.75rem);
+  color: var(--ink);
+  font-family: var(--sans);
+}
+
+/* four-column editorial grid with numbered sections (01/ 02/ 03/) */
+.aw-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: clamp(1rem, 2.5vw, 2.5rem);
+}
+.aw-num {
+  margin: 0;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.aw-section-head {
+  padding: 0 var(--gutter);
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+.aw-section-head > span:last-child {
+  grid-column: 4;
+}
+
+/* giant display type; letters rise out of a mask on first view */
+.reveal {
+  display: block;
+}
+.reveal-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.reveal-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+/* trailing gap rather than leading, so a wrapped line starts flush */
+.reveal-word:not(:last-of-type) {
+  margin-right: 0.22em;
+}
+.reveal-mask {
+  display: inline-block;
+  overflow: hidden;
+  margin-block: -0.08em;
+  padding-block: 0.08em;
+  vertical-align: top;
+}
+.reveal-mask > span {
+  display: inline-block;
+  transform: translateY(108%);
+  transition: transform 0.95s cubic-bezier(0.2, 0.75, 0.2, 1) var(--d, 0s);
+}
+.reveal[data-in] .reveal-mask > span {
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce), (scripting: none) {
+  .reveal-mask > span {
+    transform: none;
+    transition: none;
+  }
+}
+.aw-display,
+.aw-mail {
+  font-weight: 500;
+  line-height: 0.86;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+
+/* buttons: square, mono caps, label rolls up on hover */
+.aw-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.aw-btn {
+  display: inline-flex;
+  align-items: center;
+  height: 2.45rem;
+  padding: 0 0.75rem;
+  border: 0;
+  background: var(--surface-hover);
+  color: var(--ink);
+  font: 400 0.875rem/1 var(--mono);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+.aw-btn:hover {
+  background: var(--hairline-strong);
+}
+.aw-btn-solid {
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+}
+.aw-btn-solid:hover {
+  background: var(--accent);
+  color: #fff;
+}
+.aw-roll {
+  display: grid;
+  height: 1em;
+  overflow: hidden;
+}
+.aw-roll > span {
+  grid-area: 1 / 1;
+  line-height: 1;
+  transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.aw-roll > span + span {
+  transform: translateY(110%);
+}
+.aw-btn:hover .aw-roll > span:first-child {
+  transform: translateY(-110%);
+}
+.aw-btn:hover .aw-roll > span + span {
+  transform: translateY(0);
+}
+
+/* hero */
+.aw-hero {
+  padding: clamp(5.5rem, 12vh, 7rem) var(--gutter) clamp(6rem, 15vh, 9rem);
+}
+.aw-display {
+  margin: clamp(3rem, 9vh, 5.5rem) 0 clamp(3.5rem, 10vh, 6rem);
+  color: var(--ink);
+  font-size: clamp(3.5rem, 11.6vw, 12rem);
+}
+/* second display line: the big title, with the smaller one opposite it */
+.aw-display-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.5rem 2rem;
+}
+.aw-display-alt {
+  padding-bottom: 0.04em;
+  color: var(--ink-55);
+  font-size: clamp(1.5rem, 3.4vw, 3.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  text-align: right;
+}
+.aw-intro .aw-num {
+  font-size: 1.125rem;
+}
+.aw-intro-body {
+  grid-column: 2 / span 3;
+}
+/* type settings mirror .about-hero h1 */
+.aw-lede {
+  max-width: 15em;
+  margin: 0 0 2.25rem;
+  color: var(--ink);
+  font-size: clamp(2rem, 3.1vw, 3.75rem);
+  font-weight: 570;
+  line-height: 1.04;
+  letter-spacing: -0.055em;
+}
+
+/* selected work */
+.aw-work > .aw-section-head {
+  margin-bottom: clamp(4rem, 10vh, 6rem);
+}
+
+.aw-project + .aw-project {
+  margin-top: clamp(6rem, 15vh, 10rem);
+}
+.aw-headline {
+  align-items: end;
+  padding: 0 var(--gutter) clamp(1.5rem, 3vh, 2.25rem);
+}
+.aw-name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.28em;
+  grid-column: 1 / span 3;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(2.25rem, 4.2vw, 4.25rem);
+  font-weight: 570;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+/* the headline number sits beside the name, wrapping beneath when tight */
+/* same size, weight and colour as the project name */
+.aw-metric {
+  white-space: nowrap;
+}
+.aw-blurb {
+  max-width: 17em;
+  margin: 0;
+  padding-bottom: 0.2em;
+  color: var(--ink);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.aw-strip-wrap {
+  position: relative;
+}
+.aw-strip {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.aw-strip::-webkit-scrollbar {
+  display: none;
+}
+.aw-strip.is-dragging {
+  scroll-snap-type: none;
+  cursor: grabbing;
+  user-select: none;
+}
+.aw-frame {
+  position: relative;
+  display: flex;
+  /* matches Areeba: two-thirds of the window wide, always 4:3 */
+  flex: 0 0 67.5vw;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4 / 3;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: color-mix(in srgb, var(--tint) 13%, var(--surface));
+  scroll-snap-align: center;
+}
+.aw-frame img,
+.aw-frame video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+.aw-frame-hero {
+  background: color-mix(in srgb, var(--tint) 22%, var(--surface));
+  cursor: pointer;
+}
+.aw-frame-hero .pb-media-mark,
+.aw-frame-mark {
+  color: color-mix(in srgb, var(--tint) 75%, var(--ink));
+  font: 500 clamp(1.5rem, 3vw, 2.5rem)/1 var(--sans);
+  letter-spacing: -0.035em;
+  text-transform: none;
+}
+.aw-frame-mark {
+  opacity: 0.35;
+}
+.aw-frame-label {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  padding: 0.3rem 0.45rem;
+  background: var(--body-bg);
+  color: var(--ink-55);
+  font: 0.6875rem/1 var(--mono);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+/* "DRAG" chip follows the mouse over a strip */
+.aw-drag {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  padding: 0.45rem 0.6rem;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font: 0.75rem/1 var(--mono);
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .aw-strip {
+    cursor: none;
+  }
+  .aw-strip-wrap:hover .aw-drag {
+    opacity: 1;
+  }
+}
+
+/* details row under each strip */
+.aw-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  gap: 2rem clamp(2rem, 5vw, 5rem);
+  padding: 2.5rem var(--gutter) 0;
+}
+.aw-title .aw-num {
+  font-size: 1.125rem;
+}
+.aw-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 1.25rem 0 0;
+}
+.aw-tags span {
+  padding: 0.35rem 0.5rem;
+  background: var(--surface-hover);
+  color: var(--ink-55);
+  font: 0.75rem/1 var(--mono);
+  text-transform: uppercase;
+}
+.aw-desc {
+  max-width: 34em;
+  margin: 0;
+  color: var(--ink-60);
+  font-size: 1.0625rem;
+  line-height: 1.45;
+}
+.aw-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-width: 11rem;
+}
+.aw-meta {
+  margin: 0;
+}
+.aw-meta dt {
+  color: var(--ink-45);
+  font: 0.75rem/1 var(--mono);
+  text-transform: uppercase;
+}
+.aw-meta dd {
+  margin: 0.45rem 0 0.9rem;
+  font-size: 1.0625rem;
+}
+.aw-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.7rem;
+}
+.aw-link {
+  padding: 0 0 0.2rem;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background: none;
+  color: var(--ink);
+  font: 0.8125rem/1 var(--mono);
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.aw-link:hover {
+  color: var(--accent);
+}
+
+/* closing call — always dark, with a live Lagos clock */
+.aw-cta {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  margin-top: clamp(6rem, 15vh, 10rem);
+  padding: clamp(5rem, 12vh, 7rem) 0 2rem;
+  background: #1d1d1d;
+  color: #f1f1ef;
+}
+.aw-mail {
+  display: block;
+  margin: auto 0 2.5rem;
+  padding: 3rem var(--gutter) 0;
+  color: #f1f1ef;
+  font-size: clamp(2.75rem, 9vw, 9rem);
+  transition: color 0.25s ease;
+}
+.aw-mail:hover {
+  color: var(--accent);
+}
+.aw-cta > .aw-ctas {
+  padding: 0 var(--gutter);
+}
+.aw-cta .aw-btn {
+  background: #2b2b2b;
+  color: #f1f1ef;
+}
+.aw-cta .aw-btn:hover {
+  background: #3a3a3a;
+}
+.aw-cta .aw-btn-solid {
+  background: #d6d6d0;
+  color: #111;
+}
+.aw-cta .aw-btn-solid:hover {
+  background: var(--accent);
+  color: #fff;
+}
+.aw-foot {
+  row-gap: 1rem;
+  margin-top: clamp(4rem, 12vh, 7rem);
+  padding: 1.25rem var(--gutter) 0;
+  border-top: 1px solid rgba(241, 241, 239, 0.14);
+  color: rgba(241, 241, 239, 0.55);
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.3;
+}
+.aw-foot a {
+  color: inherit;
+}
+.aw-foot a:hover {
+  color: #f1f1ef;
+}
+
+/* the case study opens as a full-screen overlay on top of the index */
+.home .projects-page {
+  position: fixed;
+  inset: 0;
+  z-index: 21;
+  border: 1rem solid var(--body-bg);
+}
+
+@media (max-width: 1050px) {
+  .home .projects-page {
+    width: auto;
+    height: auto;
+    min-height: 0;
+    overflow-y: auto;
+    border: 0;
+    padding: 4rem 1.5rem 6rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .aw-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+    padding-top: 1.75rem;
+  }
+  .aw-frame {
+    flex-basis: 84vw;
+  }
+  .aw-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 1rem;
+  }
+
+  .aw-display-alt {
+    text-align: left;
+  }
+  .aw-intro-body {
+    grid-column: 1 / -1;
+  }
+  .aw-name,
+  .aw-blurb {
+    grid-column: 1 / -1;
+  }
+  .aw-headline {
+    row-gap: 1.25rem;
+  }
+  .aw-metric {
+    white-space: normal;
+  }
+  .aw-section-head > span:last-child {
+    grid-column: auto;
   }
 }

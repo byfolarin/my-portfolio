@@ -233,6 +233,16 @@ export default function Nav({
         <Link className="site-brand" href="/" aria-label="Folarin Folarin — home">
           Folarin <span>Folarin</span>
         </Link>
+        <p className="site-nav-info">
+          Design Director
+          <br />
+          at Kredete
+        </p>
+        <p className="site-nav-info">
+          Based in Lagos
+          <br />
+          Nigeria
+        </p>
         <div className="site-nav-links">
         {items.map((item, i) => (
           <Link

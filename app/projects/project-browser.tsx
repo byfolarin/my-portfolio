@@ -1,8 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import Link from "next/link";
 import type { Project } from "./projects";
+import { LagosClock, ProjectMedia, Reveal, ShowcaseStrip } from "./showcase";
 
 function windowLabel(href: string | undefined, name: string) {
   if (href) {
@@ -11,27 +13,6 @@ function windowLabel(href: string | undefined, name: string) {
     } catch {}
   }
   return `${name.toLowerCase().replace(/\s+/g, "")}.app`;
-}
-
-function ProjectMedia({ project }: { project: Project }) {
-  if (project.video) {
-    return (
-      <video
-        src={project.video}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        aria-label={`${project.name} preview`}
-      />
-    );
-  }
-  if (project.image) {
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img src={project.image} alt={`${project.name} preview`} />;
-  }
-  return <span className="pb-media-mark">{project.name}</span>;
 }
 
 function MetricCharts() {
@@ -166,46 +147,7 @@ export default function ProjectBrowser({ projects }: { projects: Project[] }) {
     "case-study",
   );
   const [caseProgress, setCaseProgress] = useState(0);
-  const [isDesktop, setIsDesktop] = useState(true);
-  const stageRef = useRef<HTMLDivElement>(null);
-  const listRef = useRef<HTMLElement>(null);
-  const detailRef = useRef<HTMLElement>(null);
   const focusRef = useRef<HTMLElement>(null);
-  const sectionRefs = useRef<(HTMLElement | null)[]>([]);
-  const activeRef = useRef(0);
-
-  // below this width the overview drops the nested scroll-snap carousel
-  // for plain stacked cards — keep in sync with the CSS breakpoint
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1051px)");
-    setIsDesktop(mq.matches);
-    const onChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
-
-  useEffect(() => {
-    activeRef.current = active;
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const detail = detailRef.current;
-
-    if (detail) {
-      gsap.fromTo(
-        detail.children,
-        { autoAlpha: 0, y: 8 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.55,
-          stagger: 0.045,
-          ease: "power3.out",
-          overwrite: true,
-        },
-      );
-    }
-  }, [active]);
 
   useEffect(() => {
     if (!focused) return;
@@ -216,6 +158,8 @@ export default function ProjectBrowser({ projects }: { projects: Project[] }) {
     window.addEventListener("keydown", onKeyDown);
 
     const focus = focusRef.current;
+    // every newly opened project starts at the top of its case study
+    if (focus) focus.scrollTop = 0;
     if (
       focus &&
       !window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -251,140 +195,25 @@ export default function ProjectBrowser({ projects }: { projects: Project[] }) {
     return () => page.removeEventListener("scroll", updateProgress);
   }, [detailTab, focused]);
 
+  // the case study is an overlay — freeze the page behind it
   useEffect(() => {
-    if (focused || !isDesktop) return;
-
-    const stage = stageRef.current;
-    if (!stage) return;
-    let frame = 0;
-
-    const selectedSection = sectionRefs.current[activeRef.current];
-    if (selectedSection) {
-      stage.scrollTop =
-        selectedSection.offsetTop -
-        (stage.clientHeight - selectedSection.offsetHeight) / 2;
-    }
-
-    const updateActive = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const stageCenter = stage.getBoundingClientRect().top + stage.clientHeight / 2;
-        let closest = 0;
-        let distance = Infinity;
-
-        sectionRefs.current.forEach((section, index) => {
-          if (!section) return;
-          const rect = section.getBoundingClientRect();
-          const nextDistance = Math.abs(rect.top + rect.height / 2 - stageCenter);
-          if (nextDistance < distance) {
-            closest = index;
-            distance = nextDistance;
-          }
-        });
-
-        setActive(closest);
-      });
-    };
-
-    updateActive();
-    stage.addEventListener("scroll", updateActive, { passive: true });
-    window.addEventListener("resize", updateActive);
+    if (!focused) return;
+    const html = document.documentElement;
+    const previous = html.style.overflow;
+    html.style.overflow = "hidden";
     return () => {
-      cancelAnimationFrame(frame);
-      stage.removeEventListener("scroll", updateActive);
-      window.removeEventListener("resize", updateActive);
+      html.style.overflow = previous;
     };
-  }, [focused, isDesktop, projects.length]);
-
-  const goTo = useCallback((index: number) => {
-    const stage = stageRef.current;
-    const section = sectionRefs.current[index];
-    if (!stage || !section) return;
-
-    const target =
-      section.offsetTop - (stage.clientHeight - section.offsetHeight) / 2;
-
-    activeRef.current = index;
-    setActive(index);
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      stage.scrollTop = target;
-      return;
-    }
-
-    gsap.killTweensOf(stage);
-    stage.style.scrollSnapType = "none";
-    gsap.to(stage, {
-      scrollTop: target,
-      duration: 0.62,
-      ease: "power3.inOut",
-      overwrite: "auto",
-      onComplete: () => {
-        stage.style.scrollSnapType = "";
-      },
-    });
-  }, []);
-
-  useEffect(() => {
-    if (focused || !isDesktop) return;
-
-    const stage = stageRef.current;
-    const list = listRef.current;
-    if (!stage || !list) return;
-
-    let wheelTotal = 0;
-    let lastMove = 0;
-    let resetTimer = 0;
-
-    const onWheel = (event: WheelEvent) => {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
-
-      event.preventDefault();
-      wheelTotal += event.deltaY;
-      window.clearTimeout(resetTimer);
-      resetTimer = window.setTimeout(() => {
-        wheelTotal = 0;
-      }, 140);
-
-      const now = performance.now();
-      if (now - lastMove < 260 || Math.abs(wheelTotal) < 6) return;
-
-      const direction = wheelTotal > 0 ? 1 : -1;
-      const next = Math.max(
-        0,
-        Math.min(projects.length - 1, activeRef.current + direction),
-      );
-
-      wheelTotal = 0;
-      if (next === activeRef.current) return;
-
-      lastMove = now;
-      goTo(next);
-    };
-
-    stage.addEventListener("wheel", onWheel, { passive: false });
-    list.addEventListener("wheel", onWheel, { passive: false });
-
-    return () => {
-      window.clearTimeout(resetTimer);
-      gsap.killTweensOf(stage);
-      stage.style.scrollSnapType = "";
-      stage.removeEventListener("wheel", onWheel);
-      list.removeEventListener("wheel", onWheel);
-    };
-  }, [focused, goTo, isDesktop, projects.length]);
+  }, [focused]);
 
   const openProject = (index: number) => {
-    activeRef.current = index;
     setActive(index);
     setDetailTab("case-study");
     setCaseProgress(0);
-    if (focusRef.current) focusRef.current.scrollTop = 0;
     setFocused(true);
   };
 
-  if (focused) {
+  const renderCaseStudy = () => {
     const project = projects[active];
     const progressSteps = 16;
 
@@ -402,6 +231,7 @@ export default function ProjectBrowser({ projects }: { projects: Project[] }) {
     };
 
     return (
+      <div className="projects-page">
       <div className="pb pb-focused" data-focused>
         <nav className="pb-list" aria-label="Projects">
           {projects.map((item, index) => (
@@ -640,102 +470,171 @@ export default function ProjectBrowser({ projects }: { projects: Project[] }) {
           </div>
         </article>
       </div>
+      </div>
     );
-  }
+  };
+
+  const pad = (n: number) => String(n).padStart(2, "0");
 
   return (
-    <div className="pb">
-      <div className="pb-case-progress" aria-label="Project overview progress">
-        {projects.map((project, index) => (
-          <button
-            key={project.slug}
-            type="button"
-            data-passed={index <= active || undefined}
-            data-current={index === active || undefined}
-            onClick={() => goTo(index)}
-            aria-label={`Go to ${project.name}`}
-          />
-        ))}
-      </div>
+    <div className="aw" id="top">
+      <section className="aw-hero">
+        <h1 className="aw-display">
+          <Reveal text="Senior Product" />
+          <span className="aw-display-row">
+            <Reveal text="Designer" delay={0.2} />
+            <span className="aw-display-alt">
+              <Reveal text="Front-end" delay={0.45} />
+              <Reveal text="engineer" delay={0.55} />
+            </span>
+          </span>
+        </h1>
 
-      <nav className="pb-list" aria-label="Projects" ref={listRef}>
-        {projects.map((p, i) => (
-          <button
-            key={p.slug}
-            type="button"
-            className="pb-item"
-            data-active={i === active || undefined}
-            style={{ "--tint": p.tint } as React.CSSProperties}
-            onClick={() => openProject(i)}
-          >
-            <span>{p.name}</span>
-            <span className="pb-item-period">{String(i + 1).padStart(2, "0")}</span>
-          </button>
-        ))}
-      </nav>
+        <div className="aw-grid aw-intro">
+          <span className="aw-num">01/</span>
+          <div className="aw-intro-body">
+            <p className="aw-lede">
+              I shape products, systems, and brands with clarity from first
+              idea to final detail.
+            </p>
+            <div className="aw-ctas">
+              <a className="aw-btn aw-btn-solid" href="#work">
+                <RollLabel>View selected work</RollLabel>
+              </a>
+              <Link className="aw-btn" href="/about">
+                <RollLabel>About me</RollLabel>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <div className="pb-stage" ref={stageRef}>
+      <section className="aw-work" id="work" aria-label="Selected work">
+        <header className="aw-grid aw-section-head">
+          <span className="aw-num">02/</span>
+          <span>
+            Selected
+            <br />
+            work
+          </span>
+          <span>
+            {pad(projects.length)} products,
+            <br />
+            systems &amp; brands
+          </span>
+        </header>
+
         {projects.map((project, i) => (
-          <section
+          <article
             key={project.slug}
-            className="pb-section"
-            ref={(el) => {
-              sectionRefs.current[i] = el;
-            }}
+            className="aw-project"
             style={{ "--tint": project.tint } as React.CSSProperties}
           >
-            <div className="pb-frame">
-              <span className="pb-bracket pb-bracket-tl" aria-hidden />
-              <span className="pb-bracket pb-bracket-tr" aria-hidden />
-              <span className="pb-bracket pb-bracket-bl" aria-hidden />
-              <span className="pb-bracket pb-bracket-br" aria-hidden />
-              <div className="pb-media">
-                <ProjectMedia project={project} />
+            <div className="aw-grid aw-headline">
+              <h2 className="aw-name">
+                <Reveal text={project.name} />
+                {project.metric && <span className="aw-metric">({project.metric})</span>}
+              </h2>
+              <p className="aw-blurb">{project.summary}</p>
+            </div>
+
+            <ShowcaseStrip project={project} index={i} onOpen={() => openProject(i)} />
+
+            <div className="aw-row">
+              <div className="aw-title">
+                <p className="aw-num">
+                  {pad(i + 1)}/{pad(projects.length)}
+                </p>
+                <p className="aw-tags">
+                  {project.topics.map((topic, k) => (
+                    <span key={k}>{topic}</span>
+                  ))}
+                </p>
+              </div>
+              <p className="aw-desc">{project.description}</p>
+              <div className="aw-side">
+                <dl className="aw-meta">
+                  <dt>Industry</dt>
+                  <dd>{project.industry}</dd>
+                  <dt>Role</dt>
+                  <dd>
+                    {project.role} · {project.period}
+                  </dd>
+                </dl>
+                <div className="aw-links">
+                  <button type="button" className="aw-link" onClick={() => openProject(i)}>
+                    Case study →
+                  </button>
+                  {project.href && (
+                    <a
+                      className="aw-link"
+                      href={project.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Live site ↗
+                    </a>
+                  )}
+                </div>
               </div>
             </div>
-
-            {/* mobile only — each card is self-contained, no separate
-                list/detail regions to scroll between (see .pb-section-detail) */}
-            <div className="pb-section-detail">
-              <p className="pb-section-name">{project.name}</p>
-              <p className="pb-role">
-                {project.role} · {project.period}
-              </p>
-              <p className="pb-description">{project.description}</p>
-              <p className="pb-topics">
-                {project.topics.map((topic) => `[ ${topic} ]`).join(" ")}
-              </p>
-              <button
-                type="button"
-                className="pb-case-view-link"
-                onClick={() => openProject(i)}
-              >
-                [ VIEW CASE STUDY ]
-              </button>
-            </div>
-          </section>
+          </article>
         ))}
-      </div>
+      </section>
 
-      <aside className="pb-detail" aria-live="polite" ref={detailRef}>
-        <p className="pb-role">
-          {projects[active].role} · {projects[active].period}
-        </p>
-        <p className="pb-description">{projects[active].description}</p>
-        <p className="pb-topics">
-          {projects[active].topics.map((topic) => `[ ${topic} ]`).join(" ")}
-        </p>
-        {projects[active].href && (
-          <a
-            className="pb-visit"
-            target="_blank"
-            rel="noopener noreferrer"
-            href={projects[active].href}
-          >
-            [ VISIT {windowLabel(projects[active].href, projects[active].name).toUpperCase()} ↗ ]
+      <section className="aw-cta">
+        <div className="aw-grid aw-section-head">
+          <span className="aw-num">03/</span>
+          <span>
+            Want to work
+            <br />
+            together?
+          </span>
+          <span>
+            Send me
+            <br />a message
+          </span>
+        </div>
+
+        <a className="aw-mail" href="mailto:hello@folarin.design">
+          <Reveal text="Hello@" />
+          <Reveal text="folarin.design" delay={0.15} />
+        </a>
+
+        <div className="aw-ctas">
+          <Link className="aw-btn aw-btn-solid" href="/cv">
+            <RollLabel>View CV</RollLabel>
+          </Link>
+          <Link className="aw-btn" href="/about">
+            <RollLabel>About me</RollLabel>
+          </Link>
+        </div>
+
+        <footer className="aw-grid aw-foot">
+          <span>
+            Folarin Folarin
+            <br />
+            Product designer
+          </span>
+          <LagosClock />
+          <a href="https://github.com/byfolarin" target="_blank" rel="noopener noreferrer">
+            GitHub ↗
           </a>
-        )}
-      </aside>
+          <a href="#top">Back to top ↑</a>
+        </footer>
+      </section>
+
+      {focused && renderCaseStudy()}
     </div>
+  );
+}
+
+// button label that rolls up to a second copy on hover
+function RollLabel({ children }: { children: string }) {
+  return (
+    <span className="aw-roll">
+      <span>{children}</span>
+      <span aria-hidden>{children}</span>
+    </span>
   );
 }

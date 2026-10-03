@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 const experience = [
-  { company: "Kredete", role: "Lead Product Designer", period: "2024 — Present" },
+  { company: "Kredete", role: "Design Director", period: "2024 — Present" },
   { company: "Hinstantt", role: "Product Designer", period: "2025 — 2026" },
   { company: "Gravv", role: "Brand & Product Designer", period: "2026" },
   { company: "Selah", role: "Founding Designer", period: "2025" },
@@ -25,7 +25,7 @@ export default function About() {
             things.
           </h1>
           <div className="about-meta">
-            <time>August 23, 2026</time>
+            <time>August 17, 2026</time>
             <span>Product designer</span>
           </div>
         </header>
@@ -74,7 +74,7 @@ export default function About() {
             </p>
             <p>
               The best way to reach me is{" "}
-              <a href="mailto:folarin@kredete.com">email</a>. I&rsquo;m also on{" "}
+              <a href="mailto:hello@folarin.design">email</a>. I&rsquo;m also on{" "}
               <a href="https://github.com/byfolarin" target="_blank" rel="noopener noreferrer">
                 GitHub
               </a>

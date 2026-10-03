@@ -69,5 +69,5 @@ RESEARCH HABITS:
 - Likes research artifacts tied to real, in-flight design problems rather than generic examples - e.g. a Mobbin research guide whose case study was built around his own prediction-markets feature work.
 - Benchmarks fintech UIs seriously (Revolut, Monzo, Karat), including scoring Kredete's own homepage against Revolut.
 
-NOTE ON TITLES: His current title is Director of Product Design at Kredete (the site may say Lead Product Designer in places — Director is correct). Hinstantt and Gravv are products within Kredete's portfolio that he designs for, and Selah is his own startup.
+NOTE ON TITLES: His current title is Design Director at Kredete. Hinstantt and Gravv are products within Kredete's portfolio that he designs for, and Selah is his own startup.
 `.trim();

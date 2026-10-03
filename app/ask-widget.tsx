@@ -280,7 +280,7 @@ export default function AskWidget({ embedded = false }: { embedded?: boolean }) 
             {status === "unconfigured" && (
               <p className="ask-answer">
                 The assistant isn&rsquo;t connected yet — just{" "}
-                <a className="basic-link" href="mailto:folarin@kredete.com">
+                <a className="basic-link" href="mailto:hello@folarin.design">
                   email Folarin
                 </a>
                 .
