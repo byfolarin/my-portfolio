@@ -5003,8 +5003,8 @@ a.bento-tile:hover {
   pointer-events: none;
 }
 .aw-columns i {
-  border-right: 1px solid var(--hairline);
-  border-left: 1px solid var(--hairline);
+  border-right: 1px solid color-mix(in srgb, var(--hairline) 55%, transparent);
+  border-left: 1px solid color-mix(in srgb, var(--hairline) 55%, transparent);
 }
 @media (max-width: 900px) {
   .aw-columns {
@@ -5343,12 +5343,18 @@ a.bento-tile:hover {
 .aw-title .aw-num {
   font-size: 1.125rem;
 }
+/* kept to two lines; the full story lives in the case study */
 .aw-desc {
+  display: -webkit-box;
   max-width: 34em;
   margin: 0;
+  overflow: hidden;
   color: var(--ink-60);
   font-size: 1.0625rem;
   line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
 }
 .aw-side {
   display: flex;
@@ -5466,7 +5472,15 @@ a.bento-tile:hover {
   }
 
   .aw-display-alt {
+    margin-top: 1.25rem;
     text-align: left;
+  }
+  /* one line on phones: "Front-end engineer" */
+  .aw-display-alt .reveal {
+    display: inline;
+  }
+  .aw-display-alt .reveal + .reveal {
+    margin-left: 0.22em;
   }
   .aw-intro-body {
     grid-column: 1 / -1;
