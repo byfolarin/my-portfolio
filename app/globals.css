@@ -5579,8 +5579,16 @@ a.bento-tile:hover {
   .aw-drag {
     display: none;
   }
+  /* taller containers on phones, screenshot centred in the extra space */
   .aw-frame {
     flex-basis: 88%;
+    aspect-ratio: 4 / 5;
+  }
+  .aw-frame > img {
+    inset: 50% auto auto 6%;
+    width: 88%;
+    border-radius: 8px;
+    transform: translateY(-50%);
   }
   .aw-headline {
     padding-bottom: 1.25rem;
