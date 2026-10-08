@@ -3,6 +3,7 @@ import Nav from "./nav";
 import ScrollPlayer from "./scroll-player";
 import AskWidgetRouter from "./ask-widget-router";
 import ThemeToggle from "./theme-toggle";
+import Intro from "./intro";
 import { projects } from "./projects/projects";
 import "./globals.css";
 
@@ -25,6 +26,10 @@ export default function RootLayout({
               '(function(){try{var p=new URLSearchParams(location.search).get("theme");var t=p||localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}})()',
           }}
         />
+        <noscript>
+          <style>{".intro{display:none}"}</style>
+        </noscript>
+        <Intro projectsCount={projects.length} />
         <Nav projectsCount={projects.length} />
         <ScrollPlayer />
         <AskWidgetRouter />

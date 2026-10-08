@@ -5575,3 +5575,140 @@ a.bento-tile:hover {
     margin-bottom: 4rem;
   }
 }
+
+/* intro — odometer counter on a measured ruler, then a wipe into the page */
+.intro {
+  --mono: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+  --edge: 24px;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--body-bg);
+  color: var(--btn-bg);
+  clip-path: inset(0 0 0 0);
+}
+.intro-mark {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 0 solid var(--accent);
+}
+.intro-mark-tl { top: 12px; left: 12px; border-top-width: 1px; border-left-width: 1px; }
+.intro-mark-tr { top: 12px; right: 12px; border-top-width: 1px; border-right-width: 1px; }
+.intro-mark-bl { bottom: 12px; left: 12px; border-bottom-width: 1px; border-left-width: 1px; }
+.intro-mark-br { right: 12px; bottom: 12px; border-right-width: 1px; border-bottom-width: 1px; }
+.intro-meta {
+  font: 11px/1.5 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-45);
+}
+.intro-meta-top {
+  position: absolute;
+  top: var(--edge);
+  left: calc(var(--edge) + 12px);
+  right: calc(var(--edge) + 12px);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+.intro-foot {
+  position: absolute;
+  left: calc(var(--edge) + 12px);
+  right: calc(var(--edge) + 12px);
+  bottom: var(--edge);
+}
+.intro-ruler {
+  position: relative;
+  height: 9px;
+  border-bottom: 1px solid var(--hairline-strong);
+}
+.intro-ruler-fill {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.intro-tick {
+  position: absolute;
+  bottom: 0;
+  width: 1px;
+  height: 5px;
+  background: var(--ink-25);
+}
+.intro-tick:first-of-type,
+.intro-tick:nth-of-type(7),
+.intro-tick:last-of-type {
+  height: 9px;
+}
+.intro-tick:last-of-type {
+  translate: -1px 0;
+}
+.intro-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+.intro-count {
+  /* numeral height plus breathing room, so overshoots never clip */
+  --cap: 0.86em;
+  display: flex;
+  margin: 0.06em 0 0;
+  /* clip vertically only, so tight tracking never shaves glyph edges */
+  clip-path: inset(0 -0.2em);
+  font-size: clamp(112px, 25vw, 360px);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.07em;
+  line-height: var(--cap);
+}
+.intro-slot {
+  display: block;
+  height: var(--cap);
+  clip-path: inset(0 -0.2em);
+  transition: color 0.4s ease;
+}
+.intro-slot.is-lead {
+  color: var(--ink-12);
+}
+.intro-reel {
+  display: flex;
+  flex-direction: column;
+}
+.intro-reel span {
+  height: var(--cap);
+  line-height: var(--cap);
+}
+.intro-meta-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+}
+@media (max-width: 640px) {
+  .intro {
+    --edge: 16px;
+  }
+  .intro-meta-mid {
+    display: none;
+  }
+  .intro-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .intro-meta-side {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro {
+    display: none;
+  }
+}
