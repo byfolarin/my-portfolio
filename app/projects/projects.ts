@@ -97,17 +97,15 @@ export const projects: Project[] = [
     tint: "#8a6d3b",
   },
   {
-    // TODO: replace placeholder copy, then remove `draft`
-    slug: "newstips",
-    name: "Newstips",
-    summary: "One-line summary to come",
-    role: "Role to come",
-    period: "Year",
-    industry: "Industry to come",
+    slug: "type-studio",
+    name: "Type Studio",
+    summary: "A browser-based workspace for designing Kredete's typefaces",
+    role: "Design Director",
+    period: "2026",
+    industry: "Type Design",
     description:
-      "Placeholder — describe what Newstips is, the problem it solves, and the design decisions you led.",
-    topics: ["Tag", "Tag", "Tag"],
+      "An open-source tool for drawing, spacing and exporting typefaces, built to make Kredete Sans — the first of a Sans, Serif and Mono family for Kredete, Hinstantt and Gravv. Letters are previewed live inside real product screens, and Kredete Sans Regular is set for release in December 2026.",
+    topics: ["Type Design", "Design Tools", "Brand"],
     tint: "#3f4a5a",
-    draft: true,
   },
 ];

@@ -2,11 +2,11 @@
 
 :root {
   color-scheme: light;
-  --body-bg: #f2f1ed;
-  --panel-bg: #f7f6f2;
-  --surface: #eae9e4;
-  --surface-hover: #e3e2dc;
-  --skeleton: #e1e0da;
+  --body-bg: #e1dfdd;
+  --panel-bg: #e9e7e5;
+  --surface: #d9d7d4;
+  --surface-hover: #d2d0cc;
+  --skeleton: #d0cec9;
   --body-color: var(--ink-45);
   --heading-color: var(--heading-color);
   --muted: rgba(0, 0, 0, 0.4);
@@ -19,8 +19,8 @@
   --ink-22: rgba(0, 0, 0, 0.22);
   --ink-18: rgba(0, 0, 0, 0.18);
   --ink-12: rgba(0, 0, 0, 0.12);
-  --hairline: #e7e5df;
-  --hairline-strong: #dddbd4;
+  --hairline: #d5d3cf;
+  --hairline-strong: #cbc9c4;
   --underline: #d9d9d9;
   --underline-hover: #666;
   --ring: rgba(0, 0, 0, 0.06);
@@ -29,9 +29,9 @@
   --btn-bg: #111;
   --btn-fg: #fdfdfc;
   --accent: #e0451f;
-  --glass: rgba(242, 241, 237, 0.85);
-  --panel-glass: rgba(247, 246, 242, 0.96);
-  --scrim: rgba(242, 241, 237, 0.72);
+  --glass: rgba(225, 223, 221, 0.85);
+  --panel-glass: rgba(233, 231, 229, 0.96);
+  --scrim: rgba(225, 223, 221, 0.72);
   --font-body: -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, sans-serif;
 }
