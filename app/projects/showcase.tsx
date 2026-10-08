@@ -24,6 +24,18 @@ export function ProjectMedia({ project }: { project: Project }) {
   return <span className="pb-media-mark">{project.name}</span>;
 }
 
+function SideFrame({ shot, label }: { shot: { src: string; label: string }; label: string }) {
+  return (
+    <div className="aw-frame">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={shot.src} alt={shot.label} loading="lazy" />
+      <span className="aw-frame-label">
+        {label} — {shot.label}
+      </span>
+    </div>
+  );
+}
+
 // a draggable row of frames: the hero frame sits centred with neighbours
 // peeking in at both edges. Mouse drags scroll it; touch scrolls natively.
 export function ShowcaseStrip({
@@ -38,6 +50,8 @@ export function ShowcaseStrip({
   const stripRef = useRef<HTMLDivElement>(null);
   const chipRef = useRef<HTMLSpanElement>(null);
   const no = String(index + 1).padStart(2, "0");
+  // extra screens: the first sits left of the hero, the rest follow it
+  const sides = project.gallery ?? [];
 
   useEffect(() => {
     const strip = stripRef.current;
@@ -100,10 +114,14 @@ export function ShowcaseStrip({
   return (
     <div className="aw-strip-wrap">
       <div className="aw-strip" ref={stripRef}>
-        <div className="aw-frame" aria-hidden>
-          <span className="aw-frame-mark">{project.name}</span>
-          <span className="aw-frame-label">Fig. {no}.3 — image to come</span>
-        </div>
+        {sides[0] ? (
+          <SideFrame shot={sides[0]} label={`Fig. ${no}.2`} />
+        ) : (
+          <div className="aw-frame" aria-hidden>
+            <span className="aw-frame-mark">{project.name}</span>
+            <span className="aw-frame-label">Fig. {no}.3 — image to come</span>
+          </div>
+        )}
         <button
           type="button"
           className="aw-frame aw-frame-hero"
@@ -111,12 +129,20 @@ export function ShowcaseStrip({
           aria-label={`Open ${project.name} case study`}
         >
           <ProjectMedia project={project} />
-          <span className="aw-frame-label">Fig. {no}.1</span>
+          <span className="aw-frame-label">
+            Fig. {no}.1{project.imageLabel ? ` — ${project.imageLabel}` : ""}
+          </span>
         </button>
-        <div className="aw-frame" aria-hidden>
-          <span className="aw-frame-mark">{project.name}</span>
-          <span className="aw-frame-label">Fig. {no}.2 — image to come</span>
-        </div>
+        {sides.length > 1 ? (
+          sides
+            .slice(1)
+            .map((shot, k) => <SideFrame key={shot.src} shot={shot} label={`Fig. ${no}.${k + 3}`} />)
+        ) : (
+          <div className="aw-frame" aria-hidden>
+            <span className="aw-frame-mark">{project.name}</span>
+            <span className="aw-frame-label">Fig. {no}.2 — image to come</span>
+          </div>
+        )}
       </div>
       <span className="aw-drag" ref={chipRef} aria-hidden>
         Drag

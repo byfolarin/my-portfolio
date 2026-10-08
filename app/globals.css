@@ -5287,6 +5287,25 @@ a.bento-tile:hover {
   background: color-mix(in srgb, var(--tint) 22%, var(--surface));
   cursor: pointer;
 }
+/* product screenshots sit inset on a soft gradient in the project's colour,
+   rather than filling the frame edge to edge */
+.aw-frame:has(> img) {
+  background:
+    radial-gradient(120% 90% at 15% 0%, color-mix(in srgb, var(--tint) 30%, #fff) 0%, transparent 60%),
+    linear-gradient(160deg, color-mix(in srgb, var(--tint) 45%, #f4f3f1) 0%, color-mix(in srgb, var(--tint) 85%, #0b0b0c) 100%);
+}
+.aw-frame > img {
+  inset: 9% 8% auto;
+  width: 84%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: top left;
+  border-radius: 10px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.18),
+    0 30px 60px -20px rgba(0, 0, 0, 0.45);
+}
 .aw-frame-hero .pb-media-mark,
 .aw-frame-mark {
   color: color-mix(in srgb, var(--tint) 75%, var(--ink));

@@ -19,6 +19,9 @@ export type Project = {
   topics: string[];
   href?: string;
   image?: string;
+  imageLabel?: string;
+  // extra screens shown beside the main image in the homepage strip
+  gallery?: { src: string; label: string }[];
   video?: string;
   tint: string;
   draft?: boolean;
@@ -37,6 +40,13 @@ export const projects: Project[] = [
     description:
       "Product design for Hinstantt's third-party risk management platform. I built HDS, a complete design system with clear foundations and reusable components, organized vendor onboarding into a clearer sequence, and redesigned 127 transactional emails into one coherent communication system.",
     topics: ["Design Systems", "Product Design", "Enterprise UX"],
+    image: "/projects/hinstantt-budgets.jpg",
+    imageLabel: "Budgets",
+    gallery: [
+      { src: "/projects/hinstantt-travel.jpg", label: "Travel" },
+      { src: "/projects/hinstantt-subscriptions.jpg", label: "Subscriptions" },
+      { src: "/projects/hinstantt-team.jpg", label: "Team" },
+    ],
     tint: "#004b87",
   },
   {
@@ -56,7 +66,7 @@ export const projects: Project[] = [
   },
   {
     slug: "kredete-mobile",
-    name: "Kredete Mobile",
+    name: "Kredete",
     summary: "Mobile app for building credit and moving money across borders",
     role: "Design Director",
     period: "2024 — Present",
@@ -94,6 +104,13 @@ export const projects: Project[] = [
     description:
       "A calm church app bringing scripture, sermons, and community into one focused experience, designed end to end with quiet typography — and a marketing site that carries the same thoughtful pace into a clear introduction.",
     topics: ["Product Design", "Mobile App", "Web Design"],
+    image: "/projects/selah-admin-dashboard.jpg",
+    imageLabel: "Church admin dashboard",
+    gallery: [
+      { src: "/projects/selah-admin-events.jpg", label: "Events & services" },
+      { src: "/projects/selah-admin-messages.jpg", label: "Messages" },
+      { src: "/projects/selah-admin-groups.jpg", label: "Groups" },
+    ],
     tint: "#8a6d3b",
   },
   {
@@ -106,6 +123,14 @@ export const projects: Project[] = [
     description:
       "An open-source tool for drawing, spacing and exporting typefaces, built to make Kredete Sans — the first of a Sans, Serif and Mono family for Kredete, Hinstantt and Gravv. Letters are previewed live inside real product screens, and Kredete Sans Regular is set for release in December 2026.",
     topics: ["Type Design", "Design Tools", "Brand"],
-    tint: "#3f4a5a",
+    image: "/projects/type-studio-editor-o.jpg",
+    imageLabel: "Glyph editor",
+    gallery: [
+      { src: "/projects/type-studio-editor-n.jpg", label: "Drawing the n" },
+      { src: "/projects/type-studio-dark.jpg", label: "Dark mode" },
+      { src: "/projects/type-studio-export.jpg", label: "Validation & export" },
+    ],
+    // Kredete purple, as used in the Type Studio interface
+    tint: "#5b17a6",
   },
 ];
