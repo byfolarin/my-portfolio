@@ -5568,17 +5568,19 @@ a.bento-tile:hover {
     margin-top: 3rem;
     padding-top: 0;
   }
-  /* just the hero frame, full width, no drag */
+  /* swipeable: real screens only (empty "image to come" frames are hidden),
+     each one nearly full width so the next peeks in from the edge */
   .aw-strip {
-    overflow: visible;
-    scroll-snap-type: none;
+    gap: 6px;
+    padding: 0 1rem;
+    scroll-padding: 0 1rem;
   }
-  .aw-strip > .aw-frame:not(.aw-frame-hero),
+  .aw-strip > .aw-frame:not(.aw-frame-hero):not(:has(> img)),
   .aw-drag {
     display: none;
   }
   .aw-frame {
-    flex-basis: 100%;
+    flex-basis: 88%;
   }
   .aw-headline {
     padding-bottom: 1.25rem;
