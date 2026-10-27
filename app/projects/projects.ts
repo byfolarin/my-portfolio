@@ -7,9 +7,20 @@
 // `draft: true` marks placeholder copy: it still shows on the homepage,
 // but the ask assistant ignores it until the real details are in.
 
+export type CaseSection = {
+  // short label for the sidebar and the section's mono heading
+  label: string;
+  // optional lead line, shown large beside the first section
+  title?: string;
+  body: string;
+};
+
 export type Project = {
   slug: string;
   name: string;
+  // case study subtitle, shown grey under the name
+  tagline?: string;
+  sections?: CaseSection[];
   summary: string;
   role: string;
   period: string;
@@ -30,6 +41,14 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "hinstantt",
+    tagline: "One system for the finance team",
+    sections: [
+      { label: "Challenge", title: "Bringing a finance OS into one language", body: "Hinstantt is a finance OS for global operators: payments, corporate cards, expenses, travel, treasury and accounting on one platform, across 60+ markets. With that much surface area, every module needed to look and behave like part of the same product." },
+      { label: "Design system", body: "I built HDS, a complete light-theme design system with clear foundations, reusable components and practical guidance for everyday delivery, so new modules start consistent instead of drifting apart." },
+      { label: "Product", body: "The system carries across the product: Budgets shows what each team can spend and whether it is on pace; Travel brings trips, approvals and policy into one view; Subscriptions finds every tool the company pays for from card and bill payments; Team shows who can do what, and who is away." },
+      { label: "Communication", body: "I organized vendor onboarding into a clearer sequence for teams inviting, reviewing and managing vendors, and redesigned 127 transactional emails into one coherent communication system with aligned structure, hierarchy, states and visual language." },
+      { label: "Outcome", body: "Hinstantt reports more than 10,000 businesses and $12B+ in annual volume running through the platform across 60+ markets." },
+    ],
     name: "Hinstantt",
     summary: "Design system and core flows for a third-party risk platform",
     role: "Product Designer",
@@ -51,6 +70,13 @@ export const projects: Project[] = [
   },
   {
     slug: "gravv",
+    tagline: "Stablecoin infrastructure that feels dependable",
+    sections: [
+      { label: "Challenge", title: "Making payment infrastructure feel trustworthy", body: "Gravv connects banks, blockchain networks and local payout rails so businesses can move money in real time with stablecoins. A platform like that has to feel calm and dependable before anyone integrates with it." },
+      { label: "Identity", body: "I built the identity around a distinctive deep green and a direct, dependable visual language suited to modern payment infrastructure." },
+      { label: "Developer docs", body: "I redesigned the developer documentation to shorten the path from discovery to first payment, keeping implementation guidance and essential context together on the page." },
+      { label: "Outcome", body: "Gravv has processed more than $3B in annualised volume for over 1,000 businesses across 100+ countries, and was acquired by Kredete in September 2026." },
+    ],
     name: "Gravv",
     summary: "Identity and developer docs for a USDC payments platform",
     role: "Brand & Product Designer",
@@ -62,10 +88,24 @@ export const projects: Project[] = [
     description:
       "The identity for a USDC payments platform, built around a distinctive deep green and a direct, dependable visual language — and developer documentation redesigned to shorten the path from discovery to first payment.",
     topics: ["Brand Design", "Developer Experience", "Payments"],
+    image: "/projects/gravv-payment-links.jpg",
+    imageLabel: "Payment links",
+    gallery: [
+      { src: "/projects/gravv-overview.jpg", label: "Overview" },
+      { src: "/projects/gravv-transactions.jpg", label: "Transactions" },
+      { src: "/projects/gravv-wallets.jpg", label: "Wallets" },
+      { src: "/projects/gravv-team.jpg", label: "Team" },
+    ],
     tint: "#077155",
   },
   {
     slug: "kredete-mobile",
+    tagline: "Credit and money, across borders",
+    sections: [
+      { label: "Challenge", title: "Making complex financial actions feel clear", body: "Kredete helps Africans build credit and move money across borders. Both are high-stakes, multi-step actions, and the product has to make them feel clear and safe for people sending money home." },
+      { label: "Product", body: "I lead product design for the mobile experience, from core journeys through the details that make complex financial actions feel clear: transfers, FX, and the credit-building flows that sit alongside them." },
+      { label: "Outcome", body: "Kredete has remitted more than $500M for over 700,000 monthly users, and raised a $22M Series A in September 2025." },
+    ],
     name: "Kredete",
     summary: "Mobile app for building credit and moving money across borders",
     role: "Design Director",
@@ -82,6 +122,12 @@ export const projects: Project[] = [
   },
   {
     slug: "blockstale",
+    tagline: "West Africa's first Bitcoin ATM",
+    sections: [
+      { label: "Challenge", title: "Bitcoin for everyday cash users", body: "Blockstale put a Bitcoin teller machine in Lagos for people paying with cash, many of them new to crypto and some unable to read. The machine had to be usable by anyone who walked up to it." },
+      { label: "Accessibility", body: "I led a team of four developers and four designers to ship accessibility features, including language selection across 14 local and 27 foreign languages for non-literate users." },
+      { label: "Outcome", body: "Payment task time on the ATM dropped from 12 minutes to 2, an 88% improvement, and the accessibility feature reached a 52% adoption rate." },
+    ],
     name: "Blockstale",
     summary: "A cash-to-crypto kiosk designed for everyday, non-technical users",
     role: "Senior Product Designer",
@@ -96,6 +142,12 @@ export const projects: Project[] = [
   },
   {
     slug: "selah",
+    tagline: "Scripture, sermons and community",
+    sections: [
+      { label: "Challenge", title: "A church app that slows you down", body: "Selah brings scripture, sermons and community into one focused experience. It had to feel calm for members and practical for the people running a church." },
+      { label: "App", body: "I designed the member app end to end with quiet typography and an interface intended to slow you down, and a marketing site that carries the same thoughtful pace." },
+      { label: "Church admin", body: "Behind it, the admin gives a church one place to run its community: a dashboard of members and services, events and services, groups, testimonies, and messages across email, SMS and church chat." },
+    ],
     name: "Selah",
     summary: "A calm church app and the website that introduces it",
     role: "Founding Designer",
@@ -115,6 +167,13 @@ export const projects: Project[] = [
   },
   {
     slug: "type-studio",
+    tagline: "Building Kredete's typefaces from scratch",
+    sections: [
+      { label: "Challenge", title: "A typeface built inside its own tool", body: "Kredete, Hinstantt and Gravv need their own Sans, Serif and Mono families. Rather than design them in a black box, I am building an open-source, browser-based tool to draw, space, preview and export them." },
+      { label: "Tool", body: "Shared settings such as heights, stem thickness and curve squareness drive recipes that draw each letter, and any point can still be adjusted by hand. Letters are previewed live inside real product screens." },
+      { label: "Validation", body: "Before export, technical checks catch broken or self-intersecting outlines, missing characters and spacing issues, and the tool builds an installable TTF." },
+      { label: "Status", body: "Kredete Sans Regular is in progress, with the full A–Z, figures, punctuation and ₦ $ € £ planned for release in December 2026." },
+    ],
     name: "Type Studio",
     summary: "A browser-based workspace for designing Kredete's typefaces",
     role: "Design Director",
