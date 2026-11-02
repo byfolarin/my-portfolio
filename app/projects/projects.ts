@@ -121,6 +121,32 @@ export const projects: Project[] = [
     tint: "#1f4fd8",
   },
   {
+    slug: "kredete-watch",
+    tagline: "Your money, on your wrist",
+    sections: [
+      { label: "Challenge", title: "Money on the smallest screen", body: "Kredete for Apple Watch brings the everyday money moments to the wrist: checking a balance, sending to someone you know, and asking Prael, Kredete's assistant, a quick question, all in a few seconds and a few taps." },
+      { label: "Interface", body: "Twenty watch screens cover the core journeys: home balance with quick Send, Request and Prael actions; a swipe keyboard to find a recipient; savings goals, cards, spending, markets, bills, travel and notifications, each designed to read at a glance." },
+      { label: "Prael", body: "Voice is the fastest input on a watch, so Prael listens: ask for today's USD to EUR rate or start a transfer without typing." },
+      { label: "Languages", body: "Every screen is localised into Arabic, French and Spanish. Arabic mirrors the whole layout right-to-left, so the actions, chart and balance read the way an Arabic speaker expects." },
+      { label: "Launch film", body: "A 19.5-second launch film introduces it: the logo, a hero story for each core moment (balance, swipe to send, ask Prael), then all twenty screens cascading into a tilted wall before the closing card, \u201cNow on Apple Watch.\u201d" },
+    ],
+    name: "Kredete for Apple Watch",
+    summary: "The Kredete app redesigned for the wrist, in four languages",
+    role: "Design Director",
+    period: "2026",
+    industry: "Fintech",
+    description:
+      "Kredete brought to Apple Watch: balance at a glance, send in a swipe, and ask Prael by voice, across twenty screens designed for the wrist and introduced with a launch film.",
+    topics: ["Wearables", "Product Design", "Motion"],
+    image: "/projects/kredete-watch-flow-send.jpg",
+    imageLabel: "Send in three taps",
+    gallery: [
+      { src: "/projects/kredete-watch-flow-prael.jpg", label: "Ask Prael" },
+      { src: "/projects/kredete-watch-languages.jpg", label: "Arabic, French, Spanish" },
+    ],
+    tint: "#6b21c8",
+  },
+  {
     slug: "blockstale",
     tagline: "West Africa's first Bitcoin ATM",
     sections: [

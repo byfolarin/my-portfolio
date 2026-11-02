@@ -6160,3 +6160,52 @@ body:has(.cs) .sp-track {
     padding: 1.25rem 0 7rem;
   }
 }
+
+/* transparent product cut-outs (e.g. a watch) float on the gradient at their
+   own shape, instead of being boxed like a 4:3 screenshot */
+.aw-frame > img[src$=".png"],
+.cs-tile > img[src$=".png"],
+.cs-hero > img[src$=".png"] {
+  width: auto;
+  height: 74%;
+  aspect-ratio: auto;
+  object-fit: contain;
+  border-radius: 0;
+  box-shadow: none;
+  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.35));
+}
+.aw-frame > img[src$=".png"] {
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* full-bleed compositions (e.g. Figma showcase boards) fill their frame
+   instead of sitting inset like a raw screenshot */
+.aw-frame > img[src*="/kredete-watch-"],
+.cs-tile > img[src*="/kredete-watch-"],
+.cs-hero > img[src*="/kredete-watch-"] {
+  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  /* never crop: the whole board is shown, letterboxed in its own grey */
+  object-fit: contain;
+  object-position: center;
+  border-radius: 0;
+  box-shadow: none;
+  transform: none;
+}
+.aw-frame:has(> img[src*="/kredete-watch-"]),
+.cs-tile:has(> img[src*="/kredete-watch-"]),
+.cs-hero:has(> img[src*="/kredete-watch-"]) {
+  background: #e1e1e1;
+}
+/* captions over busy full-bleed images get a solid chip so they stay legible */
+.cs-tile:has(> img[src*="/kredete-watch-"]) figcaption {
+  padding: 0.35rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(6, 6, 6, 0.85);
+  color: #f1f1ef;
+}
